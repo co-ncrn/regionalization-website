@@ -60,43 +60,20 @@
 	</div>	
 
 </div>
+
 <script src="vendor/jquery/dist/jquery.min.js"></script>
 <script src="vendor/chosen/chosen.jquery.js"></script>
 <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="vendor/leaflet/dist/leaflet.js"></script>
+
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="https://d3js.org/d3-axis.v1.min.js"></script>
-<script src="../multivariate-testing/data/data_definitions.js"></script>
+
+<script src="data/data_definitions.js"></script>
 <script src="assets/js/main.js"></script>
 
-<script>
-
-
-
-var map = L.map('map', {
-    minZoom: 5,
-    maxZoom: 15,
-    zoomControl: true
-}).setView([35.243,-80.395], 7);
-
-var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-		'Imagery © <a href="http://mapbox.com">Mapbox</a>';
-
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-	//id: 'mapbox.streets'
-    id: 'mapbox.light',
-    opacity: 0.7,
-    attribution: attribution,
-    accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
-}).addTo(map);
-
-//var geojsonLayer = new L.GeoJSON.AJAX("data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
-//geojsonLayer.addTo(map);
-
-
-
-</script>
+<script></script>
 
 
 </body>
