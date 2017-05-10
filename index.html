@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boxplot + Table</title>
+
+
+
+<link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="vendor/chosen/chosen.css" rel="stylesheet">
+<link href="vendor/leaflet/dist/leaflet.css" rel="stylesheet">
+<link href="assets/css/styles.css" rel="stylesheet">
+
+<style>
+#map { height: 680px; }
+</style>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+<div class="container-fluid">
+
+	<h1>
+		Select MSA
+		<span class="header_links"></span>
+	</h1>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div id="map"></div>
+		</div>
+		<div class="col-md-4">
+			<div class="sources">
+				<div class="form-group">
+					<label for="msa_select_box">Select a Metropolitan Statistical Area (MSA):</label>
+					<select id="msa_select_box" data-placeholder="Select an MSA"></select>
+				</div>
+				<div class="form-group">
+					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
+					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
+				</div>
+				
+				
+			</div>
+			<div class="info"></div>
+			<textarea class="form-control" rows="30" id="output"></textarea>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div id="table"></div>
+		</div>
+	</div>	
+
+</div>
+<script src="vendor/jquery/dist/jquery.min.js"></script>
+<script src="vendor/chosen/chosen.jquery.js"></script>
+<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="vendor/leaflet/dist/leaflet.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-axis.v1.min.js"></script>
+<script src="../multivariate-testing/data/data_definitions.js"></script>
+<script src="assets/js/main.js"></script>
+
+<script>
+
+
+
+var map = L.map('map', {
+    minZoom: 5,
+    maxZoom: 15,
+    zoomControl: true
+}).setView([35.243,-80.395], 7);
+
+var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+		'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+	//id: 'mapbox.streets'
+    id: 'mapbox.light',
+    opacity: 0.7,
+    attribution: attribution,
+    accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
+}).addTo(map);
+
+//var geojsonLayer = new L.GeoJSON.AJAX("data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
+//geojsonLayer.addTo(map);
+
+
+
+</script>
+
+
+</body>
+</html>
