@@ -27,7 +27,7 @@ $(document).ready(function(){
 	});
 	// on chosen() change events
 	$('#msa_select_box').on('change', function(evt, params) {
-		updateMSA(params.selected);
+		updateMSA(params.selected,"menu");
 	});
 	$('#scenario_select_box').on('change', function(evt, params) {
 		updateData(params);
@@ -53,99 +53,6 @@ function init(){
 }
 
 
-/* MAP
-*********************************************************************************************************/
-
-var loadMSALayer	// the map layer for all MSAs
-;
-
-
-var map = L.map('map', {
-    minZoom: 5,
-    maxZoom: 15,
-    zoomControl: true
-}).setView([35.243,-80.395], 7);
-
-var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-		'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-		'Imagery © <a href="http://mapbox.com">Mapbox</a>';
-
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-	//id: 'mapbox.streets'
-    id: 'mapbox.light',
-    opacity: 0.7,
-    attribution: attribution,
-    accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
-}).addTo(map);
-
-var msaStyle = {
-	"color": "#3690c0",
-	"weight": 1,
-	"opacity": 0.65
-};
-
-
-
-
-/**
- *	Load the MSA layer
- */
-function loadMSALayer(src,type,layerId){
-	// get remote json
-	d3.json(src, function(error, data) {
-		// if topojson, convert to geojson
-		data = ifTopoReturnGeo(data);
-		// create msa geojson layer
-		msaLayer = L.geoJson(data, {
-			style: msaStyle,
-		    onEachFeature: onEachMSAFeature
-		}).addTo(map);
-	});
-}
-//loadMSALayer("../../data/geojson/cbsareap010g.json");
-// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
-loadMSALayer("data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
-
-
-
-
-
-
-/* MAP - FUNCTIONS
-*********************************************************************************************************/
-
-/**
- *	Set events for MSAs
- */
-function onEachMSAFeature(feature, layer) {
-    layer.on({
-        //mouseover: highlightFeature,
-        //mouseout: resetHighlight,
-        //click: zoomToMSAFeature
-    });
-}
-
-/**
- *	Consider a geojson|topojson object and return geojson (converting if needed)
- *	@param Object data A geojson|topojson object
- *	@returns Object data A geojson object
- */
-function ifTopoReturnGeo(data){
-	// treat as geojson unless we determine it is topojson file
-	if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
-		// get object keys
-		var keys = Object.keys(data.objects);
-		// use first key as layer id
-		var layerId = keys[0];
-		// convert to geojson
-		data = topojson.feature(data, data.objects[layerId]);
-	}
-	return data;
-}
-
-
-
-
 
 
 
@@ -167,64 +74,50 @@ function createMSAMenu(json){
 	}
 	$("#msa_select_box").append( msa_options ).trigger('chosen:updated'); // update select
 
-	addTempMSAmarkers(); // temp
-}
-/**
- *	Temp: Place markers over the centroids of all MSAs
- */
-function addTempMSAmarkers(){
-	// array to hold markers
-	var markerArray = [];
-	// loop through each MSA
-	for (var key in msas) {
-		if (!msas.hasOwnProperty(key)) continue;
-		// current marker
-	    var o = msas[key][0];
-	    //console.log(o);
-	    // push new marker to array
-	    markerArray.push(L.marker([o.lat,o.lng]));
-	}
-	// create feature group and add to map
-	var group = L.featureGroup(markerArray).addTo(map);
-	//map.fitBounds(group.getBounds());
-	//console.log(markerArray.length)
+	//addTempMSAmarkers(); // temp
 }
 
-
-
-
 /**
- *	Update MSA
- * 	This changes the title, menu, chart, and map
+ *	Update MSA - Propogates the MSA across the title, menu, chart, and map
  */
-function updateMSA(msa){
+function updateMSA(msa,origin){
+	console.log("updateMSA()", msa, origin);
 	current.msa = msa;			// update current obj
+	if (origin && origin != "menu")	
+		updateMSAMenu(msa);		// update selected MSA in dropdown
 	updateTitle(msa);			// update title
 	updateScenarioMenu(msa);	// update scenario menu
-	//updateChart(msa);		// update d3 data
-	updateMap(msa);				// update map data
+	//updateChart(msa);			// update d3 data
+	zoomToMSAonMap(msa);		// update MSA displayed on map
 }
-
-function updateMap(msa){
-	console.log("updateMap()", msa, msas[msa][0]);
-	var m = msas[msa][0];
-	map.panTo(new L.LatLng(m.lat, m.lng));
+/**
+ *	Update MSA dropdown
+ */
+function updateMSAMenu(msa){
+	console.log("updateMSAMenu()", msa);
+	$("#msa_select_box").val(msa).trigger('chosen:updated');;
 }
-
-
-
-
+/**
+ *	Update URL
+ */
+function updateURL(msa){
+	
+}
 /**
  *	Update Title
  */
 function updateTitle(msa){
 }
 
+
+
+
+
 /**
  *	Build the scenario menu based on MSA selection
  */
 function updateScenarioMenu(msa){
-	console.log(msa, msas[msa]);
+	console.log("updateScenarioMenu()", msa, msas[msa]);
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
