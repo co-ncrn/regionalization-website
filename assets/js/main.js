@@ -5,7 +5,8 @@
  */
 
 
-var msas = {}, 											// all the MSAs
+var domain = "regionalization-website/",				// will eventually be domain name
+	msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" },	// object to store current data reference
 	api_url = "http://localhost/api/"					// api url
 	//api_url = "http://207.38.84.184/api/"			// remote api url
@@ -33,7 +34,13 @@ $(document).ready(function(){
 		updateData(params);
 	});
 
+
+
 	init(); // load data, map, page
+
+
+
+
 });
 
 
@@ -53,6 +60,41 @@ function init(){
 }
 
 
+function getPath() {
+    var fullpath = window.location.pathname,
+    	page = [],
+    	pages = [],
+    	location = {};
+ 
+ 	// split on domain (the working directory or domain name)
+    if (fullpath.indexOf(domain) != -1) {
+    	// get everything after domain
+        page = fullpath.split(domain)[1];
+        // remove any trailing slashes
+        page = page.replace(/\/$/, "").trim();
+        // if data there
+        if (page != ""){
+        	// then there must be msa + data
+	        if (page.indexOf("/") != -1) {
+	        	// split on /
+	        	pages = page.split("/");
+	        	// set vars
+	        	if (pages[0]) location.msa = pages[0].trim();
+	        	if (pages[1]) location.data = pages[1].trim();
+	        }
+	        else {
+				location.msa = page.trim();
+	        }
+        } 
+    }
+    return location;
+}
+//console.log("getPath()",JSON.stringify(getPath()) )
+function checkForCurrentPage(){
+	var path = getPath();
+	console.log("checkForCurrentPage()",JSON.stringify(getPath()) )
+	if (path.msa) updateMSA(path.msa,"load");
+}
 
 
 
@@ -75,6 +117,7 @@ function createMSAMenu(json){
 	$("#msa_select_box").append( msa_options ).trigger('chosen:updated'); // update select
 
 	//addTempMSAmarkers(); // temp
+	checkForCurrentPage(); // should we display a page based on url?
 }
 
 /**
@@ -86,6 +129,7 @@ function updateMSA(msa,origin){
 	if (origin && origin != "menu")	
 		updateMSAMenu(msa);		// update selected MSA in dropdown
 	updateTitle(msa);			// update title
+	updateURL(msa);				// update URL bar
 	updateScenarioMenu(msa);	// update scenario menu
 	//updateChart(msa);			// update d3 data
 	zoomToMSAonMap(msa);		// update MSA displayed on map
@@ -97,11 +141,37 @@ function updateMSAMenu(msa){
 	console.log("updateMSAMenu()", msa);
 	$("#msa_select_box").val(msa).trigger('chosen:updated');;
 }
+
+
+
+
 /**
  *	Update URL
  */
-function updateURL(msa){
-	
+function updateURL(msa,data){
+
+
+
+
+	var state = {}
+
+	var url = "";
+	console.log(url)
+	if (msa){
+		url += ""+ msa;
+		state.msa = msa;
+	}
+	console.log(url)
+	if (data) {
+		url += "/"+ data;
+		state.data = data;
+	}
+	console.log(url)
+
+
+	window.history.pushState( state, 'TITLE New URL: '+url, url);
+
+
 }
 /**
  *	Update Title
