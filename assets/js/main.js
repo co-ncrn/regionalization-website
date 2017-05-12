@@ -131,7 +131,7 @@ function updateMSA(msa,origin){
 		updateURL(msa);				// update URL bar 
 	updateScenarioMenu(msa);	// update scenario menu
 	//updateChart(msa);			// update d3 data
-	zoomToMSAonMap(msa);		// update MSA displayed on map
+	m.zoomToMSAonMap(msa);		// update MSA displayed on map
 }
 /**
  *	Update MSA dropdown
@@ -175,6 +175,7 @@ function updateTitle(msa){
 }
 
 
+var currentData = null;
 
 
 
@@ -185,6 +186,9 @@ function updateScenarioMenu(msa){
 	console.log("updateScenarioMenu()", msa, msas[msa]);
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
+
+	console.log(msas[msa][0])
+	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
 	var scenario_options = "<option val=''></option>";
@@ -203,6 +207,8 @@ function updateScenarioMenu(msa){
 			//console.log( msas[msa][i].data[j]);
 
 			var data = msas[msa][i].data[j];
+
+
 
 			// add scenario
 			scenario_options += optionHTML(scenario +"-"+ data, dataDict[data]);
