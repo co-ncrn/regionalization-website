@@ -13,6 +13,10 @@ var domain = "regionalization-website/",				// will eventually be domain name
 	;
 
 
+var rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
+var websiteName = "ACS Regionalization";
+
+
 $(document).ready(function(){
 
 	// define chosen() options
@@ -31,8 +35,10 @@ $(document).ready(function(){
 		dataChange("menu",params.selected,current.scenario,current.data);
 	});
 	$('#scenario_select_box').on('change', function(evt, params) {
-		if (parseScenario(params.selected))
-			dataChange("menu",current.msa,current.scenario,current.data);
+		//console.log(params.selected)
+		var p = parseScenario(params.selected);
+		//console.log( p.toString())
+		dataChange("menu",current.msa,p[0],p[1]);
 	});
 	init(); // load data, map, page
 });
@@ -70,9 +76,11 @@ function dataChange(origin,msa,scenario,data){
 
 
 	// 1. HANDLE INCOMING
+	// user clicks msa on map - 
+	// user selects scenario dropdown while msa selected
 
 	// a. compare against current msa
-	if (prop(msa)){
+	if (prop(msa) && msa != current.msa){
 		current.msa = msa;		// update current
 		updateMSA = true;
 	}
@@ -92,22 +100,26 @@ function dataChange(origin,msa,scenario,data){
 	// 2. HANDLE CHANGES
 
 	if (updateMSA || updateScenario){
-		mns.zoomToMSAonMap(msa);	// update MSA displayed on map
 		updateTitle();			// update title
-		if (origin != "load") updateURL(); 	// update URL bar 
+		
 	}
 	if (updateMSA){
 		if (origin != "menu") updateMSAMenu(msa); // update selected MSA in dropdown
 		updateScenarioMenu(msa);	// update scenario menu
+		mns.loadTractLayer(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
+		mns.zoomToMSAonMap(msa);	// update MSA displayed on map
 	}
 	if (updateScenario){
 	}
-	if (updateMSA || updateScenario && updateData){
-		mns.loadTractLayer(current.msa,"data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
+	// menu updated, ...
+	if (updateScenario || updateData){
+		getScenarioData(); 
+	}
+	if (updateMSA || updateScenario || updateData){
+		if (origin != "load") updateUrl('add'); 	// update URL bar 
 	}
 
-
-	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) +"\n\n\n");
 }
 
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
@@ -116,33 +128,56 @@ function checkForCurrentPage(){
 	console.log("checkForCurrentPage()",JSON.stringify(getUrlPath()) )
 
 	if (path.msa && path.scenario && path.data){
-		current.msa = path.msa;
-		current.scenario = path.scenario;
-		current.data = path.data;
-		dataChange("load",current.msa,current.scenario,current.data);
+		dataChange("load",path.msa,path.scenario,path.data);
 	}
 	else if (path.msa) {
-		current.msa = path.msa;
-		dataChange("load",current.msa);
+		dataChange("load",path.msa);
 	}
 }
 
 
 
 
+/**
+ *	update URL - Be careful, because as you do the root of the site changes
+ */
+function updateUrl(change){
+
+
+	// bind to StateChange Event
+	History.Adapter.bind(window,'statechange',function(){ 
+		var State = History.getState();
+	});
+
+
+	var url = "";
+
+	if (prop(current.msa))
+		url += ""+ current.msa;
+	if (prop(current.scenario)) 
+		url += "/"+ current.scenario;
+	if (prop(current.data)) 
+		url += "/"+ current.data;
 
 
 
-
-
-
+	// change state
+	if (change == 'add'){
+		// data
+		History.replaceState({state:1}, websiteName +" - "+ url, rootDir + url);
+	} else {
+		// default
+		History.replaceState({state:0}, websiteName + "", rootDir);
+	}
+	
+}
 
 
 
 /**
  *	Update URL
  */
-function updateURL(){
+function updateURL2(){
 	//var state = {};
 
 	var url = "";
@@ -333,22 +368,21 @@ function parseScenario(params){
 	// split the params from the dropdown
 	var p = params.split("-");
 	if (p.length == 2){
-		current.scenario = p[0];
-		current.data = p[1];
-		return current;
+		//current.scenario = p[0];
+		//current.data = p[1];
+		return p;
 	} 
 }
 /**
  *	Get data from server
  */
-function getData(){
-	// 
-	d3.json(api_url + current.msa +"/"+ current.scenario +"/"+ current.data, function(error, json) {
+function getScenarioData(){
+	var url = api_url + current.msa +"/"+ current.scenario +"/"+ current.data;
+	console.log("getScenarioData()", url);
+	d3.json(url, function(error, json) {
 		if (error) return console.warn(error);		// handle error
 		//console.log(data);
 		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
-
-
 	});
 }
 

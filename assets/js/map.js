@@ -46,6 +46,7 @@ var mns = new function() {
 	 *	Load the MSA layer - Loads a topojson and adds it to the map
 	 */
 	function loadMSALayer(src,type,layerId){
+		console.log("loadMSALayer()",src,type,layerId);
 		// get remote json
 		d3.json(src, function(error, data) {
 			// if topojson, convert to geojson
@@ -150,11 +151,15 @@ var mns = new function() {
 	 *	@param String src The url to remote file
 	 */
 	this.loadTractLayer = function(msa,src) {
-		console.log("loadTractLayer("+src+")");
-		if (currentLayer != null) map.removeLayer(layers[currentLayer]);
+		console.log("loadTractLayer()",msa,src);
+
+		if (currentLayer != null && layers[currentLayer]) 
+			map.removeLayer(layers[currentLayer]);
 		currentLayer = msa;
 		// get geojson|topojson file
 		d3.json(src, function(error, data) {
+			if (error) throw error;
+			console.log("d3.json",error,data);
 			// if topojson convert to geojson
 			data = ifTopoReturnGeo(data);
 			//console.log(data);
@@ -257,6 +262,7 @@ var mns = new function() {
 	 *	@returns Object data A geojson object
 	 */
 	function ifTopoReturnGeo(data){
+		console.log("ifTopoReturnGeo()", data);
 		// treat as geojson unless we determine it is topojson file
 		if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
 			// get object keys
