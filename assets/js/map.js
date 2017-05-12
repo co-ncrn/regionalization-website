@@ -6,8 +6,8 @@
 *********************************************************************************************************/
 
 
-
-var m = new function() {
+// map namespace 
+var mns = new function() {
 
 
 
@@ -149,7 +149,7 @@ var m = new function() {
 	 *	Load geojson|topojson file and display in a tract layer
 	 *	@param String src The url to remote file
 	 */
-	function loadTractLayer(msa,src){
+	this.loadTractLayer = function(msa,src) {
 		console.log("loadTractLayer("+src+")");
 		if (currentLayer != null) map.removeLayer(layers[currentLayer]);
 		currentLayer = msa;
@@ -163,12 +163,12 @@ var m = new function() {
 			layers[msa] = L.geoJson(data, {
 				msa: msa, // store the msa for reference later
 				style: style,
-			    onEachFeature: onEachTractFeature
+			    //onEachFeature: onEachTractFeature
 			});
 			layers[msa].addTo(map);
 		});
 	}
-	loadTractLayer(10180,"data/10180_tract.topojson"); // charlotte
+	//loadTractLayer(10180,"data/10180_tract.topojson"); 
 
 
 
@@ -230,8 +230,8 @@ var m = new function() {
 			// and there is a GEOID (MSA)
 			if (layer.feature.properties.GEOID)
 				// update the MSA across the interface
-				updateMSA(layer.feature.properties.GEOID,"map");
-
+				//updateMSA(layer.feature.properties.GEOID,"map");
+				dataChange("map",layer.feature.properties.GEOID);
 
 			/*
 			if (layer.feature.properties.GEOID == 16740)
