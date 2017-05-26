@@ -1,3 +1,10 @@
+<?php
+
+$config = file_get_contents("assets/js/config.js");
+
+$rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +15,10 @@
 
 
 
-<link href="/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="/vendor/chosen/chosen.css" rel="stylesheet">
-<link href="/vendor/leaflet/dist/leaflet.css" rel="stylesheet">
-<link href="/assets/css/styles.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>vendor/chosen/chosen.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
 
 <style>
 #map { height: 680px; }
@@ -62,21 +69,21 @@
 </div>
 
 
-<script src="/vendor/jquery/dist/jquery.min.js"></script>
-<script src="/vendor/chosen/chosen.jquery.js"></script>
-<script src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/vendor/leaflet/dist/leaflet.js"></script>
-<script src="/vendor/d3/d3.min.js"></script>
+<script src="<?php print $rootDir; ?>vendor/jquery/dist/jquery.min.js"></script>
+<script src="<?php print $rootDir; ?>vendor/chosen/chosen.jquery.js"></script>
+<script src="<?php print $rootDir; ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.js"></script>
+<script src="<?php print $rootDir; ?>vendor/d3/d3.min.js"></script>
 
-<script src="/assets/js/topojson.v1.min.js"></script>
-<script src="/assets/js/d3-axis.v1.min.js"></script>
-<script src="/assets/js/jquery.history.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/topojson.v1.min.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/d3-axis.v1.min.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/jquery.history.js"></script>
 
-<script src="/data/data_definitions.js"></script>
-<script src="/assets/js/config.js"></script>
-<script src="/assets/js/functions.js"></script>
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/map.js"></script>
+<script src="<?php print $rootDir; ?>data/data_definitions.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/config.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/functions.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/main.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/map.js"></script>
 <!--<script src="assets/js/chart.js"></script>-->
 
 <script></script>

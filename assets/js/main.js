@@ -317,7 +317,7 @@ function updateScenarioMenu(msa){
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
-//	console.log(msas[msa][0])
+	console.log(msas[msa][0])
 	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
