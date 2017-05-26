@@ -67,7 +67,7 @@ var mns = new function() {
 	}
 	//loadMSALayer("../../data/geojson/cbsareap010g.json");
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
-	loadMSALayer("data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
+	loadMSALayer(domain+"data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
 
 
 
