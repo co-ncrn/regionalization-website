@@ -176,6 +176,7 @@ var mns = new function() {
 			    //onEachFeature: onEachTractFeature
 			});
 			layers[msa].addTo(map);
+			zoomToMSAonMap(msa);	// update MSA displayed on map
 			console.log(" --> layers.length", Object.keys(layers).length );
 		});
 	}
@@ -247,7 +248,7 @@ var mns = new function() {
 	/**
 	 *	Zoom and fit the map to the MSA bounds
 	 */
-	this.zoomToMSAonMap = function(msa) {
+	var zoomToMSAonMap = function(msa) {
 	//function zoomToMSAonMap(msa){
 		console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
 		map.fitBounds(msaLayerIndex[msa].bounds);
@@ -260,7 +261,7 @@ var mns = new function() {
 	 *	@returns Object data A geojson object
 	 */
 	function ifTopoReturnGeo(data){
-		console.log(" --> ifTopoReturnGeo()", data);
+		//console.log(" --> ifTopoReturnGeo()", data);
 		// treat as geojson unless we determine it is topojson file
 		if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
 			// get object keys

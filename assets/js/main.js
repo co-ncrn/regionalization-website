@@ -84,7 +84,7 @@ function dataChange(origin,msa,scenario,data){
 		updateMSA = true;
 	}
 	// b. compare against current scenario
-	if (prop(scenario) && scenario != current.scenario){
+	if ( (prop(scenario) && scenario != current.scenario) || (msa != current.msa) ){
 		current.scenario = scenario;
 		updateScenario = true;
 	}
@@ -100,18 +100,17 @@ function dataChange(origin,msa,scenario,data){
 
 	if (updateMSA || updateScenario){
 		updateTitle();			// update title
-		
 	}
 	if (updateMSA){
 		if (origin != "menu") updateMSAMenu(msa); // update selected MSA in dropdown
 		updateScenarioMenu(msa);	// update scenario menu
 		mns.loadTractLayer(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
-		mns.zoomToMSAonMap(msa);	// update MSA displayed on map
 	}
 	if (updateScenario){
+		updateScenarioMenu(msa,scenario,data); // update selected MSA in dropdown
 	}
 	// menu updated, ...
-	if (updateScenario || updateData){
+	if ((updateScenario || updateData) || (updateMSA && prop(current.scenario))){
 		getScenarioData(); 
 	}
 	if (updateMSA || updateScenario || updateData){
@@ -128,7 +127,7 @@ function dataChange(origin,msa,scenario,data){
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	console.log("checkForCurrentPage()",JSON.stringify(path) )
+	console.log(" --> checkForCurrentPage()",JSON.stringify(path) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
@@ -170,35 +169,9 @@ function updateUrl(change){
 	}
 	
 }
-
-
-
 /**
- *	Update URL
+ *	if user clicks back/forward button then check the page again
  */
-function updateURL2(){
-	//var state = {};
-
-	var url = "";
-
-	if (prop(current.msa)){
-		url += ""+ current.msa;
-		//state.msa = current.msa;
-	}
-	if (prop(current.scenario)) {
-		url += "/"+ current.scenario;
-		//state.scenario = current.scenario;
-	}
-	if (prop(current.data)) {
-		url += "/"+ current.data;
-		//state.data = current.data;
-	}
-	//console.log("url",url)
-
-	// push the state to the browser
-	window.history.pushState( null, 'TITLE New URL: '+url, url);
-}
-// if user clicks back/forward button then check the page again
 window.onpopstate = function(event) {    
     if(event && event.state) {
         //location.reload(); 
@@ -239,7 +212,7 @@ function getUrlPath() {
 	        }
         } 
     }
-	console.log("getUrlPath()",domain,fullpath,page,location);
+	console.log(" --> getUrlPath()",domain,fullpath,page,location);
     return location;
 }
 
@@ -292,7 +265,7 @@ function updateMSA(msa,origin){
  */
 function updateMSAMenu(msa){
 	console.log(" --> updateMSAMenu()", msa);
-	$("#msa_select_box").val(msa).trigger('chosen:updated');;
+	$("#msa_select_box").val(msa).trigger('chosen:updated');
 }
 
 
@@ -314,12 +287,12 @@ var currentData = null;
 /**
  *	Build the scenario menu based on MSA selection
  */
-function updateScenarioMenu(msa){
+function updateScenarioMenu(msa,scenario,data){
 	console.log(" --> updateScenarioMenu()", msa);
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
-	console.log(msas[msa][0])
+	//console.log(msas[msa][0])
 	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
@@ -350,9 +323,16 @@ function updateScenarioMenu(msa){
 
 	// update options
 	$("#scenario_select_box").append( scenario_options ).trigger('chosen:updated');
- 	// trying to open it... :-P
-	$('#scenario_select_box').trigger('chosen:open');
 
+ 	// if scenario/data then set it
+	if (prop(scenario) ){
+		//console.log("scenario",current.scenario +"-"+ current.data);
+		$("#scenario_select_box").val(current.scenario +"-"+ current.data).trigger('chosen:updated');
+	} 
+	// otherwise open it for input
+	else {
+		$('#scenario_select_box').trigger('chosen:open');
+	}
 }
 function optionHTML(val,text){
 	var option = "";
