@@ -1,6 +1,6 @@
 <?php
 
-// hand rewrites
+// handle rewrites
 if ($_SERVER['HTTP_HOST'] == "localhost"){
 	$rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
 } else {
