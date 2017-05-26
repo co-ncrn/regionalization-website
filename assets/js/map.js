@@ -46,7 +46,7 @@ var mns = new function() {
 	 *	Load the MSA layer - Loads a topojson and adds it to the map
 	 */
 	function loadMSALayer(src,type,layerId){
-		console.log("loadMSALayer()",src,type,layerId);
+		log("loadMSALayer()",src,type,layerId);
 		// get remote json
 		d3.json(src, function(error, data) {
 			// if topojson, convert to geojson
@@ -92,7 +92,7 @@ var mns = new function() {
 	}
 
 	function style(feature) {
-		//console.log(feature.properties.avgroomsE)
+		//log(feature.properties.avgroomsE)
 		return {
 		    fillColor: getColor(currentData),
 		    weight: 1,
@@ -126,8 +126,8 @@ var mns = new function() {
 
 	// turn off highlight
 	function resetTractHighlight(e) {
-		//console.log(layers);
-		console.log(e.target.options);
+		//log(layers);
+		log(e.target.options);
 		var _msa = e.target.options.msa;
 	    layers[_msa].resetStyle(e.target);
 	}
@@ -151,7 +151,7 @@ var mns = new function() {
 	 *	@param String src The url to remote file
 	 */
 	this.loadTractLayer = function(msa,src) {
-		console.log("loadTractLayer()",msa,src);
+		log("loadTractLayer()",msa,src);
 
 		if (currentLayer != null && layers[currentLayer]) 
 			map.removeLayer(layers[currentLayer]);
@@ -159,10 +159,10 @@ var mns = new function() {
 		// get geojson|topojson file
 		d3.json(src, function(error, data) {
 			if (error) throw error;
-			console.log("d3.json",error,data);
+			log("d3.json",error,data);
 			// if topojson convert to geojson
 			data = ifTopoReturnGeo(data);
-			//console.log(data);
+			//log(data);
 			// add to tract layer and map
 			//tractLayer = L.geoJson(data, {
 			layers[msa] = L.geoJson(data, {
@@ -194,14 +194,14 @@ var mns = new function() {
 			if (!msas.hasOwnProperty(key)) continue;
 			// current marker
 		    var o = msas[key][0];
-		    //console.log(o);
+		    //log(o);
 		    // push new marker to array
 		    markerArray.push(L.marker([o.lat,o.lng]));
 		}
 		// create feature group and add to map
 		var group = L.featureGroup(markerArray).addTo(map);
 		//map.fitBounds(group.getBounds());
-		//console.log(markerArray.length)
+		//log(markerArray.length)
 	}
 
 
@@ -226,11 +226,11 @@ var mns = new function() {
 	 */
 	function msaFeatureClicked(e) {
 		var layer = e.target;
-		console.log("\nmsaFeatureClicked() -> layer:",layer);
+		log("\nmsaFeatureClicked() -> layer:",layer);
 
 		// if this is an actual MSA feature 
 		if (layer.feature.properties){
-			//console.log("layer.feature.properties",layer.feature.properties);
+			//log("layer.feature.properties",layer.feature.properties);
 
 			// and there is a GEOID (MSA)
 			if (layer.feature.properties.GEOID)
@@ -251,7 +251,7 @@ var mns = new function() {
 	 */
 	this.zoomToMSAonMap = function(msa) {
 	//function zoomToMSAonMap(msa){
-		console.log("zoomToMSAonMap()", msa, msas[msa][0]);
+		log("zoomToMSAonMap()", msa, msas[msa][0]);
 		map.fitBounds(msaLayerIndex[msa].bounds);
 	}
 
@@ -262,7 +262,7 @@ var mns = new function() {
 	 *	@returns Object data A geojson object
 	 */
 	function ifTopoReturnGeo(data){
-		console.log("ifTopoReturnGeo()", data);
+		log("ifTopoReturnGeo()", data);
 		// treat as geojson unless we determine it is topojson file
 		if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
 			// get object keys

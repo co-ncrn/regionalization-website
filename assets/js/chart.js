@@ -47,12 +47,12 @@ var sources = [
 function load_data(_source,status,callback){
 	source = _source;
 	d3.csv("../data/"+ sources[source]["file"], function(data){
-		//console.log(data);
+		//log(data);
 		data = remove_rows(data,"inf"); 		// remove rows with "inf" (infinity)
 		//limit = Math.ceil(Math.random()*10)+10; 	// limit is randomized to mimic map interaction
 		data = data.slice(0,limit);				// confine to limit
 		display_table(data,"table",limit);		// display table
-		//console.log(data);
+		//log(data);
 		callback(data,status);
 	});
 }
@@ -63,7 +63,7 @@ function load_api_data(_msa,_scenario,_data,callback){
 	d3.json("http://localhost:3000/api/"+_msa+"/"+_scenario+"/"+_data, function(error, json) {
 		if (error) return console.warn(error);
 		data = json;
-		console.log(data);
+		log(data);
 	});
 
 
@@ -84,7 +84,7 @@ function load_api_data(_msa,_scenario,_data,callback){
 function fixdata(data){
 	// data fixing
 	data.forEach(function(row,i) {
-		//console.log(row);
+		//log(row);
 
 		data[i].TID = data[i].TID.replace("g","");
 
@@ -205,13 +205,13 @@ function return_cdo(status){
  *	Select the current column
  */
 function select_col(node,state){
-	console.log(d3.select(node));
+	log(d3.select(node));
 
 	if (state == "on"){
-		console.log("state = on");
+		log("state = on");
 		//d3.select(node).style("bgColor",".1");
 	} else {
-		console.log("state = off");
+		log("state = off");
 		//d3.select(node).style("background-color","#000000");	
 	}
 
@@ -249,7 +249,7 @@ theadtr.append('th').attr('class','svgHeader')
  */
 function tabulate(data,status) {
 
-	console.log("tabulate()",data,status);
+	log("tabulate()",data,status);
 
 	data = fixdata(data);
 
@@ -266,7 +266,7 @@ function tabulate(data,status) {
 	var xMin = d3.min(data, function(d) { return parseFloat(d["tractErrorMin"]); });
 	var xMax = d3.max(data, function(d) { return parseFloat(d["tractErrorMax"]); });
 	var xExtent = [xMin,xMax];
-	//console.log(xExtent);
+	//log(xExtent);
 	var xScale = d3.scaleLinear()
 		.domain(xExtent).nice()
 		.range([margin.left,width-margin.right]);
