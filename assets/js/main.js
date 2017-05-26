@@ -7,11 +7,8 @@
 
 var msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" }	// object to store current data reference
+	websiteName = "ACS Regionalization"
 	;
-
-
-var rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
-var websiteName = "ACS Regionalization";
 
 
 $(document).ready(function(){
