@@ -5,11 +5,8 @@
  */
 
 
-var domain = "regionalization-website/",				// will eventually be domain name
-	msas = {}, 											// all the MSAs
-	current = { "msa":"", "scenario":"", "data":"" },	// object to store current data reference
-	//api_url = "http://localhost/api/"					// api url
-	api_url = "http://207.38.84.184/api/"				// remote api url
+var msas = {}, 											// all the MSAs
+	current = { "msa":"", "scenario":"", "data":"" }	// object to store current data reference
 	;
 
 

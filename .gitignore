@@ -4,3 +4,5 @@
 vendor
 
 data/tracts/topojson
+
+assets/js/config.js
