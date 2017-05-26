@@ -128,7 +128,7 @@ function dataChange(origin,msa,scenario,data){
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	console.log("checkForCurrentPage()",JSON.stringify(getUrlPath()) )
+	console.log("checkForCurrentPage()",JSON.stringify(path) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
@@ -146,12 +146,10 @@ function checkForCurrentPage(){
  */
 function updateUrl(change){
 
-
 	// bind to StateChange Event
 	History.Adapter.bind(window,'statechange',function(){ 
 		var State = History.getState();
 	});
-
 
 	var url = "";
 
@@ -161,8 +159,6 @@ function updateUrl(change){
 		url += "/"+ current.scenario;
 	if (prop(current.data)) 
 		url += "/"+ current.data;
-
-
 
 	// change state
 	if (change == 'add'){
@@ -213,21 +209,15 @@ window.onpopstate = function(event) {
 
 
 
-
-
-
-
-
-
-
-
-
+/**
+ *	Return the params from the current URL
+ */
 function getUrlPath() {
-    var fullpath = window.location.pathname,
+    var fullpath = window.location.href, //window.location.pathname,
     	page = [],
     	location = {};
  
- 	// split on domain (the working directory || domain name)
+ 	// split on domain (the working directory OR domain name)
     if (fullpath.indexOf(domain) != -1) {
     	// get everything after domain
         page = fullpath.split(domain)[1];
@@ -249,8 +239,20 @@ function getUrlPath() {
 	        }
         } 
     }
+	console.log("getUrlPath()",domain,fullpath,page,location);
     return location;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
