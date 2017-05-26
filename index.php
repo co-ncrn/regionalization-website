@@ -1,8 +1,11 @@
 <?php
 
-$config = file_get_contents("assets/js/config.js");
-
-$rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
+// handle rewrites
+if ($_SERVER['HTTP_HOST'] == "localhost"){
+	$rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
+} else {
+	$rootDir = "/";
+}
 
 ?>
 <!DOCTYPE html>
