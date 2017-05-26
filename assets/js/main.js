@@ -37,11 +37,11 @@ $(document).ready(function(){
 		dataChange("menu",params.selected,current.scenario,current.data);
 	});
 	$('#scenario_select_box').on('change', function(evt, params) {
-		log("params.selected",params.selected);
+		console.log("params.selected",params.selected);
 		// split the params from the dropdown
 		var p = params.selected.split("-");
 		if (p.length == 2){
-			//log( p.toString())
+			//console.log( p.toString())
 			dataChange("menu",current.msa,p[0],p[1]);
 		} 
 	});
@@ -58,7 +58,7 @@ function init(){
 	d3.json(api_url+ "_metadata", function(error, json) {
 		if (error) return console.warn(error);	// handle error
 		msas = json.response; 					// update MSAs
-		//log(data);
+		//console.log(data);
 		$("#output").val( "all MSAs: \n"+ JSON.stringify(msas) );
 		createMSAMenu(json.response); 			// create MSA menu
 	});	
@@ -73,8 +73,8 @@ function init(){
  */
 function dataChange(origin,msa,scenario,data){
 	if (!prop(origin)) return; // origin required
-	log("dataChange()",origin,msa,scenario,data);
-	log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	console.log("\n\ndataChange()",origin,msa,scenario,data);
+	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 
 	// should we update?
 	var updateMSA, updateScenario, updateData;
@@ -124,17 +124,17 @@ function dataChange(origin,msa,scenario,data){
 		if (origin != "load") updateUrl('add'); 	// update URL bar 
 	}
 
-	log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) +"\n\n\n");
+	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 }
 
 
 /**
  *	Checks to see if there is a current page to load
  */
-//log("getUrlPath()",JSON.stringify(getUrlPath()) )
+//console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	log("checkForCurrentPage()",JSON.stringify(getUrlPath()) )
+	console.log("checkForCurrentPage()",JSON.stringify(getUrlPath()) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
@@ -203,7 +203,7 @@ function updateURL2(){
 		url += "/"+ current.data;
 		//state.data = current.data;
 	}
-	//log("url",url)
+	//console.log("url",url)
 
 	// push the state to the browser
 	window.history.pushState( null, 'TITLE New URL: '+url, url);
@@ -272,7 +272,7 @@ function createMSAMenu(json){
 	// loop through msas
 	for (var key in json) {
 	    if (!json.hasOwnProperty(key)) continue;	// skip loop if the property is from prototype
-	   	//log(key,data[key])
+	   	//console.log(key,data[key])
 	    // add MSAs to select options
 		msa_options += optionHTML(key, key +" - "+ json[key][0].description);
 	}
@@ -286,7 +286,7 @@ function createMSAMenu(json){
  *	Update MSA - Propogates the MSA across the title, menu, chart, and map
 
 function updateMSA(msa,origin){
-	log("updateMSA()", msa, origin);
+	console.log("updateMSA()", msa, origin);
 
 	
 	//updateChart(msa);			// update d3 data
@@ -295,7 +295,7 @@ function updateMSA(msa,origin){
  *	Update MSA dropdown
  */
 function updateMSAMenu(msa){
-	log("updateMSAMenu()", msa);
+	console.log(" --> updateMSAMenu()", msa);
 	$("#msa_select_box").val(msa).trigger('chosen:updated');;
 }
 
@@ -319,11 +319,11 @@ var currentData = null;
  *	Build the scenario menu based on MSA selection
  */
 function updateScenarioMenu(msa){
-	log("updateScenarioMenu()", msa, msas[msa]);
+	console.log(" --> updateScenarioMenu()", msa);
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
-//	log(msas[msa][0])
+//	console.log(msas[msa][0])
 	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
@@ -331,7 +331,7 @@ function updateScenarioMenu(msa){
 
 	// for each scenario
 	for (var i = 0; i <  msas[msa].length; i++) {
-		//log( msas[msa][i]);
+		//console.log( msas[msa][i]);
 
 		var scenario = msas[msa][i].scenario;
 
@@ -340,7 +340,7 @@ function updateScenarioMenu(msa){
 
 		// for each data type
 		for (var j = 0; j <  msas[msa][i].data.length; j++) {
-			//log( msas[msa][i].data[j]);
+			//console.log( msas[msa][i].data[j]);
 
 			var data = msas[msa][i].data[j];
 
@@ -375,10 +375,10 @@ function optionHTML(val,text){
  */
 function getScenarioData(){
 	var url = api_url + current.msa +"/"+ current.scenario +"/"+ current.data;
-	log("getScenarioData()", url);
+	console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
 		if (error) return console.warn(error);		// handle error
-		//log(data);
+		//console.log(data);
 		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
 	});
 }

@@ -24,13 +24,10 @@ function prop(val){
 /**
  *	Wrapper function(s) for console.log() for non-chrome browsers
  */
+var debug = true;
 function log(text) {
-	if (window.console) {
+	if (prop(debug) && window.console) 
 		window.console.log(text);
-	}
-	if (prop(debug)){
-		$('#console').html( text + "<br>" + $('#console').html() );
-	}
 } 
 if (!window.console) window.console = {};
 if (!window.console.log) window.console.log = function () { };
