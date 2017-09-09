@@ -2,7 +2,17 @@
 /**
  *	Select MSA script to test API
  *	@author Owen Mundy
+
+1. dataChange()
+2. data downloaded
+	- update map
+	- updateChart()
+
+
+
+
  */
+
 
 
 var msas = {}, 											// all the MSAs
@@ -78,8 +88,7 @@ function dataChange(origin,msa,scenario,data){
 
 
 	// 1. HANDLE INCOMING
-	// user clicks msa on map - 
-	// user selects scenario dropdown while msa selected
+	// user clicks msa on map || user selects scenario dropdown while msa selected
 
 	// a. compare against current msa
 	if (prop(msa) && msa != current.msa){

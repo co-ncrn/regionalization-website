@@ -17,10 +17,13 @@
   ],
   "dependencies": {
     "jquery": "^3.1.1",
-    "bootstrap": "^3.3.7",
     "chosen": "^1.6.2",
     "leaflet": "^1.0.3",
     "leaflet-ajax": "^2.1.0",
-    "d3": "^4.8.0"
+    "d3": "^4.8.0",
+    "bootstrap": "v4.0.0-alpha.6"
+  },
+  "devDependencies": {
+    "tether": "^1.4.0"
   }
 }

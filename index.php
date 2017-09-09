@@ -35,33 +35,66 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <![endif]-->
 </head>
 <body>
+
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-static-top mb-4">
+	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<a class="navbar-brand" href="#">Reducing Uncertainty </a>
+	<div class="collapse navbar-collapse" id="navbarCollapse">
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a class="nav-link" href="#">Data Quality</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">What is Margin of Error?</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Regionalization</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Credits</a>
+			</li>
+		</ul>
+	</div>
+
+</nav>
+
+
 <div class="container-fluid">
 
-	<h4>
-		Select MSA
-		<span class="header_links"></span>
-	</h4>
+<h2 class="header_callout">Reducing Uncertainty in the American Community Survey Using Data-Driven Regionalization</h2>
+
+
 
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<div id="map"></div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<div class="sources">
 				<div class="form-group">
+					<img src="assets/img/icon_geo_point.png">
 					<label for="msa_select_box">Select a Metropolitan Statistical Area (MSA):</label>
 					<select id="msa_select_box" data-placeholder="Select an MSA"></select>
 				</div>
 				<div class="form-group">
+					<img src="assets/img/icon_bar_graph.png">
 					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
 					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
 				</div>
-
-
-				<div id="chart-container">
-					<div id="chart" class="tableText"></div>
+				<div class="form-group">
+					<img src="assets/img/icon_download.png">
+					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
+					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
 				</div>
 				
+			</div>
+
+
+			<div id="chart-container">
+				<div id="chart" class="tableText"></div>
 			</div>
 			<div class="info"></div>
 			
