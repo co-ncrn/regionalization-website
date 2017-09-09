@@ -73,21 +73,21 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 			<div id="map"></div>
 		</div>
 		<div class="col-md-5">
-			<div class="sources">
-				<div class="form-group">
-					<img src="assets/img/icon_geo_point.png">
-					<label for="msa_select_box">Select a Metropolitan Statistical Area (MSA):</label>
-					<select id="msa_select_box" data-placeholder="Select an MSA"></select>
+			<div class="sources clearfix">
+
+				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_geo_point.png"></div>
+				<div class="form-group dropdown_right">
+					<select id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
 				</div>
-				<div class="form-group">
-					<img src="assets/img/icon_bar_graph.png">
-					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
-					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
+
+				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_bar_graph.png"></div>
+				<div class="form-group dropdown_right">
+					<select id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
 				</div>
-				<div class="form-group">
-					<img src="assets/img/icon_download.png">
-					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
-					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
+
+				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_download.png"></div>
+				<div class="form-group dropdown_right">
+					<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
 				</div>
 				
 			</div>
@@ -113,6 +113,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 
 <script src="<?php print $rootDir; ?>vendor/jquery/dist/jquery.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/chosen/chosen.jquery.js"></script>
+<script src="<?php print $rootDir; ?>vendor/tether/dist/js/tether.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.js"></script>
 <script src="<?php print $rootDir; ?>vendor/d3/d3.min.js"></script>

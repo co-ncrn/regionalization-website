@@ -1,6 +1,6 @@
 
 
-#chart-container { height:480px;  overflow-y:auto; background: #eee; font: 12px sans-serif; 
+#chart-container { clear: all; height:480px;  overflow-y:auto; background: #eee; font: 12px sans-serif; 
 
 max-width: 100%;
 overflow-x: hidden;
@@ -21,7 +21,7 @@ overflow-x: hidden;
 #chart tbody td.est, #chart tbody td.err { padding: 0px 6px 0 4px; text-align: right; }
 
 #chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 60%; }
-#chart tbody td.svgCell svg { height: 22;  }
+#chart tbody td.svgCell svg { height: 22; border: none; }
 #chart tbody td.svgCell .svgBar { fill: red; }
 
 

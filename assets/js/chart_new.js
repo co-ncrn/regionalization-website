@@ -25,7 +25,9 @@ var margin = { top: 0, right: 0, bottom: 0, left: 0 },
     barW = 1.5, barHV = 8;
 
 // create table
-var table = d3.select('#chart').append('table').attr('class','tableText');
+var table = d3.select('#chart')
+	.append('table')
+	.attr('class','tableText');
 var thead = table.append('thead');
 var	tbody = table.append('tbody');
 
@@ -225,7 +227,71 @@ function updateChart() {
 		// remove rows not needed
 	rows.exit().remove(); 	
 
+	create_axes(currentScenario,yScale,xScale,"tractError","tractEstimate");
 }
+
+
+
+
+/* 
+ *	Create axes and labels
+ *	@param {Array} data - the array of objects
+ *	@param {Function} yScale - returns a scale
+ *	@param {Function} xScale - returns a scale
+ *	@param {Float} err - "tractError" or "regionError" from above
+ *	@param {Float} est - "tractEst" or "regionEst" from above
+ */
+function create_axes(data,yScale,xScale,err,est){
+
+	// keep tick labels from overlapping
+	var ticks = 5;
+	if (parseFloat(data[0][est]) > 1000) ticks = 4;
+
+
+	//************ TOP AXIS (NUMBERS) ************
+
+	// set X/Y axes functions
+	var xAxis = d3.axisTop()
+		.scale(xScale)
+		.ticks(ticks)		
+		.tickSizeInner(-height)
+		.tickSizeOuter(1000)
+		.tickPadding(10)
+	;
+	// add X axis properties
+	d3.select(".svgHeader svg").append("g")	
+		.attr("class", "x axis tableText")
+		.attr("transform", "translate(" + 0 + ","+ (25) +")")
+	;
+	// update axis	
+	d3.select(".x.axis").transition().duration(500).call(xAxis); 
+
+
+
+	//************ BACKGROUND TICKS ************
+
+	var xAxisTicks = d3.axisTop()
+		.scale(xScale)
+		.ticks(ticks)		
+		.tickSizeInner(-height)
+		.tickSizeOuter(0)
+		.tickPadding(10)
+		.tickFormat(function (d) { return ''; });
+	;
+//xAxisTicks.selectAll("text").remove();
+
+	d3.selectAll(".svgCell svg")	
+		.attr("class", "x3 axis3 ")
+		//.attr("transform", "translate(" + 0 + ","+ 0 +")")
+	;
+	d3.selectAll(".x3.axis3")
+		.transition().duration(500)
+		.call(xAxisTicks); 
+
+
+
+}
+
 
 
 // resize elements of graph based on window size
