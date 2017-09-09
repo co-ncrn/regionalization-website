@@ -21,6 +21,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <link href="<?php print $rootDir; ?>vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/chosen/chosen.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>assets/css/chart_styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
 
 <style>
@@ -55,7 +56,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 					<label for="scenario_select_box">Select an ACS scenario/dataset:</label>
 					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
 				</div>
-				
+
+				<div id="chart"></div>
 				
 			</div>
 			<div class="info"></div>
@@ -85,11 +87,10 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>data/data_definitions.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/config.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/functions.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/chart_new.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/main.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/map.js"></script>
-<!--<script src="assets/js/chart.js"></script>-->
 
-<script></script>
 
 
 </body>

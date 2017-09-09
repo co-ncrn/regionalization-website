@@ -6,9 +6,12 @@
 
 
 var msas = {}, 											// all the MSAs
-	current = { "msa":"", "scenario":"", "data":"" }	// object to store current data reference
-	websiteName = "ACS Regionalization"
+	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
+	currentScenario = { }								// current scenario data, once loaded
+	websiteName = "ACS Regionalization",
+	MAIN_DEBUG = false
 	;
+
 
 
 $(document).ready(function(){
@@ -31,11 +34,11 @@ $(document).ready(function(){
 		dataChange("menu",params.selected,current.scenario,current.data);
 	});
 	$('#scenario_select_box').on('change', function(evt, params) {
-		console.log("params.selected",params.selected);
+		if (MAIN_DEBUG) console.log("params.selected",params.selected);
 		// split the params from the dropdown
 		var p = params.selected.split("-");
 		if (p.length == 2){
-			//console.log( p.toString())
+			//if (MAIN_DEBUG) console.log( p.toString())
 			dataChange("menu",current.msa,p[0],p[1]);
 		} 
 	});
@@ -44,7 +47,7 @@ $(document).ready(function(){
 
 
 /**
- *	Initialize page
+ *	Initialize page, get data
  */
 function init(){
 	
@@ -52,7 +55,7 @@ function init(){
 	d3.json(api_url+ "_metadata", function(error, json) {
 		if (error) return console.warn(error);	// handle error
 		msas = json.response; 					// update MSAs
-		//console.log(data);
+		//if (MAIN_DEBUG) console.log(data);
 		$("#output").val( "all MSAs: \n"+ JSON.stringify(msas) );
 		createMSAMenu(json.response); 			// create MSA menu
 	});	
@@ -67,8 +70,8 @@ function init(){
  */
 function dataChange(origin,msa,scenario,data){
 	if (!prop(origin)) return; // origin required
-	console.log("\n\ndataChange()",origin,msa,scenario,data);
-	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	if (MAIN_DEBUG) console.log("\n\ndataChange()",origin,msa,scenario,data);
+	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 
 	// should we update?
 	var updateMSA, updateScenario, updateData;
@@ -99,25 +102,25 @@ function dataChange(origin,msa,scenario,data){
 	// 2. HANDLE CHANGES
 
 	if (updateMSA || updateScenario){
-		updateTitle();			// update title
+		updateTitle();								// update title
 	}
 	if (updateMSA){
-		if (origin != "menu") updateMSAMenu(msa); // update selected MSA in dropdown
-		updateScenarioMenu(msa);	// update scenario menu
+		if (origin != "menu") updateMSAMenu(msa); 	// update selected MSA in dropdown
+		updateScenarioMenu(msa);					// update scenario menu
 		mns.loadTractLayer(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
 	}
 	if (updateScenario){
-		updateScenarioMenu(msa,scenario,data); // update selected MSA in dropdown
+		updateScenarioMenu(msa,scenario,data); 		// update selected MSA in dropdown
 	}
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(current.scenario))){
 		getScenarioData(); 
 	}
 	if (updateMSA || updateScenario || updateData){
-		if (origin != "load") updateUrl('add'); 	// update URL bar 
+		if (origin != "load") updateUrl('add');		// update URL bar 
 	}
 
-	console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 }
 
 
@@ -127,7 +130,7 @@ function dataChange(origin,msa,scenario,data){
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	console.log(" --> checkForCurrentPage()",JSON.stringify(path) )
+	if (MAIN_DEBUG) console.log(" --> checkForCurrentPage()",JSON.stringify(path) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
@@ -212,7 +215,7 @@ function getUrlPath() {
 	        }
         } 
     }
-	console.log(" --> getUrlPath()",domain,fullpath,page,location);
+	if (MAIN_DEBUG) console.log(" --> getUrlPath()",domain,fullpath,page,location);
     return location;
 }
 
@@ -241,7 +244,7 @@ function createMSAMenu(json){
 	// loop through msas
 	for (var key in json) {
 	    if (!json.hasOwnProperty(key)) continue;	// skip loop if the property is from prototype
-	   	//console.log(key,data[key])
+	   	//if (MAIN_DEBUG) console.log(key,data[key])
 	    // add MSAs to select options
 		msa_options += optionHTML(key, key +" - "+ json[key][0].description);
 	}
@@ -255,7 +258,7 @@ function createMSAMenu(json){
  *	Update MSA - Propogates the MSA across the title, menu, chart, and map
 
 function updateMSA(msa,origin){
-	console.log("updateMSA()", msa, origin);
+	if (MAIN_DEBUG) console.log("updateMSA()", msa, origin);
 
 	
 	//updateChart(msa);			// update d3 data
@@ -264,7 +267,7 @@ function updateMSA(msa,origin){
  *	Update MSA dropdown
  */
 function updateMSAMenu(msa){
-	console.log(" --> updateMSAMenu()", msa);
+	if (MAIN_DEBUG) console.log(" --> updateMSAMenu()", msa);
 	$("#msa_select_box").val(msa).trigger('chosen:updated');
 }
 
@@ -288,11 +291,11 @@ var currentData = null;
  *	Build the scenario menu based on MSA selection
  */
 function updateScenarioMenu(msa,scenario,data){
-	console.log(" --> updateScenarioMenu()", msa);
+	if (MAIN_DEBUG) console.log(" --> updateScenarioMenu()", msa);
 
 	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
-	//console.log(msas[msa][0])
+	//if (MAIN_DEBUG) console.log(msas[msa][0])
 	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
@@ -300,7 +303,7 @@ function updateScenarioMenu(msa,scenario,data){
 
 	// for each scenario
 	for (var i = 0; i <  msas[msa].length; i++) {
-		//console.log( msas[msa][i]);
+		//if (MAIN_DEBUG) console.log( msas[msa][i]);
 
 		var scenario = msas[msa][i].scenario;
 
@@ -309,7 +312,7 @@ function updateScenarioMenu(msa,scenario,data){
 
 		// for each data type
 		for (var j = 0; j <  msas[msa][i].data.length; j++) {
-			//console.log( msas[msa][i].data[j]);
+			//if (MAIN_DEBUG) console.log( msas[msa][i].data[j]);
 
 			var data = msas[msa][i].data[j];
 
@@ -326,7 +329,7 @@ function updateScenarioMenu(msa,scenario,data){
 
  	// if scenario/data then set it
 	if (prop(scenario) ){
-		//console.log("scenario",current.scenario +"-"+ current.data);
+		//if (MAIN_DEBUG) console.log("scenario",current.scenario +"-"+ current.data);
 		$("#scenario_select_box").val(current.scenario +"-"+ current.data).trigger('chosen:updated');
 	} 
 	// otherwise open it for input
@@ -351,16 +354,86 @@ function optionHTML(val,text){
  */
 function getScenarioData(){
 	var url = api_url + current.msa +"/"+ current.scenario +"/"+ current.data;
-	console.log("getScenarioData()", url);
+	if (MAIN_DEBUG) console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
 		if (error) return console.warn(error);		// handle error
-		//console.log(data);
+		if (MAIN_DEBUG) console.log(json.response);
+
+		currentScenario = cleanData(json.response);			// clean data
+
+		updateChart();								// update chart
+		
+		// testing
 		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
 	});
 }
 
 
 
+/**
+ *	Clean data from API (need to eventually make these changes permanent in DB)
+ */
+function cleanData(data){
+	if (MAIN_DEBUG) console.log("cleanData() -> current = ",current);
+
+	// data fixing
+	data.forEach(function(row,i) {
+		if (MAIN_DEBUG) console.log("row ",i," = ",row);
+
+		// now on server
+		// remove g from TID
+		//data[i].TID = data[i].TID.replace("g","");
+
+
+
+		// store names in row so easier to reference
+		data[i].tractError = parseFloat(row[ "t_"+ current.data + "M" ]);
+		data[i].tractEstimate = parseFloat(row[ "t_"+ current.data + "E" ]);
+		data[i].regionError = parseFloat(row[ "r_"+ current.data + "M" ]);
+		data[i].regionEstimate = parseFloat(row[ "r_"+ current.data + "E" ]);
+
+
+		// round errors, estimiates
+		data[i].tractError = roundDecimal(data[i].tractError);
+		data[i].regionError = roundDecimal(data[i].regionError);
+		data[i].tractEstimate = roundDecimal(data[i].tractEstimate);
+		data[i].regionEstimate = roundDecimal(data[i].regionEstimate);
+
+		// create TRACT scale (a min / max for each TRACT)
+		// this will be the scale for the axis as well so the change will be obvious
+		data[i].tractErrorMin = data[i].tractEstimate - data[i].tractError;
+		data[i].tractErrorMax = data[i].tractEstimate + data[i].tractError;
+
+		// create REGION scale (a min / max for each REGION)
+		data[i].regionErrorMin = data[i].regionEstimate - data[i].regionError;
+		data[i].regionErrorMax = data[i].regionEstimate + data[i].regionError;
+	
+		// round min, max
+		data[i].tractErrorMin = roundDecimal(data[i].tractErrorMin);
+		data[i].tractErrorMax = roundDecimal(data[i].tractErrorMax);
+		data[i].regionErrorMin = roundDecimal(data[i].regionErrorMin);
+		data[i].regionErrorMax = roundDecimal(data[i].regionErrorMax);
+
+	});
+	return data;
+}
+/**
+ *	Round decimal according to size
+ */
+function roundDecimal(num){
+
+	var decimal = 1000;
+	
+	if (num > 1000) {		var decimal = 1;
+	} else if (num > 100){ 	var decimal = 10;
+	} else if (num > 10){	var decimal = 10;
+	} else if (num > 1){	var decimal = 1000;
+	} else if (num > .1){ 	var decimal = 1000;
+	} else if (num > .01){ 	var decimal = 1000;
+	}
+	num = Math.round(num * decimal) / decimal;
+	return num;
+}
 
 
 
