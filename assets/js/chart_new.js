@@ -41,11 +41,13 @@ theadtr.append('th').attr('class','svgHeader')
 
 
 /**
- * 	Build HTML table
+ * 	Build / Update HTML table inside the SVG chart
  */
-function tabulate() {
+function updateChartTable() {
 
-	console.log("tabulate()",currentScenario);
+	console.log("updateChartTable() -> currentScenario = ",currentScenario);
+
+
 
 
 	// set the update selection:
@@ -58,28 +60,57 @@ function tabulate() {
 
 	rowsEnter.append('td')
 	    .attr("class", "tid")
-	    .text(function(d) { return d.TID; });
+	    //.text(function(d) { return d.TID; });
 	rowsEnter.append('td')
 	    .attr("class", "rid")
-	    .text(function(d) { return d.RID; });
+	    //.text(function(d) { return d.RID; });
 	rowsEnter.append('td')
 	    .attr("class", "est")
-	    .text(function(d) { return d["tractEstimate"]; });
+	    //.text(function(d) { return d["tractEstimate"]; });
 	rowsEnter.append('td')
 	    .attr("class", "err")
-	    .text(function(d) { return d["tractError"];; });
+	    //.text(function(d) { return d["tractError"];; });
+
+	// select all columns by class, (re)bind the data
+	d3.selectAll(".tid")
+		.data(currentScenario)
+		.classed("button_sliding_bg_left",true)
+		.attr("current_source",current.data)
+		.attr("row",function(d,i) { return i; })
+		.text(function(d) { return d.TID; });
+	d3.selectAll(".rid")
+		.data(currentScenario)
+		.classed("button_sliding_bg_right",true)
+		.attr("current_source",current.data)
+		.attr("row",function(d,i) { return i; })
+		.text(function(d) { return d.RID; });
+	d3.selectAll(".est")
+		.data(currentScenario)
+		.attr("row",function(d,i) { return i; })
+		.text(function(d) { return d["tractEstimate"]; });
+	d3.selectAll(".err")
+		.data(currentScenario)
+		.attr("row",function(d,i) { return i; })
+		.text(function(d) { return d["tractError"]; });
 
 
+	// remove rows not needed
+	rows.exit().remove(); 
 }
 
 
+/**
+ * 	Build / Update SVG boxplot
+ */
+function updateChartBoxPlot() {
 
-
+}
 
 
 function updateChart(){
 	//console.log(" --> updateChart() current data ", JSON.stringify(currentScenario) );
 
-	tabulate();
+	updateChartTable();
+	updateChartBoxPlot();
 }
 

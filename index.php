@@ -37,10 +37,10 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <body>
 <div class="container-fluid">
 
-	<h1>
+	<h4>
 		Select MSA
 		<span class="header_links"></span>
-	</h1>
+	</h4>
 
 	<div class="row">
 		<div class="col-md-8">
@@ -57,17 +57,21 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 					<select id="scenario_select_box" data-placeholder="Select a scenario"></select>
 				</div>
 
-				<div id="chart"></div>
+
+				<div id="chart-container">
+					<div id="chart" class="tableText"></div>
+				</div>
 				
 			</div>
 			<div class="info"></div>
-			<textarea class="form-control" rows="30" id="output"></textarea>
+			
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-12">
 			<div id="table"></div>
+			<textarea class="form-control" rows="30" id="output"></textarea>
 		</div>
 	</div>	
 
