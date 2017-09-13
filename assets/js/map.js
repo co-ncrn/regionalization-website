@@ -62,22 +62,21 @@ var mns = new function() {
  **************************************************/
 
 	/**
-	 *	Load the MSA layer - Loads a topojson and adds it to the map
+	 *	Load the MSA topojson and add it to the map
 	 */
-	function loadMSALayer(src){
+	function loadMSALayer(src) {
 		//if (MAP_DEBUG) console.log("loadMSALayer()",src);
-		// get remote json
-		d3.json(src, function(error, data) {
-			// if topojson, convert to geojson
-			data = ifTopoReturnGeo(data);
-			// create msa geojson layer
-			msaLayer = L.geoJson(data, {
+
+		d3.json(src, function(error, data) {		// use D3 to load JSON
+			if (error) return console.warn(error);	// return if error
+
+			msaLayer = new L.TopoJSON(data, {
 				style: msaStyle,
 			    onEachFeature: onEachMSAFeature
-			}).addTo(map);
+			});
+			msaLayer.addTo(map);					// add layer to map
 		});
 	}
-	//loadMSALayer("../../data/geojson/cbsareap010g.json");
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
 	loadMSALayer(rootDir+"data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
 
@@ -127,26 +126,6 @@ var mns = new function() {
  * 	TRACTS									  	  *
  *												  *
  **************************************************/
-
-	/**
-	 *	TopoJSON extends GeoJSON class
-	 */
-	L.TopoJSON = L.GeoJSON.extend({  
-		// update addData function to check for "Typology"
-		addData: function(jsonData) {    
-			// handle as TopoJSON
-			if (jsonData.type === "Topology") {
-				for (key in jsonData.objects) {
-					geojson = topojson.feature(jsonData, jsonData.objects[key]);
-					L.GeoJSON.prototype.addData.call(this, geojson);
-				}
-			}      
-			// handle as regular GeoJSON
-			else {
-				L.GeoJSON.prototype.addData.call(this, jsonData);
-			}
-		}  
-	});
 
 
 	/**
@@ -308,6 +287,28 @@ var mns = new function() {
  *												  *
  **************************************************/
 
+ 
+	/**
+	 *	TopoJSON extends GeoJSON class
+	 */
+	L.TopoJSON = L.GeoJSON.extend({  
+		// update addData function to check for "Typology"
+		addData: function(jsonData) {    
+			// handle as TopoJSON
+			if (jsonData.type === "Topology") {
+				for (key in jsonData.objects) {
+					geojson = topojson.feature(jsonData, jsonData.objects[key]);
+					L.GeoJSON.prototype.addData.call(this, geojson);
+				}
+			}      
+			// handle as regular GeoJSON
+			else {
+				L.GeoJSON.prototype.addData.call(this, jsonData);
+			}
+		}  
+	});
+
+
  	/**
 	 *	Temporary: List all features on the map	(only for testing, takes too long to cycle through them)
 	 */
@@ -378,40 +379,5 @@ var mns = new function() {
 			console.log("msas not loaded")
 		}
 	}
-
-
-	/**
-	 *	Consider a geojson|topojson object and return geojson (converting if needed)
-	 *	@param Object data A geojson|topojson object
-	 *	@returns Object data A geojson object
-	 */
-	function ifTopoReturnGeo(data){
-		if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()", data);
-
-		// treat as geojson unless we determine it is topojson file
-		if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
-/*
-			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","IT IS TOPOJSON", data);
-
-			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","data.objects.tracts = ", JSON.stringify(data.objects.tracts ) );
-
-			for (var prop in data.objects.tracts) {
-				console.log(prop)
-			}	
-
-*/
-			// get object keys
-			var keys = Object.keys(data.objects);
-//			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","data.objects", data.objects);
-			// use first key as layer id
-			var layerId = keys[0];
-			// convert to geojson
-			data = topojson.feature(data, data.objects[layerId]);
-//			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","AFTER", data);
-		}
-		return data;
-	}
-
-
 
 }
