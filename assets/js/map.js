@@ -8,14 +8,17 @@
  *												  *
  **************************************************/
 
-
 // Map NameSpace 
 var mns = new function() {
+
+
 
 	var msaLayer = {},		// the map layer for all MSAs
 		msaLayerIndex = {},	// index of all MSA features for quick lookup
 		
-tractLayer = {},
+		tractLayer = {},// reference to Topojson layer created by Leaflet
+		tractTIDs = {},	// reference to tracts by TID
+		tractRIDs = {}, // reference to tracts by RID
 
 		currentLayer = null,// current layer
 		layers = {},
@@ -49,11 +52,7 @@ tractLayer = {},
 	    accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
 	}).addTo(map);
 
-	var msaStyle = {
-		"color": "#3690c0",
-		"weight": 1,
-		"opacity": 0.65
-	};
+
 
 
 /**************************************************
@@ -65,8 +64,8 @@ tractLayer = {},
 	/**
 	 *	Load the MSA layer - Loads a topojson and adds it to the map
 	 */
-	function loadMSALayer(src,type,layerId){
-		if (MAP_DEBUG) console.log("loadMSALayer()",src,type,layerId);
+	function loadMSALayer(src){
+		//if (MAP_DEBUG) console.log("loadMSALayer()",src);
 		// get remote json
 		d3.json(src, function(error, data) {
 			// if topojson, convert to geojson
@@ -82,12 +81,190 @@ tractLayer = {},
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
 	loadMSALayer(rootDir+"data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
 
+	/**
+	 *	Set events, etc. for each MSA feature
+	 */
+	function onEachMSAFeature(feature, layer) {
+
+		// reference to bounds of each MSA 
+		msaLayerIndex[layer.feature.properties.GEOID] = {
+			"bounds": layer.getBounds()
+		}
+
+	    layer.on({
+	        mouseover: highlightMSAFromMap,
+	        mouseout: resetMSAStyleFromMap,
+	        click: msaFeatureClicked
+	    });
+	}
+	// highlight an MSA on the map
+	function highlightMSAFromMap(e) {
+	    var layer = e.target;
+	    console.log("highlightMSAFromMap() layer = ",layer)
+
+	    // show info
+		//info.update(layer.feature.properties);
+
+	    layer.setStyle({
+	        fillOpacity: 0.4
+	    });
+
+	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+	        layer.bringToFront();
+	    }
+	}
+	// reset tract
+	function resetMSAStyleFromMap(e) {
+		//if (MAP_DEBUG) console.log(layers);
+		if (MAP_DEBUG) console.log(e.target.options);
+	    msaLayer.resetStyle(e.target);
+	}
 
 
 
+/**************************************************
+ *												  *
+ * 	TRACTS									  	  *
+ *												  *
+ **************************************************/
+
+	/**
+	 *	TopoJSON extends GeoJSON class
+	 */
+	L.TopoJSON = L.GeoJSON.extend({  
+		// update addData function to check for "Typology"
+		addData: function(jsonData) {    
+			// handle as TopoJSON
+			if (jsonData.type === "Topology") {
+				for (key in jsonData.objects) {
+					geojson = topojson.feature(jsonData, jsonData.objects[key]);
+					L.GeoJSON.prototype.addData.call(this, geojson);
+				}
+			}      
+			// handle as regular GeoJSON
+			else {
+				L.GeoJSON.prototype.addData.call(this, jsonData);
+			}
+		}  
+	});
+
+
+	/**
+	 *	Load geojson|topojson file and display in a tract layer
+	 *	@param Int msa The msa to load
+	 *	@param String src The url to remote file
+	 */
+	this.loadTractLayerData = function(msa,src) {
+		if (MAP_DEBUG) console.log("loadTractLayerData()",msa,src);
+
+		d3.json(src, function(error, data) {		// use D3 to load JSON
+			if (error) return console.warn(error);	// return if error
+			if (MAP_DEBUG) console.log(" --> d3.json",error,data); // testing
+			if (tractLayer != null)
+				map.removeLayer(tractLayer)			// remove current layer from map
+			tractTIDs = {};							// reset TID references
+			tractRIDs = {};							// reset RID references
+			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
+				msa: msa, 							// for reference later
+				style: tractStyle,
+			    onEachFeature: onEachTractFeature
+			});
+			tractLayer.addTo(map);					// add layer to map
+			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
+		});
+	}
+	// set properties, events for tracts
+	function onEachTractFeature(feature, layer) {
+		//if (MAP_DEBUG) console.log(" --> onEachTractFeature() feature, layer", feature, layer)
+
+		// add references to TID, RID to call it from the chart later
+		tractTIDs[feature.properties.TID] = layer;
+		tractRIDs[feature.properties.RID] = layer;
+
+		//console.log("onEachTractFeature()",feature,layer);
+	    layer.on({
+	        mouseover: highlightTractFromMap,
+	        mouseout: resetTractStyleFromMap,
+	        click: zoomToTractFeature
+	    });
+	}
+	// highlight tract
+	function highlightTractFromMap(e) {
+		// reference to layer feature
+	    var layer = e.target;
+
+	    //if (MAP_DEBUG) console.log(" --> highlightTractFromMap() layer = ",layer)
+	    //if (MAP_DEBUG) console.log(" --> highlightTractFromMap() layer.feature = ",layer.feature)
+
+	    // slightly shift fill
+	    layer.setStyle({
+	        fillOpacity: 0.4
+	    });
+
+	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+	        layer.bringToFront();
+	    }
+	}
+	// reset tract
+	function resetTractStyleFromMap(e) {
+		//if (MAP_DEBUG) console.log(layers);
+		if (MAP_DEBUG) console.log(e.target.options);
+	    tractLayer.resetStyle(e.target);
+	}
+	// zoom to an tract
+	function zoomToTractFeature(e) {
+	    map.fitBounds(e.target.getBounds());
+	}
 
 
 
+	// highlight tract
+	this.highlightTractFromChart = function(tid) {
+
+
+		var layer = tractTIDs[tid];
+	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
+	    //var style = testStyle(tid);
+		layer.setStyle({
+	        fillOpacity: 0.5
+	    });
+	}
+	// reset tract style to original
+	this.resetTractStyleFromChart = function(tid) {
+		var layer = tractTIDs[tid];
+	    tractLayer.resetStyle(layer);
+	}
+
+
+
+/**************************************************
+ *												  *
+ * 	MAP	STYLES					 				  *
+ *												  *
+ **************************************************/
+
+ 	var msaStyle = {
+		"color": "#3690c0",
+		"weight": 1,
+		"opacity": 0.55
+	};
+ 	var tractStyle = {
+		"color": "#3690c0",
+		"weight": 1,
+		"opacity": 0.75
+	};
+
+
+	function testStyle(tid) {
+	    return {
+	        fillColor: "#000000",
+	        weight: 2,
+	        opacity: 1,
+	        color: 'white',
+	        dashArray: '3',
+	        fillOpacity: 0.7
+	    };
+	}
 
 
 	function getColorOrange(d) {
@@ -122,164 +299,7 @@ tractLayer = {},
 		};
 	}
 
-	// highlight an MSA on the map
-	function highlightFeature(e) {
-	    var layer = e.target;
-
-	    console.log("highlightFeature() layer = ",layer)
-
-	    // show info
-		//info.update(layer.feature.properties);
-		updateFeatures(layer.feature.properties);
-
-	    layer.setStyle({
-	        fillOpacity: 0.4
-	    });
-
-	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-	        layer.bringToFront();
-	    }
-	}
-
-	function updateFeatures(properties){
-		console.log("updateFeatures() properties = ",properties);
-	}
-
-
-	// turn off highlight
-	function resetTractHighlight(e) {
-		//if (MAP_DEBUG) console.log(layers);
-		if (MAP_DEBUG) console.log(e.target.options);
-		var _msa = e.target.options.msa;
-	    layers[_msa].resetStyle(e.target);
-	}
-	// zoom to an tract
-	function zoomToTractFeature(e) {
-	    map.fitBounds(e.target.getBounds());
-	}
-	// set event functions for tracts
-	function onEachTractFeature(feature, layer) {
-		console.log("onEachTractFeature()",feature,layer);
-	    layer.on({
-	        mouseover: highlightFeature,
-	        mouseout: resetTractHighlight,
-	        click: zoomToTractFeature
-	    });
-	}
-
-
-	/**
-	 *	TopoJSON extends GeoJSON class
-	 */
-	L.TopoJSON = L.GeoJSON.extend({  
-		addData: function(jsonData) {    
-			if (jsonData.type === "Topology") {
-				for (key in jsonData.objects) {
-					geojson = topojson.feature(jsonData, jsonData.objects[key]);
-					L.GeoJSON.prototype.addData.call(this, geojson);
-				}
-			}    
-			else {
-				L.GeoJSON.prototype.addData.call(this, jsonData);
-			}
-		}  
-	});
-
-
-	/**
-	 *	Load geojson|topojson file and display in a tract layer
-	 *	@param String src The url to remote file
-	 */
-	this.loadTractLayer = function(msa,src) {
-		if (MAP_DEBUG) console.log("loadTractLayer()",msa,src);
-
-
-/*
-		if (currentLayer != null && layers[currentLayer]) 
-			map.removeLayer(layers[currentLayer]);
-		currentLayer = msa;
-
-
-		// get geojson|topojson file
-		d3.json(src, function(error, data) {
-			if (error) throw error;
-			if (MAP_DEBUG) console.log(" --> d3.json",error,data);
-			// if topojson convert to geojson
-			data = ifTopoReturnGeo(data);
-			if (MAP_DEBUG) console.log(" --> data",data);
-			// add to tract layer and map
-			//tractLayer = L.geoJson(data, {
-			layers[msa] = L.geoJson(data, {
-				msa: msa, // store the msa for reference later
-				style: style,
-			    //onEachFeature: onEachTractFeature
-			});
-			layers[msa].addTo(map);
-			
-			
-		});
-*/		
-
-
-		d3.json(src, function(error, data) {
-			if (error) return console.warn(error);
-			if (MAP_DEBUG) console.log(" --> d3.json",error,data);
-			if (tractLayer != null)
-				map.removeLayer(tractLayer)	// remove current layer
-			tractLayer = new L.TopoJSON(data, {	// create new tractLayer
-				msa: msa, // store the msa for reference later
-				style: style,
-			    //onEachFeature: onEachTractFeature
-			});
-			//tractLayer.addData(data);		// add data
-			tractLayer.addTo(map);			// add to map
-
-			
-			zoomToMSAonMap(msa);			// zoom to MSA displayed on map
-
-			if (MAP_DEBUG) console.log(" --> layers.length", Object.keys(layers).length );
-		})
-
-
-	}
-	//loadTractLayer(10180,"data/10180_tract.topojson"); 
-
-
-
-
-
-
-
- 
-
 	
-
-
-
-
-
-	var topoLayer = new L.TopoJSON();
-
-
-
-	function addTopoData(topoData){  
-		console.log(topoData);
-		topoLayer.addData(topoData);
-		topoLayer.addTo(map);
-		//group = L.featureGroup().addTo(map);
-		topoLayer.eachLayer(handleLayer);
-	}
-	function handleLayer(layer){  
-
-		layer.on({
-			mouseover: enterLayer,
-			//mouseout: leaveLayer
-		});
-	}
-
-	function enterLayer(){  
-	}
-
 
 
 /**************************************************
@@ -289,12 +309,18 @@ tractLayer = {},
  **************************************************/
 
  	/**
-	 *	Temporary: List all features on the map
+	 *	Temporary: List all features on the map	(only for testing, takes too long to cycle through them)
 	 */
- 	function listMapFeatures(){
+ 	function selectMapFeature(tid){
+		console.log("selectMapFeature() --> ",tid)
  		map.eachLayer(function (layer) {
-			if (layer.feature && layer.feature.id)
-				console.log(layer.feature.id)
+			console.log("selectMapFeature() --> ",layer.feature)
+			if (layer.feature && layer.feature.properties.TID){
+				console.log("selectMapFeature() --> ",layer.feature.properties.tid)
+				layer.setStyle({
+			        fillOpacity: 0.8
+			    });
+			}
 		});
  	}
 
@@ -320,22 +346,7 @@ tractLayer = {},
 	}
 
 
-	/**
-	 *	Set events, etc. for each MSA feature
-	 */
-	function onEachMSAFeature(feature, layer) {
 
-		// create a reference in msaLayerIndex for later use
-		msaLayerIndex[layer.feature.properties.GEOID] = {
-			"bounds": layer.getBounds()
-		}
-
-	    layer.on({
-	        //mouseover: highlightFeature,
-	        //mouseout: resetHighlight,
-	        click: msaFeatureClicked
-	    });
-	}
 	/**
 	 *	When a user clicks on an MSA feature in the map
 	 */
@@ -357,8 +368,15 @@ tractLayer = {},
 	 *	Zoom and fit the map to the MSA bounds
 	 */
 	var zoomToMSAonMap = function(msa) {
-		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
-		map.fitBounds(msaLayerIndex[msa].bounds);
+		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
+		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaLayerIndex[msa] = ", msaLayerIndex[msa]);
+		try {
+			if (map && prop(msaLayerIndex[msa].bounds))
+				map.fitBounds(msaLayerIndex[msa].bounds);
+		} catch(err) {
+			// pass
+			console.log("msas not loaded")
+		}
 	}
 
 
@@ -372,6 +390,7 @@ tractLayer = {},
 
 		// treat as geojson unless we determine it is topojson file
 		if ( data.hasOwnProperty("type") && data.type == "Topology" && data.hasOwnProperty("objects") ){
+/*
 			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","IT IS TOPOJSON", data);
 
 			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","data.objects.tracts = ", JSON.stringify(data.objects.tracts ) );
@@ -380,15 +399,15 @@ tractLayer = {},
 				console.log(prop)
 			}	
 
-
+*/
 			// get object keys
 			var keys = Object.keys(data.objects);
-			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","data.objects", data.objects);
+//			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","data.objects", data.objects);
 			// use first key as layer id
 			var layerId = keys[0];
 			// convert to geojson
 			data = topojson.feature(data, data.objects[layerId]);
-			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","AFTER", data);
+//			if (MAP_DEBUG) console.log(" --> ifTopoReturnGeo()","AFTER", data);
 		}
 		return data;
 	}

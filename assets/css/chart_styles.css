@@ -1,38 +1,50 @@
 
 
-#chart-container { clear: all; height:480px;  overflow-y:auto; background: #eee; font: 12px sans-serif; 
+/* TABLE */
+#chart-container { clear: all; margin-top: 15px; height:480px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
 
 max-width: 100%;
-overflow-x: hidden;
+/*overflow-x: hidden;*/
 }
-
-
- 
-    
-
 #chart { }
-#chart table { border-collapse: collapse; width:100%;  }
-#chart th { font-weight: normal; text-align: center; padding: 4px; min-width: 10px; }
+#chart table { border-collapse: collapse; width:100%; border: none;  }
 
-#chart tr {   }
-#chart tbody td { padding: 0px 4px; text-align: center; background: rgba(0,0,0,.1); border:1px solid rgba(255,255,255,.1) }
+/* HEADERS */
+#chart th { font-weight: normal; text-align: center; margin: 0; padding: 4px; }
+#chart th.thTID { min-width: 30px; max-width: 60px; }
+#chart th.thRID { min-width: 35px; max-width: 60px; padding: 2px; }
+#chart th.thEST { min-width: 50px; max-width: 60px;  }
+#chart th.thERR { min-width: 30px; max-width: 60px; }
+#chart th.thSVG { min-width: 100px; max-width: 70%; width:70%; }
+
+/* ROWS */
+#chart tbody tr { padding: 0; border: none; }
+#chart tbody td { padding: 0 6px 0 4px; text-align: center; border: none; }
 #chart tbody td.tid { }
-#chart tbody td.rid { padding: 0;  }
-#chart tbody td.est, #chart tbody td.err { padding: 0px 6px 0 4px; text-align: right; }
+#chart tbody td.rid { padding: 0; }
+#chart tbody td.est, 
+#chart tbody td.err { text-align: right; }
 
-#chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 60%; }
-#chart tbody td.svgCell svg { height: 22; border: none; }
+/* SVG CELL */
+#chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 30%; }
+#chart tbody td.svgCell svg { height: 20; border: none; }
 #chart tbody td.svgCell .svgBar { fill: red; }
 
+/* SVG SPECIFC */
+.domain { stroke: #fff } /* removes strange stroke above svg */
+/* AXIS */
+.tick text { stroke-width: 1px; opacity: 1.0; }
+.tick line { stroke-width: 1px; opacity: .2; }
+
+.axis text { font-size: 12px; }
+.axis path { display: none; }
 
 
 
-
-
-
+/* INTERACTIVE */
 
 .tid:hover, .rid:hover { cursor: pointer; cursor: hand; } 
-td.highlight { background-color: #81b2c1 }
+/*td.highlight { background-color: #900 }*/
 
 
 
@@ -43,23 +55,6 @@ td.highlight { background-color: #81b2c1 }
 #chart tbody rect { fill: "#990000"; }
 #chart tbody tr:hover rect { fill: brown; }
 */
-
-
-
-
-.tick text { stroke-width: 1px; opacity: 1.0; }
-.tick line { stroke-width: 1px; opacity: .2; }
-
-
-
-.headings {  }
-
-
-
-
-
-.axis text { font-size: 12px; }
-.axis path { display: none; }
 
 
 

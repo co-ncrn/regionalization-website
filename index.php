@@ -94,7 +94,22 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 
 
 			<div id="chart-container">
-				<div id="chart" class="tableText"></div>
+				<div id="chart">
+					
+					<table class="table-striped table-hover">
+						<thead>
+							<tr>
+								<th class="thTID">Tract</th>
+								<th class="thRID">Region</th>
+								<th class="thEST">Estimate</th>
+								<th class="thERR">Error</th>
+								<th class="thSVG"></th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+
+				</div>
 			</div>
 			<div class="info"></div>
 			
@@ -126,8 +141,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>assets/js/config.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/functions.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/chart_new.js"></script>
-<script src="<?php print $rootDir; ?>assets/js/main.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/map.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/main.js"></script>
 
 
 

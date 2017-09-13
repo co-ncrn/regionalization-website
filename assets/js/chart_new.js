@@ -12,37 +12,60 @@ var chartBuilt = false,
 	;
 
 
+var margin
+
+// resize elements
+d3.select(window).on('resize', setSize); 
+function setSize() {
+	// get sizes
+	var sizes = {
+		"chartContainer": $("#chart-container").width(),
+		"chart": $("#chart").width(),
+		"table": $("table").width(),
+		"thSVG": $(".thSVG").width(),
+		"svgCell": $(".svgCell").width(),
+	}
+
+	//console.log("setSize() sizes = ",sizes);
+
+$("table").width(sizes.chartContainer);
+$(".thSVG").width(sizes.chartContainer * .7);
+
+	//d3.select('table').attr("width", sizes.chartContainer);
+	//d3.select('thSVG').attr("width", sizes.thSVG);
+
+
+
+	// svg properties
+margin = { top: 0, right: 10, bottom: 0, left: 10 },
+	width = sizes.thSVG - margin.left - margin.right,
+    height = 20 - margin.top - margin.bottom,
+    barW = 1.5, barHV = 8;
+}
+setSize();
+
+
+
+
+
 /**************************************************
  *												  *
  * 	INIT CHART									  *
  *												  *
  **************************************************/
 
-// svg properties
-var margin = { top: 0, right: 0, bottom: 0, left: 0 },
-	width = 200 - margin.left - margin.right,
-    height = 20 - margin.top - margin.bottom,
-    barW = 1.5, barHV = 8;
 
-// create table
-var table = d3.select('#chart')
-	.append('table')
-	.attr('class','tableText');
-var thead = table.append('thead');
-var	tbody = table.append('tbody');
 
-// select header row
-var theadtr = thead.append('tr');
+// references to table
+var table = d3.select('#chart table');
+var theadtr = table.select('thead tr');
+var	tbody = table.select('tbody');
 
-// select th
-theadtr.selectAll('th')
-	.data(['Tract','Region','Estimate','Error']).enter()
-	.append('th')
-	.text(function (d) { return d; });
 
-// select last th, add svg
-theadtr.append('th').attr('class','svgHeader')
-	.append("svg").attr("height",20);
+// add svg to thSVG
+theadtr.select('.thSVG').append("svg").attr("height",20);
+
+
 
 
 /**************************************************
@@ -205,6 +228,60 @@ function updateChart() {
 			});
 
 
+
+	//************ INTERACTION ************
+
+
+	d3.selectAll(".tid")
+	    .on("mouseover", selectTID)
+	    .on("mouseout", resetTID);
+	d3.selectAll(".rid")
+	    .on("mouseover", selectRID);
+
+		
+	function selectRow(r){
+		//d3.selectAll("td.tid").classed("highlight", true);
+	}
+
+	function selectTID(d,i){
+		d3.selectAll(".tid").classed("highlight", true);
+		d3.selectAll(".rid").classed("highlight", false);
+
+		//console.log(d.TID)
+		mns.highlightTractFromChart("g"+d.TID); // highlight tract on map
+
+
+	//	var s = d3.select(this).attr("current_source");
+	//	load_data(s,"tract",tabulate);
+	}
+	function selectRID(d,i){
+		d3.selectAll("td.tid").classed("highlight", false);
+		d3.selectAll("td.rid").classed("highlight", true);
+	//	var s = d3.select(this).attr("current_source");
+	//	load_data(s,"region",tabulate);
+	}
+
+	function resetTID(d){
+		
+		mns.resetTractStyleFromChart("g"+d.TID) 
+	}
+
+
+
+
+	updateChartScales();
+
+
+		// remove rows not needed
+	rows.exit().remove(); 	
+
+	create_axes(currentScenario,yScale,xScale,"tractError","tractEstimate");
+}
+
+/**
+ * 	Build / Update HTML table inside the SVG chart
+ */
+function updateChartScales() {
 	//************ SCALES ************
 
 	// Y-SCALE: based on number of data
@@ -220,17 +297,7 @@ function updateChart() {
 	xScale = d3.scaleLinear()
 		.domain(xExtent).nice()
 		.range([margin.left,width-margin.right]);
-
-
-
-
-		// remove rows not needed
-	rows.exit().remove(); 	
-
-	create_axes(currentScenario,yScale,xScale,"tractError","tractEstimate");
 }
-
-
 
 
 /* 
@@ -259,8 +326,8 @@ function create_axes(data,yScale,xScale,err,est){
 		.tickPadding(10)
 	;
 	// add X axis properties
-	d3.select(".svgHeader svg").append("g")	
-		.attr("class", "x axis tableText")
+	d3.select(".thSVG svg").append("g")	
+		.attr("class", "x axis")
 		.attr("transform", "translate(" + 0 + ","+ (25) +")")
 	;
 	// update axis	
@@ -294,21 +361,4 @@ function create_axes(data,yScale,xScale,err,est){
 
 
 
-// resize elements of graph based on window size
-d3.select(window).on('resize', resize); 
-// Update graph using new width and height
-function resize() {
-	console.log("resize() called ");
-	var dw = d3.select('.svgHeader').node().getBoundingClientRect().width;
-	var dw2 = $(".svgCell").width();
-	console.log(dw);
-	console.log(dw2);
 
-width = dw;
-d3.selectAll('svg').attr("width", dw);
-
-//d3.select('#chart tbody td.svgCell').node().getBoundingClientRect().width = dw;
-//d3.select('#chart tbody td.svgCell svg').attr("width", dw);
-
-
-}

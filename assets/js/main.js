@@ -87,6 +87,10 @@ function dataChange(origin,msa,scenario,data){
 	var updateMSA, updateScenario, updateData;
 
 
+
+updateChartScales();
+
+
 	// 1. HANDLE INCOMING
 	// user clicks msa on map || user selects scenario dropdown while msa selected
 
@@ -94,6 +98,8 @@ function dataChange(origin,msa,scenario,data){
 	if (prop(msa) && msa != current.msa){
 		current.msa = msa;		// update current
 		updateMSA = true;
+
+		
 	}
 	// b. compare against current scenario
 	if ( (prop(scenario) && scenario != current.scenario) || (msa != current.msa) ){
@@ -104,6 +110,8 @@ function dataChange(origin,msa,scenario,data){
 	if (prop(data) && data != current.data){
 		current.data = data;
 		updateData = true;
+
+
 	}
 
 
@@ -116,7 +124,7 @@ function dataChange(origin,msa,scenario,data){
 	if (updateMSA){
 		if (origin != "menu") updateMSAMenu(msa); 	// update selected MSA in dropdown
 		updateScenarioMenu(msa);					// update scenario menu
-		mns.loadTractLayer(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
+		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson?r=1111");
 	}
 	if (updateScenario){
 		updateScenarioMenu(msa,scenario,data); 		// update selected MSA in dropdown
@@ -270,7 +278,7 @@ function updateMSA(msa,origin){
 	if (MAIN_DEBUG) console.log("updateMSA()", msa, origin);
 
 	
-	//updateChart(msa);			// update d3 data
+	//updateChart();			// update d3 data
 } */
 /**
  *	Update MSA dropdown
@@ -345,6 +353,8 @@ function updateScenarioMenu(msa,scenario,data){
 	else {
 		$('#scenario_select_box').trigger('chosen:open');
 	}
+
+	
 }
 function optionHTML(val,text){
 	var option = "";
