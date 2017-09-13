@@ -2,11 +2,11 @@
 
 
 
-/**************************************************
- *												  *
- * 	MAP											  *
- *												  *
- **************************************************/
+/**************************************************************************
+ *																		  *
+ * 	INIT MAP															  *
+ *																		  *
+ **************************************************************************/
 
 // Map NameSpace 
 var mns = new function() {
@@ -14,25 +14,17 @@ var mns = new function() {
 
 
 	var msaLayer = {},		// the map layer for all MSAs
-		msaLayerIndex = {},	// index of all MSA features for quick lookup
+		msaIndex = {},		// index of all MSA features for quick lookup
 		
-		tractLayer = {},// reference to Topojson layer created by Leaflet
-		tractTIDs = {},	// reference to tracts by TID
-		tractRIDs = {}, // reference to tracts by RID
+		tractLayer = {},	// reference to Topojson layer created by Leaflet
+		tractTIDindex = {},	// reference to tracts by TID
+		tractRIDindex = {}, // reference to tracts by RID
 
-		currentLayer = null,// current layer
-		layers = {},
+		lastLayer = null,
+
 		MAP_DEBUG = true
 		;
 
-
-
-
-/**************************************************
- *												  *
- * 	INIT MAP									  *
- *												  *
- **************************************************/
 
 	// create Leaflet map
 	var map = L.map('map', {
@@ -55,11 +47,11 @@ var mns = new function() {
 
 
 
-/**************************************************
- *												  *
- * 	MSAs									  	  *
- *												  *
- **************************************************/
+/**************************************************************************
+ *																		  *
+ * 	MSAs															  	  *
+ *																		  *
+ **************************************************************************/
 
 	/**
 	 *	Load the MSA topojson and add it to the map
@@ -86,14 +78,14 @@ var mns = new function() {
 	function onEachMSAFeature(feature, layer) {
 
 		// reference to bounds of each MSA 
-		msaLayerIndex[layer.feature.properties.GEOID] = {
+		msaIndex[layer.feature.properties.GEOID] = {
 			"bounds": layer.getBounds()
 		}
 
 	    layer.on({
-	        mouseover: highlightMSAFromMap,
-	        mouseout: resetMSAStyleFromMap,
-	        click: msaFeatureClicked
+	        mouseover: 	highlightMSAFromMap,
+	        mouseout: 	resetMSAStyleFromMap,
+	        click: 		msaFeatureClicked
 	    });
 	}
 	// highlight an MSA on the map
@@ -107,6 +99,8 @@ var mns = new function() {
 	    layer.setStyle({
 	        fillOpacity: 0.4
 	    });
+	    // track recently clicked layer
+	    lastLayer = layer;
 
 	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 	        layer.bringToFront();
@@ -114,18 +108,57 @@ var mns = new function() {
 	}
 	// reset tract
 	function resetMSAStyleFromMap(e) {
-		//if (MAP_DEBUG) console.log(layers);
-		if (MAP_DEBUG) console.log(e.target.options);
+		if (MAP_DEBUG) console.log("resetMSAStyleFromMap() --> ",e.target.options);
 	    msaLayer.resetStyle(e.target);
+	}
+	// reset tract
+	function resetMSAStyle() {
+		if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer);
+	    if (lastLayer != null) msaLayer.resetStyle(lastLayer);
+	}
+
+	/**
+	 *	When a user clicks on an MSA feature in the map
+	 */
+	function msaFeatureClicked(e) {
+		var layer = e.target;
+		if (MAP_DEBUG) console.log("\n\n### msaFeatureClicked() -> layer:",layer);
+
+		// if this is an actual MSA feature 
+		if (layer.feature.properties){
+			//if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
+
+			// and there is a GEOID (MSA)
+			if (layer.feature.properties.GEOID){
+			    // track recently clicked msa layer
+			    lastLayer = layer;
+				// update the MSA across the interface
+				dataChange("map",layer.feature.properties.GEOID);
+			}
+		} 
+	}
+	/**
+	 *	Zoom and fit the map to the MSA bounds
+	 */
+	var zoomToMSAonMap = function(msa) {
+		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
+		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
+		try {
+			if (map && prop(msaIndex[msa].bounds))
+				map.fitBounds(msaIndex[msa].bounds);
+		} catch(err) {
+			// pass
+			console.log("msas not loaded")
+		}
 	}
 
 
 
-/**************************************************
- *												  *
- * 	TRACTS									  	  *
- *												  *
- **************************************************/
+/**************************************************************************
+ *																		  *
+ * 	TRACTS									  							  *
+ *																		  *
+ **************************************************************************/
 
 
 	/**
@@ -141,8 +174,8 @@ var mns = new function() {
 			if (MAP_DEBUG) console.log(" --> d3.json",error,data); // testing
 			if (tractLayer != null)
 				map.removeLayer(tractLayer)			// remove current layer from map
-			tractTIDs = {};							// reset TID references
-			tractRIDs = {};							// reset RID references
+			tractTIDindex = {};							// reset TID references
+			tractRIDindex = {};							// reset RID references
 			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
 				msa: msa, 							// for reference later
 				style: tractStyle,
@@ -150,6 +183,7 @@ var mns = new function() {
 			});
 			tractLayer.addTo(map);					// add layer to map
 			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
+			resetMSAStyle();	
 		});
 	}
 	// set properties, events for tracts
@@ -157,8 +191,8 @@ var mns = new function() {
 		//if (MAP_DEBUG) console.log(" --> onEachTractFeature() feature, layer", feature, layer)
 
 		// add references to TID, RID to call it from the chart later
-		tractTIDs[feature.properties.TID] = layer;
-		tractRIDs[feature.properties.RID] = layer;
+		tractTIDindex[feature.properties.TID] = layer;
+		tractRIDindex[feature.properties.RID] = layer;
 
 		//console.log("onEachTractFeature()",feature,layer);
 	    layer.on({
@@ -186,7 +220,6 @@ var mns = new function() {
 	}
 	// reset tract
 	function resetTractStyleFromMap(e) {
-		//if (MAP_DEBUG) console.log(layers);
 		if (MAP_DEBUG) console.log(e.target.options);
 	    tractLayer.resetStyle(e.target);
 	}
@@ -201,7 +234,7 @@ var mns = new function() {
 	this.highlightTractFromChart = function(tid) {
 
 
-		var layer = tractTIDs[tid];
+		var layer = tractTIDindex[tid];
 	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
 	    //var style = testStyle(tid);
 		layer.setStyle({
@@ -210,17 +243,17 @@ var mns = new function() {
 	}
 	// reset tract style to original
 	this.resetTractStyleFromChart = function(tid) {
-		var layer = tractTIDs[tid];
+		var layer = tractTIDindex[tid];
 	    tractLayer.resetStyle(layer);
 	}
 
 
 
-/**************************************************
- *												  *
- * 	MAP	STYLES					 				  *
- *												  *
- **************************************************/
+/**************************************************************************
+ *																		  *
+ * 	MAP	STYLES					 										  *
+ *																		  *
+ **************************************************************************/
 
  	var msaStyle = {
 		"color": "#3690c0",
@@ -281,11 +314,11 @@ var mns = new function() {
 	
 
 
-/**************************************************
- *												  *
- * 	MAP	FUNCTIONS				 				  *
- *												  *
- **************************************************/
+/**************************************************************************
+ *																		  *
+ * 	MAP	FUNCTIONS				 										  *
+ *																		  *
+ **************************************************************************/
 
  
 	/**
@@ -348,36 +381,6 @@ var mns = new function() {
 
 
 
-	/**
-	 *	When a user clicks on an MSA feature in the map
-	 */
-	function msaFeatureClicked(e) {
-		var layer = e.target;
-		if (MAP_DEBUG) console.log("\n\n### msaFeatureClicked() -> layer:",layer);
 
-		// if this is an actual MSA feature 
-		if (layer.feature.properties){
-			//if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
-
-			// and there is a GEOID (MSA)
-			if (layer.feature.properties.GEOID)
-				// update the MSA across the interface
-				dataChange("map",layer.feature.properties.GEOID);
-		} 
-	}
-	/**
-	 *	Zoom and fit the map to the MSA bounds
-	 */
-	var zoomToMSAonMap = function(msa) {
-		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
-		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaLayerIndex[msa] = ", msaLayerIndex[msa]);
-		try {
-			if (map && prop(msaLayerIndex[msa].bounds))
-				map.fitBounds(msaLayerIndex[msa].bounds);
-		} catch(err) {
-			// pass
-			console.log("msas not loaded")
-		}
-	}
 
 }
