@@ -1,7 +1,7 @@
 
 
 /* TABLE */
-#chart-container { clear: all; margin-top: 15px; height:480px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
+#chart-container { clear: all; margin-top: 15px; height:600px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
 
 max-width: 100%;
 /*overflow-x: hidden;*/
@@ -72,7 +72,7 @@ max-width: 100%;
 	transition: all ease 0.9s;
 }
 */
- /*
+ /**/
 .button_sliding_bg_left:hover {
    box-shadow: inset -200px 0 0 0 #a8d3dd;
 }
@@ -80,4 +80,4 @@ max-width: 100%;
 .button_sliding_bg_right:hover {
     box-shadow: inset 200px 0 0 0 #a8d3dd;
 }
-*/
+

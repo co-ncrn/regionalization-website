@@ -5,6 +5,15 @@
  */
  
  
+// if TID has a g then remove
+function cleanTID(tid){
+
+	return tid.replace(/^g/, '');
+
+}
+
+
+
 
 /**
  *	Make sure a property or method is:

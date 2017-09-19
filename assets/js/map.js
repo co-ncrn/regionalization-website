@@ -91,7 +91,7 @@ var mns = new function() {
 	// highlight an MSA on the map
 	function highlightMSAFromMap(e) {
 	    var layer = e.target;
-	    console.log("highlightMSAFromMap() layer = ",layer)
+	    //console.log("highlightMSAFromMap() layer = ",layer)
 
 	    // show info
 		//info.update(layer.feature.properties);
@@ -108,12 +108,12 @@ var mns = new function() {
 	}
 	// reset tract
 	function resetMSAStyleFromMap(e) {
-		if (MAP_DEBUG) console.log("resetMSAStyleFromMap() --> ",e.target.options);
+		//if (MAP_DEBUG) console.log("resetMSAStyleFromMap() --> ",e.target.options);
 	    msaLayer.resetStyle(e.target);
 	}
 	// reset tract
 	function resetMSAStyle() {
-		if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer);
+		//if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer);
 	    if (lastLayer != null) msaLayer.resetStyle(lastLayer);
 	}
 
@@ -141,8 +141,8 @@ var mns = new function() {
 	 *	Zoom and fit the map to the MSA bounds
 	 */
 	var zoomToMSAonMap = function(msa) {
-		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
-		if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
+		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
+		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
 		try {
 			if (map && prop(msaIndex[msa].bounds))
 				map.fitBounds(msaIndex[msa].bounds);
@@ -178,7 +178,7 @@ var mns = new function() {
 			tractRIDindex = {};							// reset RID references
 			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
 				msa: msa, 							// for reference later
-				style: tractStyle,
+				style: initialTractStyle,
 			    onEachFeature: onEachTractFeature
 			});
 			tractLayer.addTo(map);					// add layer to map
@@ -220,7 +220,7 @@ var mns = new function() {
 	}
 	// reset tract
 	function resetTractStyleFromMap(e) {
-		if (MAP_DEBUG) console.log(e.target.options);
+		//if (MAP_DEBUG) console.log("resetTractStyleFromMap()", e.target.options);
 	    tractLayer.resetStyle(e.target);
 	}
 	// zoom to an tract
@@ -238,7 +238,7 @@ var mns = new function() {
 	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
 	    //var style = testStyle(tid);
 		layer.setStyle({
-	        fillOpacity: 0.5
+	        fillOpacity: 0.4
 	    });
 	}
 	// reset tract style to original
@@ -247,6 +247,23 @@ var mns = new function() {
 	    tractLayer.resetStyle(layer);
 	}
 
+
+
+
+
+	// initial set tractStyles to build choropleth map
+	this.setAllTractColors = function(data){
+		console.log("setAllTractColors()",data);
+
+
+		// update the color scale for the map
+
+	}
+	// sets scales for tractStyles
+	this.setTractStyleScale = function(data){
+		console.log("setTractStyleScale()",data);
+
+	}
 
 
 /**************************************************************************
@@ -260,11 +277,44 @@ var mns = new function() {
 		"weight": 1,
 		"opacity": 0.55
 	};
+	/*
  	var tractStyle = {
 		"color": "#3690c0",
 		"weight": 1,
 		"opacity": 0.75
 	};
+*/	
+	function initialTractStyle(data) {
+
+		if ( !currentScenarioTIDs[cleanTID(data.properties.TID)] ){
+			return {
+		        fillColor: "#000000",
+		        weight: 1,
+		        opacity: 1,
+		        color: 'white',
+		        dashArray: '3',
+		        fillOpacity: 0.7
+		    };
+		}
+		else {
+
+			// use TID (without "g") as a reference with currentScenario to get estimate
+			var est = currentScenarioTIDs[cleanTID(data.properties.TID)].tractEstimate;
+			//console.log("TID",cleanTID(data.properties.TID))
+			//console.log("currentScenarioTIDs",currentScenarioTIDs)
+			//console.log("currentScenarioTIDs[cleanTID(data.properties.TID)]",currentScenarioTIDs[cleanTID(data.properties.TID)])
+		    return {
+		        fillColor: blues(est), //"#000000",
+		        weight: 1,
+		        opacity: 1,
+		        color: 'white',
+		        fillOpacity: 0.8
+		    };
+	    }
+	}
+
+
+
 
 
 	function testStyle(tid) {

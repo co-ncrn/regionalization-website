@@ -17,7 +17,8 @@
 
 var msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
-	currentScenario = { }								// current scenario data, once loaded
+	currentScenario = { },							// current scenario data, once loaded
+	currentScenarioTIDs = { },	
 	websiteName = "ACS Regionalization",
 	MAIN_DEBUG = false
 	;
@@ -397,7 +398,7 @@ function cleanData(data){
 
 	// data fixing
 	data.forEach(function(row,i) {
-		if (MAIN_DEBUG) console.log("row ",i," = ",row);
+		if (MAIN_DEBUG) console.log("i=",i," // row = ",row);
 
 		// now on server
 		// remove g from TID
@@ -434,6 +435,17 @@ function cleanData(data){
 		data[i].regionErrorMax = roundDecimal(data[i].regionErrorMax);
 
 	});
+
+
+/**/
+	// save them by TID
+	currentScenarioTIDs = {};
+	data.forEach(function(row,i) {
+		currentScenarioTIDs[ row.TID ] = row;
+	});
+	if (MAIN_DEBUG) console.log("currentScenarioTIDs = ",currentScenarioTIDs);
+
+
 	return data;
 }
 /**

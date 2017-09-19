@@ -160,12 +160,37 @@ function buildChart() {
 	chartBuilt = true;
 }
 
+
+
+
+
+
+var accent = d3.scaleOrdinal(d3.schemeAccent);
+var blues = d3.scaleOrdinal(d3.schemeBlues[9]);
+
+
+//var extent = d3.extent(geojson.features, function(d) { return d.properties.pop_max; });
+
+
+//d3.scaleQuantile()
+//	.domain([extent[0], extent[1]])
+//	.range(colorbrewer.Greens[9]);
+
+
+
+
+
+
+
+
 /**
  * 	Build / Update HTML table inside the SVG chart
  */
 function updateChart() {
 	if (!chartBuilt) buildChart();
 
+
+	//updateChartScales();
 
 	// transitions über alles! (IOW, reusable by the selects below)
 	var t = d3.transition().duration(600);
@@ -183,7 +208,9 @@ function updateChart() {
 		.classed("button_sliding_bg_right",true)
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.RID; });
+		.text(function(d) { return d.RID; })
+.attr("fill", "black") 
+		;
 	d3.selectAll(".est")
 		.data(currentScenario)
 		.attr("row",function(d,i) { return i; })
@@ -227,6 +254,10 @@ function updateChart() {
 			});
 
 
+	// set all map colors
+	mns.setAllTractColors(currentScenario);
+
+
 
 	//************ INTERACTION ************
 
@@ -268,7 +299,7 @@ function updateChart() {
 
 
 
-	updateChartScales();
+
 
 
 		// remove rows not needed
@@ -281,6 +312,9 @@ function updateChart() {
  * 	Build / Update HTML table inside the SVG chart
  */
 function updateChartScales() {
+
+	console.log("updateChartScales()")
+
 	//************ SCALES ************
 
 	// Y-SCALE: based on number of data
@@ -357,6 +391,12 @@ function create_axes(data,yScale,xScale,err,est){
 
 
 }
+
+
+
+
+
+
 
 
 

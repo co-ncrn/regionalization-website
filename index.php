@@ -133,6 +133,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.js"></script>
 <script src="<?php print $rootDir; ?>vendor/d3/d3.min.js"></script>
 
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/topojson.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/d3-axis.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/jquery.history.js"></script>
@@ -143,7 +145,6 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>assets/js/chart_new.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/map.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/main.js"></script>
-
 
 
 </body>
