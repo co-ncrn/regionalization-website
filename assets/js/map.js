@@ -194,6 +194,15 @@ var mns = new function() {
 		tractTIDindex[feature.properties.TID] = layer;
 		tractRIDindex[feature.properties.RID] = layer;
 
+		// add popup
+		var popupHTML = '<table><tr><td>TID</td><td>'+cleanTID(feature.properties.TID)+'</td></tr>'+
+						'<td>RID</td><td>'+feature.properties.RID+'</td></tr>'+
+						'</table>';
+		layer.bindPopup(popupHTML,{closeButton: false});
+                
+
+
+
 		//console.log("onEachTractFeature()",feature,layer);
 	    layer.on({
 	        mouseover: highlightTractFromMap,
@@ -214,14 +223,18 @@ var mns = new function() {
 	        fillOpacity: 0.4
 	    });
 
+	    layer.openPopup();
+
 	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 	        layer.bringToFront();
 	    }
 	}
 	// reset tract
 	function resetTractStyleFromMap(e) {
-		//if (MAP_DEBUG) console.log("resetTractStyleFromMap()", e.target.options);
-	    tractLayer.resetStyle(e.target);
+		var layer = e.target;
+		//if (MAP_DEBUG) console.log("resetTractStyleFromMap()", layer.options);
+	    tractLayer.resetStyle(layer);
+	    layer.closePopup();
 	}
 	// zoom to an tract
 	function zoomToTractFeature(e) {
@@ -230,21 +243,24 @@ var mns = new function() {
 
 
 
+
+
+
 	// highlight tract
 	this.highlightTractFromChart = function(tid) {
-
-
 		var layer = tractTIDindex[tid];
 	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
 	    //var style = testStyle(tid);
 		layer.setStyle({
 	        fillOpacity: 0.4
 	    });
+	    layer.openPopup();
 	}
 	// reset tract style to original
 	this.resetTractStyleFromChart = function(tid) {
 		var layer = tractTIDindex[tid];
 	    tractLayer.resetStyle(layer);
+	    layer.closePopup();
 	}
 
 
@@ -287,6 +303,9 @@ var mns = new function() {
 	function initialTractStyle(data) {
 
 		if ( !currentScenarioTIDs[cleanTID(data.properties.TID)] ){
+			console.log("cleanTID(data.properties.TID) = ",cleanTID(data.properties.TID))
+			console.log(" ---> currentScenarioTIDs = ",currentScenarioTIDs)
+			console.log(" ---> currentScenarioTIDs[cleanTID(data.properties.TID)] = ",currentScenarioTIDs[cleanTID(data.properties.TID)] )
 			return {
 		        fillColor: "#000000",
 		        weight: 1,

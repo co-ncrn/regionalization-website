@@ -413,7 +413,7 @@ function cleanData(data){
 		data[i].regionEstimate = parseFloat(row[ "r_"+ current.data + "E" ]);
 
 
-		// round errors, estimiates
+		// round errors, estimates
 		data[i].tractError = roundDecimal(data[i].tractError);
 		data[i].regionError = roundDecimal(data[i].regionError);
 		data[i].tractEstimate = roundDecimal(data[i].tractEstimate);

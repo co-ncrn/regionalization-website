@@ -161,12 +161,26 @@ function buildChart() {
 }
 
 
+var accent,blues,extent;
+function updateColorScales(){
+	//accent = d3.scaleOrdinal(d3.schemeAccent);
+	blues = d3.scaleOrdinal(d3.schemeBlues[9]);
+
+	//extent = d3.extent(currentScenario, function(d) { return d.properties.pop_max; })
+
+	extent = d3.extent(currentScenario.map(function (item) {
+		return (item.tractEstimate);
+	}))
+
+
+	blues = d3.scaleOrdinal()
+		.domain([extent[0], extent[1]])
+		.range(d3.schemeBlues[9])
+	;
+}
 
 
 
-
-var accent = d3.scaleOrdinal(d3.schemeAccent);
-var blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 
 
 //var extent = d3.extent(geojson.features, function(d) { return d.properties.pop_max; });
@@ -190,7 +204,8 @@ function updateChart() {
 	if (!chartBuilt) buildChart();
 
 
-	//updateChartScales();
+	updateColorScales();
+	updateChartScales();
 
 	// transitions über alles! (IOW, reusable by the selects below)
 	var t = d3.transition().duration(600);
@@ -202,14 +217,15 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.attr("title",function(d,i) { return d.TID; })
-		.text(function(d) { return d.TID.substring(4); });
+		.text(function(d) { return d.TID.substring(4); })
+		.attr("style", function (d) { return "background: "+blues(d["tractEstimate"]) }) // set bg color
+		;
 	d3.selectAll(".rid")
 		.data(currentScenario)
 		.classed("button_sliding_bg_right",true)
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.text(function(d) { return d.RID; })
-.attr("fill", "black") 
 		;
 	d3.selectAll(".est")
 		.data(currentScenario)
