@@ -1,16 +1,7 @@
 
 /**
- *	Select MSA script to test API
+ *	Main.js - last file to load, starts everything
  *	@author Owen Mundy
-
-1. dataChange()
-2. data downloaded
-	- update map
-	- updateChart()
-
-
-
-
  */
 
 
@@ -19,8 +10,9 @@ var msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
 	currentScenario = { },							// current scenario data, once loaded
 	currentScenarioTIDs = { },	
+	tractOrRegion = "tract",
 	websiteName = "ACS Regionalization",
-	MAIN_DEBUG = false
+	MAIN_DEBUG = true
 	;
 
 
@@ -63,12 +55,13 @@ $(document).ready(function(){
 function init(){
 	
 	// get _metadata for menus, etc.
-	d3.json(api_url+ "_metadata", function(error, json) {
+	//d3.json(api_url+ "_metadata", function(error, json) { // from API
+	d3.json(rootDir + "data/msas.json", function(error, json) { // flat JSON file
 		if (error) return console.warn(error);	// handle error
-		msas = json.response; 					// update MSAs
-		//if (MAIN_DEBUG) console.log(data);
+		msas = json; 							// update MSAs
+		if (MAIN_DEBUG) console.log("init() --> msas = ",msas);
 		$("#output").val( "all MSAs: \n"+ JSON.stringify(msas) );
-		createMSAMenu(json.response); 			// create MSA menu
+		createMSAMenu(msas); 			// create MSA menu
 	});	
 }
 
@@ -79,17 +72,13 @@ function init(){
 /**
  *	Controls all changes to data displayed
  */
-function dataChange(origin,msa,scenario,data){
+function dataChange(origin,msa,scenario,data,tractOrRegion){
 	if (!prop(origin)) return; // origin required
 	if (MAIN_DEBUG) console.log("\n\ndataChange()",origin,msa,scenario,data);
 	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 
 	// should we update?
 	var updateMSA, updateScenario, updateData;
-
-
-
-updateChartScales();
 
 
 	// 1. HANDLE INCOMING
@@ -99,8 +88,6 @@ updateChartScales();
 	if (prop(msa) && msa != current.msa){
 		current.msa = msa;		// update current
 		updateMSA = true;
-
-		
 	}
 	// b. compare against current scenario
 	if ( (prop(scenario) && scenario != current.scenario) || (msa != current.msa) ){
@@ -111,8 +98,6 @@ updateChartScales();
 	if (prop(data) && data != current.data){
 		current.data = data;
 		updateData = true;
-
-
 	}
 
 
@@ -120,23 +105,29 @@ updateChartScales();
 	// 2. HANDLE CHANGES
 
 	if (updateMSA || updateScenario){
-		updateTitle();								// update title
+		//updateTitle();								// update title
 	}
 	if (updateMSA){
-		if (origin != "menu") updateMSAMenu(msa); 	// update selected MSA in dropdown
+		if (origin != "menu") 						// if origin is anything but "menu" 
+			$("#msa_select_box").val(msa).trigger('chosen:updated'); // then update selected MSA in dropdown
 		updateScenarioMenu(msa);					// update scenario menu
 		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson?r=1111");
 	}
 	if (updateScenario){
-		updateScenarioMenu(msa,scenario,data); 		// update selected MSA in dropdown
+		updateScenarioMenu(msa,scenario,data); 		// update scenario menu
 	}
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(current.scenario))){
 		getScenarioData(); 
 	}
 	if (updateMSA || updateScenario || updateData){
-		if (origin != "load") updateUrl('add');		// update URL bar 
+		if (origin != "load") updateUrl('add');		// if origin is anything but "load" then update URL bar 
 	}
+
+	if (updateData || tractOrRegion != ""){
+		updateChartScales();
+	}
+
 
 	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 }
@@ -148,11 +139,12 @@ updateChartScales();
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	if (MAIN_DEBUG) console.log(" --> checkForCurrentPage()",JSON.stringify(path) )
+	if (MAIN_DEBUG) console.log(" --> checkForCurrentPage() path = ",JSON.stringify(path) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
 	}
+	// only the msa is set
 	else if (path.msa) {
 		dataChange("load",path.msa);
 	}
@@ -257,6 +249,7 @@ function getUrlPath() {
  *	Build the MSA menu when the page loads
  */
 function createMSAMenu(json){
+	if (MAIN_DEBUG) console.log("--> createMSAMenu()")
 	// default empty value in select menus
 	var msa_options = "<option val=''></option>";	
 	// loop through msas
@@ -272,22 +265,6 @@ function createMSAMenu(json){
 	checkForCurrentPage(); // now that the MSA menu is set, should we display a page based on url?
 }
 
-/**
- *	Update MSA - Propogates the MSA across the title, menu, chart, and map
-
-function updateMSA(msa,origin){
-	if (MAIN_DEBUG) console.log("updateMSA()", msa, origin);
-
-	
-	//updateChart();			// update d3 data
-} */
-/**
- *	Update MSA dropdown
- */
-function updateMSAMenu(msa){
-	if (MAIN_DEBUG) console.log(" --> updateMSAMenu()", msa);
-	$("#msa_select_box").val(msa).trigger('chosen:updated');
-}
 
 
 
@@ -333,8 +310,6 @@ function updateScenarioMenu(msa,scenario,data){
 			//if (MAIN_DEBUG) console.log( msas[msa][i].data[j]);
 
 			var data = msas[msa][i].data[j];
-
-
 
 			// add scenario
 			scenario_options += optionHTML(scenario +"-"+ data, dataDict[data]);

@@ -7,7 +7,8 @@
  **************************************************************************/
 
 var chartBuilt = false,
-	limit = 20 // data limit
+	limit = 20, // data limit
+	CHART_DEBUG = false
 	;
 
 
@@ -25,7 +26,7 @@ function setSize() {
 		"svgCell": $(".svgCell").width(),
 	}
 
-	//console.log("setSize() sizes = ",sizes);
+	//if (CHART_DEBUG) console.log("setSize() sizes = ",sizes);
 
 $("table").width(sizes.chartContainer);
 $(".thSVG").width(sizes.chartContainer * .7);
@@ -81,7 +82,7 @@ var rows, yScale, xScale, xMin, xMax, xExtent;
  */
 function buildChart() {
 
-	console.log("updateChart() -> currentScenario = ",currentScenario);
+	if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario);
 
 
 
@@ -89,14 +90,14 @@ function buildChart() {
 
 	// Y-SCALE: based on number of data
 	yScale = d3.scaleLinear()
-		.domain([0,limit])
+		.domain([0,currentScenario.length])
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
 	xMin = d3.min(currentScenario, function(d) { return parseFloat(d["tractErrorMin"]); });
 	xMax = d3.max(currentScenario, function(d) { return parseFloat(d["tractErrorMax"]); });
 	xExtent = [xMin,xMax];
-	//console.log(xExtent);
+	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
 		.domain(xExtent).nice()
 		.range([margin.left,width-margin.right]);
@@ -293,7 +294,7 @@ function updateChart() {
 		d3.selectAll(".tid").classed("highlight", true);
 		d3.selectAll(".rid").classed("highlight", false);
 
-		//console.log(d.TID)
+		//if (CHART_DEBUG) console.log(d.TID)
 		mns.highlightTractFromChart("g"+d.TID); // highlight tract on map
 
 
@@ -329,20 +330,20 @@ function updateChart() {
  */
 function updateChartScales() {
 
-	console.log("updateChartScales()")
+	if (CHART_DEBUG) console.log("updateChartScales()")
 
 	//************ SCALES ************
 
 	// Y-SCALE: based on number of data
 	yScale = d3.scaleLinear()
-		.domain([0,limit])
+		.domain([0,currentScenario.length])
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
 	xMin = d3.min(currentScenario, function(d) { return parseFloat(d["tractErrorMin"]); });
 	xMax = d3.max(currentScenario, function(d) { return parseFloat(d["tractErrorMax"]); });
 	xExtent = [xMin,xMax];
-	//console.log(xExtent);
+	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
 		.domain(xExtent).nice()
 		.range([margin.left,width-margin.right]);

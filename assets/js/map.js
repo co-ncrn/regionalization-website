@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastLayer = null,
 
-		MAP_DEBUG = true
+		MAP_DEBUG = false
 		;
 
 
@@ -67,6 +67,7 @@ var mns = new function() {
 			    onEachFeature: onEachMSAFeature
 			});
 			msaLayer.addTo(map);					// add layer to map
+			if (prop(current.msa)) zoomToMSAonMap(current.msa); // if an msa is set then zoom to it
 		});
 	}
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
