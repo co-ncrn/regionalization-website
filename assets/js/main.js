@@ -8,11 +8,12 @@
 
 var msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
-	currentScenario = { },							// current scenario data, once loaded
-	currentScenarioTIDs = { },	
+	currentScenario = {},							// current scenario data, once loaded
+	currentScenarioTIDs = {},	
+	currentScenarioArray = [],	
 	tractOrRegion = "tract",
 	websiteName = "ACS Regionalization",
-	MAIN_DEBUG = true
+	MAIN_DEBUG = false
 	;
 
 
@@ -86,7 +87,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion){
 
 	// a. compare against current msa
 	if (prop(msa) && msa != current.msa){
-		current.msa = msa;		// update current
+		current.msa = msa;
 		updateMSA = true;
 	}
 	// b. compare against current scenario
@@ -107,24 +108,31 @@ function dataChange(origin,msa,scenario,data,tractOrRegion){
 	if (updateMSA || updateScenario){
 		//updateTitle();								// update title
 	}
-	if (updateMSA){
-		if (origin != "menu") 						// if origin is anything but "menu" 
-			$("#msa_select_box").val(msa).trigger('chosen:updated'); // then update selected MSA in dropdown
-		updateScenarioMenu(msa);					// update scenario menu
-		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson?r=1111");
-	}
-	if (updateScenario){
-		updateScenarioMenu(msa,scenario,data); 		// update scenario menu
-	}
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(current.scenario))){
-		getScenarioData(); 
+		getScenarioData(); // do this before any map work
+	}
+	if (updateMSA){
+		// if origin is anything but "menu" 
+		if (origin != "menu") 
+			// then update selected MSA in dropdown
+			$("#msa_select_box").val(msa).trigger('chosen:updated'); 
+		// update scenario menu
+		updateScenarioMenu(msa); 
+		// load msa tracts topojson
+		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
+	}
+	if (updateScenario){
+		// update scenario menu
+		updateScenarioMenu(msa,scenario,data); 		
 	}
 	if (updateMSA || updateScenario || updateData){
-		if (origin != "load") updateUrl('add');		// if origin is anything but "load" then update URL bar 
+		// if origin is anything but "load" then update URL bar 
+		if (origin != "load") updateUrl('add');		
 	}
 
 	if (updateData || tractOrRegion != ""){
+		// if data or tractOrRegion changes then update scales
 		updateChartScales();
 	}
 
@@ -348,6 +356,29 @@ function optionHTML(val,text){
  *	Get data from server
  */
 function getScenarioData(){
+	var url = "http://localhost/RegionalismMap/code/regionalization-webdata-tools/data/scenarios/" + current.msa +"_"+ current.scenario +"_"+ current.data +".json";
+	if (MAIN_DEBUG) console.log("getScenarioData()", url);
+	d3.json(url, function(error, json) {
+		if (error) return console.warn(error);		// handle error
+		console.log("getScenarioData() --> json = ",json);
+
+		currentScenario = json;
+		currentScenarioArray = d3.entries(currentScenario); 
+
+		// currentScenario = cleanData(json.response);			// clean data
+
+		 updateChart();								// update chart
+		
+		// testing
+		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json) );
+	});
+}
+
+
+/**
+ *	Get data from server
+ */
+function getScenarioDataAPI(){
 	var url = api_url + current.msa +"/"+ current.scenario +"/"+ current.data;
 	if (MAIN_DEBUG) console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
@@ -370,7 +401,7 @@ function getScenarioData(){
  */
 function cleanData(data){
 	if (MAIN_DEBUG) console.log("cleanData() -> current = ",current);
-
+/*
 	// data fixing
 	data.forEach(function(row,i) {
 		if (MAIN_DEBUG) console.log("i=",i," // row = ",row);
@@ -412,13 +443,15 @@ function cleanData(data){
 	});
 
 
-/**/
+*/
 	// save them by TID
-	currentScenarioTIDs = {};
+//	currentScenarioTIDs = {};
 	data.forEach(function(row,i) {
-		currentScenarioTIDs[ row.TID ] = row;
+		//currentScenarioTIDs[ row.TID ] = row;
+		console.log("cleanData() --> row = ",row);
 	});
-	if (MAIN_DEBUG) console.log("currentScenarioTIDs = ",currentScenarioTIDs);
+	//if (MAIN_DEBUG) 
+		console.log("cleanData() --> currentScenarioTIDs = ",currentScenarioTIDs);
 
 
 	return data;

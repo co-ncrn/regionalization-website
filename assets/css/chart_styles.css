@@ -1,5 +1,17 @@
 
 
+
+/* LEAFLET POP TABLES */
+#map .key { min-width: 100px; }
+#map .val { min-width: 70px; }
+
+
+
+
+
+
+
+
 /* TABLE */
 #chart-container { clear: all; margin-top: 15px; height:600px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
 

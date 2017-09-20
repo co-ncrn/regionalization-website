@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastLayer = null,
 
-		MAP_DEBUG = false
+		MAP_DEBUG = true
 		;
 
 
@@ -77,29 +77,50 @@ var mns = new function() {
 	 *	Set events, etc. for each MSA feature
 	 */
 	function onEachMSAFeature(feature, layer) {
+	    //console.log("onEachMSAFeature() feature = ",feature, " layer = ",layer)
 
 		// reference to bounds of each MSA 
 		msaIndex[layer.feature.properties.GEOID] = {
-			"bounds": layer.getBounds()
+			"bounds": layer.getBounds(),
+			"msa":layer.feature.properties.GEOID
 		}
+
+		// add popup
+		var popupHTML = '<h6 class="text-center">MSA</h6>'+
+						'<table>'+
+						'<tr><td class="key">Name:</td><td class="val">'+ feature.properties.NAME +'</td></tr>'+
+						'<tr><td class="key">MSA:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
+						'<tr><td class="key">CSAFP:</td><td class="val">'+ feature.properties.CSAFP +'</td></tr>'+
+						'<tr><td class="key">CBSAFP:</td><td class="val">'+ feature.properties.CBSAFP +'</td></tr>'+
+						'<tr><td class="key">AFFGEOID:</td><td class="val">'+ feature.properties.AFFGEOID +'</td></tr>'+
+						'<tr><td class="key">GEOID:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
+						'</table>';
+		layer.bindPopup(popupHTML,{closeButton: false});
 
 	    layer.on({
 	        mouseover: 	highlightMSAFromMap,
-	        mouseout: 	resetMSAStyleFromMap,
+	        mouseout: 	resetMSAStyle,
 	        click: 		msaFeatureClicked
 	    });
 	}
 	// highlight an MSA on the map
 	function highlightMSAFromMap(e) {
 	    var layer = e.target;
-	    //console.log("highlightMSAFromMap() layer = ",layer)
+	    var _msa = msaIndex[layer.feature.properties.GEOID].msa;
+	    //console.log("highlightMSAFromMap() layer = ",layer, " // msa = ",_msa)
 
 	    // show info
 		//info.update(layer.feature.properties);
 
-	    layer.setStyle({
-	        fillOpacity: 0.4
-	    });
+		// if msa is not set then don't do this
+		if (prop(current.msa) && current.msa != _msa){
+		    layer.setStyle({
+		        fillOpacity: 0.4
+		    });
+		}
+
+		layer.openPopup();
+
 	    // track recently clicked layer
 	    lastLayer = layer;
 
@@ -107,16 +128,20 @@ var mns = new function() {
 	        layer.bringToFront();
 	    }
 	}
-	// reset tract
-	function resetMSAStyleFromMap(e) {
-		//if (MAP_DEBUG) console.log("resetMSAStyleFromMap() --> ",e.target.options);
-	    msaLayer.resetStyle(e.target);
+	// reset msa style
+	function resetMSAStyle(e) {
+		//if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer,e.target.options);
+
+		if (prop(e)){
+			msaLayer.resetStyle(e.target);
+			e.target.closePopup();
+		}
+		else if (lastLayer != null) {
+			msaLayer.resetStyle(lastLayer);
+			lastLayer.closePopup();
+		}
 	}
-	// reset tract
-	function resetMSAStyle() {
-		//if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer);
-	    if (lastLayer != null) msaLayer.resetStyle(lastLayer);
-	}
+
 
 	/**
 	 *	When a user clicks on an MSA feature in the map
@@ -125,17 +150,19 @@ var mns = new function() {
 		var layer = e.target;
 		if (MAP_DEBUG) console.log("\n\n### msaFeatureClicked() -> layer:",layer);
 
-		// if this is an actual MSA feature 
-		if (layer.feature.properties){
+		// if this is an actual MSA feature && there is a GEOID (MSA)
+		if (layer.feature.properties && layer.feature.properties.GEOID){
 			//if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
+	
+		    // track recently clicked msa layer
+		    lastLayer = layer;
 
-			// and there is a GEOID (MSA)
-			if (layer.feature.properties.GEOID){
-			    // track recently clicked msa layer
-			    lastLayer = layer;
-				// update the MSA across the interface
-				dataChange("map",layer.feature.properties.GEOID);
-			}
+			// reset any previous msas selected
+			resetMSAStyle();
+
+			// update the MSA across the interface
+			dataChange("map",layer.feature.properties.GEOID);
+		
 		} 
 	}
 	/**
@@ -152,6 +179,12 @@ var mns = new function() {
 			console.log("msas not loaded")
 		}
 	}
+
+
+
+
+
+
 
 
 
@@ -177,6 +210,9 @@ var mns = new function() {
 				map.removeLayer(tractLayer)			// remove current layer from map
 			tractTIDindex = {};							// reset TID references
 			tractRIDindex = {};							// reset RID references
+
+//console.log("currentScenarioTIDs = ",currentScenarioTIDs)
+
 			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
 				msa: msa, 							// for reference later
 				style: initialTractStyle,
@@ -184,7 +220,8 @@ var mns = new function() {
 			});
 			tractLayer.addTo(map);					// add layer to map
 			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
-			resetMSAStyle();	
+			resetMSAStyle();						// make sure the MSA is not visible
+			//restyleTractLayer()
 		});
 	}
 	// set properties, events for tracts
@@ -195,9 +232,19 @@ var mns = new function() {
 		tractTIDindex[feature.properties.TID] = layer;
 		tractRIDindex[feature.properties.RID] = layer;
 
+		var tractData = currentScenario[cleanTID(feature.properties.TID)];
+
 		// add popup
-		var popupHTML = '<table><tr><td>TID</td><td>'+cleanTID(feature.properties.TID)+'</td></tr>'+
-						'<td>RID</td><td>'+feature.properties.RID+'</td></tr>'+
+		var popupHTML = '<h6 class="text-center">Tract</h6>'+
+						'<table>'+
+						'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
+
+						'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
+						'<tr><td class="key">Estimate</td><td class="val">'+ tractData.tEst +'</td><td class="val">'+ tractData.rEst +'</td></tr>'+
+						'<tr><td class="key">Margin of Error</td><td class="val">'+ tractData.tMar +'</td><td class="val">'+ tractData.rMar +'</td></tr>'+
+						'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
+
+						'<tr><td class="key"></td><td class="val"></td><td class="val">'+ JSON.stringify(tractData) +'</td></tr>'+
 						'</table>';
 		layer.bindPopup(popupHTML,{closeButton: false});
                 
@@ -270,7 +317,7 @@ var mns = new function() {
 
 	// initial set tractStyles to build choropleth map
 	this.setAllTractColors = function(data){
-		console.log("setAllTractColors()",data);
+	//	console.log("setAllTractColors()",data);
 
 
 		// update the color scale for the map
@@ -294,19 +341,72 @@ var mns = new function() {
 		"weight": 1,
 		"opacity": 0.55
 	};
-	/*
+	/**/
  	var tractStyle = {
 		"color": "#3690c0",
 		"weight": 1,
 		"opacity": 0.75
 	};
-*/	
+
+// 	function restyleTractLayer() {
+
+// 	    tractLayer.eachLayer(function(layer) {
+
+
+// 			console.log("selectMapFeature() --> ",layer.feature)
+// 			if (layer.feature && layer.feature.properties.TID){
+
+// 				var _tid = cleanTID(layer.feature.properties.TID);
+
+
+// 				var est = currentScenarioTIDs[_tid].tractEstimate;
+
+
+// 				console.log("selectMapFeature() --> tid = ",_tid)
+// 				layer.setStyle({
+// 		         //   fillColor: blues(est),
+// 		            fillOpacity: 0.8,
+// 		            weight: 0.5
+// 			    });
+// 			}
+
+
+
+// 	        //var est = currentScenarioTIDs[_tid].tractEstimate;
+// // var est = 3;
+
+// // 	        // Your function that determines a fill color for a particular
+// // 	        // property name and value.
+// // 	 //       var myFillColor = getColor(propertyName, propertyValue);
+
+// // 	        layer.setStyle({
+// // 	            fillColor: blues(est),
+// // 	            fillOpacity: 0.8,
+// // 	            weight: 0.5
+// // 	        });
+// 	    });
+// 	}
+	
+
+	/**
+	 *	Set initial tract style on load or click
+	 */
 	function initialTractStyle(data) {
 
-		if ( !currentScenarioTIDs[cleanTID(data.properties.TID)] ){
-			console.log("cleanTID(data.properties.TID) = ",cleanTID(data.properties.TID))
-			console.log(" ---> currentScenarioTIDs = ",currentScenarioTIDs)
-			console.log(" ---> currentScenarioTIDs[cleanTID(data.properties.TID)] = ",currentScenarioTIDs[cleanTID(data.properties.TID)] )
+		var _tid = cleanTID(data.properties.TID);
+		var _rid = data.properties.RID;
+	//	console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+
+		
+
+
+		if ( !prop(currentScenario) || !currentScenario[_tid] ){
+
+			console.log(" ---> currentScenario NOT LOADED")
+
+
+	//		console.log(" ---> currentScenarioTIDs = ",currentScenarioTIDs)
+	//		console.log(" ---> currentScenarioTIDs[_tid] = ",currentScenarioTIDs[_tid] )
 			return {
 		        fillColor: "#000000",
 		        weight: 1,
@@ -319,7 +419,7 @@ var mns = new function() {
 		else {
 
 			// use TID (without "g") as a reference with currentScenario to get estimate
-			var est = currentScenarioTIDs[cleanTID(data.properties.TID)].tractEstimate;
+			var est = currentScenario[_tid].tEst;
 			//console.log("TID",cleanTID(data.properties.TID))
 			//console.log("currentScenarioTIDs",currentScenarioTIDs)
 			//console.log("currentScenarioTIDs[cleanTID(data.properties.TID)]",currentScenarioTIDs[cleanTID(data.properties.TID)])

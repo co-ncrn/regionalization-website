@@ -82,7 +82,7 @@ var rows, yScale, xScale, xMin, xMax, xExtent;
  */
 function buildChart() {
 
-	if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario);
+	if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray);
 
 
 
@@ -90,12 +90,12 @@ function buildChart() {
 
 	// Y-SCALE: based on number of data
 	yScale = d3.scaleLinear()
-		.domain([0,currentScenario.length])
+		.domain([0,currentScenarioArray.length])
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenario, function(d) { return parseFloat(d["tractErrorMin"]); });
-	xMax = d3.max(currentScenario, function(d) { return parseFloat(d["tractErrorMax"]); });
+	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMin"]); });
+	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMax"]); });
 	xExtent = [xMin,xMax];
 	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
@@ -109,7 +109,7 @@ function buildChart() {
 
 	// set the update selection:
 	rows = tbody.selectAll('tr')
-    	.data(currentScenario);
+    	.data(currentScenarioArray);
 
 	// set the enter selection:
 	var rowsEnter = rows.enter()
@@ -117,16 +117,16 @@ function buildChart() {
 
 	rowsEnter.append('td')
 	    .attr("class", "tid")
-	    //.text(function(d) { return d.TID; });
+	    //.text(function(d) { return d.value.TID; });
 	rowsEnter.append('td')
 	    .attr("class", "rid")
-	    //.text(function(d) { return d.RID; });
+	    //.text(function(d) { return d.value.RID; });
 	rowsEnter.append('td')
 	    .attr("class", "est")
-	    //.text(function(d) { return d["tractEstimate"]; });
+	    //.text(function(d) { return d.value["tEst"]; });
 	rowsEnter.append('td')
 	    .attr("class", "err")
-	    //.text(function(d) { return d["tractError"];; });
+	    //.text(function(d) { return d.value["tMar"];; });
 
 
 
@@ -167,24 +167,19 @@ function updateColorScales(){
 	//accent = d3.scaleOrdinal(d3.schemeAccent);
 	blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 
-	//extent = d3.extent(currentScenario, function(d) { return d.properties.pop_max; })
+	//extent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
-	extent = d3.extent(currentScenario.map(function (item) {
-		return (item.tractEstimate);
+	extent = d3.extent(currentScenarioArray.map(function (item) {
+		return (item.value.tEst);
 	}))
 
+	console.log("updateColorScales() --> extent = ",extent)
 
 	blues = d3.scaleOrdinal()
 		.domain([extent[0], extent[1]])
 		.range(d3.schemeBlues[9])
 	;
 }
-
-
-
-
-
-//var extent = d3.extent(geojson.features, function(d) { return d.properties.pop_max; });
 
 
 //d3.scaleQuantile()
@@ -204,6 +199,8 @@ function updateColorScales(){
 function updateChart() {
 	if (!chartBuilt) buildChart();
 
+	if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
+	if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
 
 	updateColorScales();
 	updateChartScales();
@@ -213,33 +210,34 @@ function updateChart() {
 
 	// select all columns by class, (re)bind the data
 	d3.selectAll(".tid")
-		.data(currentScenario)
+		.data(currentScenarioArray)
 		.classed("button_sliding_bg_left",true)
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
-		.attr("title",function(d,i) { return d.TID; })
-		.text(function(d) { return d.TID.substring(4); })
-		.attr("style", function (d) { return "background: "+blues(d["tractEstimate"]) }) // set bg color
+		.attr("title",function(d,i) { return d.value.TID; })
+		.text(function(d) { return d.value.TID; })
+		//.text(function(d) { return d.TID.substring(4); })
+		.attr("style", function (d) { return "background: "+blues(d.value["tEst"]) }) // set bg color
 		;
 	d3.selectAll(".rid")
-		.data(currentScenario)
+		.data(currentScenarioArray)
 		.classed("button_sliding_bg_right",true)
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.RID; })
+		.text(function(d) { return d.value.RID; })
 		;
 	d3.selectAll(".est")
-		.data(currentScenario)
+		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d["tractEstimate"]; });
+		.text(function(d) { return d.value.tEst; });
 	d3.selectAll(".err")
-		.data(currentScenario)
+		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d["tractError"]; });
+		.text(function(d) { return d.value.tMar; });
 
 
 	d3.selectAll(".svgCell")
-		.data(currentScenario)
+		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
 
 
@@ -247,32 +245,32 @@ function updateChart() {
 
 	// select svgs by class, rebind data, and set transitions
 	d3.selectAll(".svgBarHorz")
-		.data(currentScenario).transition(t)
-			.attr("x", function(d,i){ return xScale( d["tractErrorMin"] )}) 
+		.data(currentScenarioArray).transition(t)
+			.attr("x", function(d,i){ return xScale( d.value["tMarMin"] )}) 
 			.attr("y", height/2 ) 
-			.attr("width", function(d,i){ return xScale( d["tractErrorMax"] ) - xScale( d["tractErrorMin"] ) }) 
+			.attr("width", function(d,i){ return xScale( d.value["tMarMax"] ) - xScale( d.value["tMarMin"] ) }) 
 			.attr("height", barW);
 	d3.selectAll(".svgBarVert1")
-		.data(currentScenario).transition(t)
-			.attr("x", function(d,i){ return xScale( d["tractErrorMin"] )}) 
+		.data(currentScenarioArray).transition(t)
+			.attr("x", function(d,i){ return xScale( d.value["tMarMin"] )}) 
 			.attr("y", 7 ) 
 			.attr("width", barW) 
 			.attr("height", barHV);	
 	d3.selectAll(".svgBarVert2")
-		.data(currentScenario).transition(t)
-			.attr("x", function(d,i){ return xScale( d["tractErrorMax"] )}) 
+		.data(currentScenarioArray).transition(t)
+			.attr("x", function(d,i){ return xScale( d.value["tMarMax"] )}) 
 			.attr("y", 7 ) 
 			.attr("width", barW) 
 			.attr("height", barHV);		
 	d3.selectAll(".svgTri")
-		.data(currentScenario).transition(t)
+		.data(currentScenarioArray).transition(t)
 			.attr('transform',function(d,i){ 
-				return "translate("+ xScale( d["tractEstimate"] ) +","+ barHV*2 +") "; 
+				return "translate("+ xScale( d.value["tEst"] ) +","+ barHV*2 +") "; 
 			});
 
 
 	// set all map colors
-	mns.setAllTractColors(currentScenario);
+	mns.setAllTractColors(currentScenarioArray);
 
 
 
@@ -295,7 +293,7 @@ function updateChart() {
 		d3.selectAll(".rid").classed("highlight", false);
 
 		//if (CHART_DEBUG) console.log(d.TID)
-		mns.highlightTractFromChart("g"+d.TID); // highlight tract on map
+		mns.highlightTractFromChart("g"+d.value.TID); // highlight tract on map
 
 
 	//	var s = d3.select(this).attr("current_source");
@@ -310,7 +308,7 @@ function updateChart() {
 
 	function resetTID(d){
 		
-		mns.resetTractStyleFromChart("g"+d.TID) 
+		mns.resetTractStyleFromChart("g"+d.value.TID) 
 	}
 
 
@@ -322,7 +320,7 @@ function updateChart() {
 		// remove rows not needed
 	rows.exit().remove(); 	
 
-	create_axes(currentScenario,yScale,xScale,"tractError","tractEstimate");
+	create_axes(currentScenarioArray,yScale,xScale,"tMar","tEst");
 }
 
 /**
@@ -336,12 +334,12 @@ function updateChartScales() {
 
 	// Y-SCALE: based on number of data
 	yScale = d3.scaleLinear()
-		.domain([0,currentScenario.length])
+		.domain([0,currentScenarioArray.length])
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenario, function(d) { return parseFloat(d["tractErrorMin"]); });
-	xMax = d3.max(currentScenario, function(d) { return parseFloat(d["tractErrorMax"]); });
+	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMin"]); });
+	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMax"]); });
 	xExtent = [xMin,xMax];
 	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
@@ -355,14 +353,14 @@ function updateChartScales() {
  *	@param {Array} data - the array of objects
  *	@param {Function} yScale - returns a scale
  *	@param {Function} xScale - returns a scale
- *	@param {Float} err - "tractError" or "regionError" from above
+ *	@param {Float} err - "tMar" or "regionError" from above
  *	@param {Float} est - "tractEst" or "regionEst" from above
  */
 function create_axes(data,yScale,xScale,err,est){
 
 	// keep tick labels from overlapping
 	var ticks = 5;
-	if (parseFloat(data[0][est]) > 1000) ticks = 4;
+	if (parseFloat(data[0]['value'][est]) > 1000) ticks = 4;
 
 
 	//************ TOP AXIS (NUMBERS) ************
