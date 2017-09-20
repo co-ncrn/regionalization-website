@@ -75,17 +75,23 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 		<div class="col-md-5">
 			<div class="sources clearfix">
 
-				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_geo_point.png"></div>
+				<label for="msa_select_box" title="Select a Metropolitan Statistical Area (MSA)" class="dropdown_left">
+						<img src="<?php print $rootDir; ?>assets/img/icon_geo_point.png">
+				</label>
 				<div class="form-group dropdown_right">
 					<select id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
 				</div>
 
-				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_bar_graph.png"></div>
+				<label for="scenario_select_box" title="Select an ACS scenario and dataset" class="dropdown_left">
+					<img src="<?php print $rootDir; ?>assets/img/icon_bar_graph.png">
+				</label>
 				<div class="form-group dropdown_right">
 					<select id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
 				</div>
 
-				<div class="dropdown_left"><img src="<?php print $rootDir; ?>assets/img/icon_download.png"></div>
+				<div class="dropdown_left">
+					<a title="Download data for this Metropolitan Area">
+						<img src="<?php print $rootDir; ?>assets/img/icon_download.png"></a></div>
 				<div class="form-group dropdown_right">
 					<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
 				</div>
