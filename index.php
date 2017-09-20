@@ -142,7 +142,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>data/data_definitions.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/config.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/functions.js"></script>
-<script src="<?php print $rootDir; ?>assets/js/chart_new.js"></script>
+<script src="<?php print $rootDir; ?>assets/js/chart.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/map.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/main.js"></script>
 
