@@ -86,16 +86,16 @@ var mns = new function() {
 		}
 
 		// add popup
-		var popupHTML = '<h6 class="text-center">MSA</h6>'+
+		var popupHTML = '<h6 class="text-center">'+ feature.properties.NAME +'</h6>'+
 						'<table>'+
-						'<tr><td class="key">Name:</td><td class="val">'+ feature.properties.NAME +'</td></tr>'+
-						'<tr><td class="key">MSA:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
+						'<tr><td class="key">MSA Name:</td><td class="val">'+ feature.properties.NAME +'</td></tr>'+
+						'<tr><td class="key">MSA code:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
 						'<tr><td class="key">CSAFP:</td><td class="val">'+ feature.properties.CSAFP +'</td></tr>'+
 						'<tr><td class="key">CBSAFP:</td><td class="val">'+ feature.properties.CBSAFP +'</td></tr>'+
 						'<tr><td class="key">AFFGEOID:</td><td class="val">'+ feature.properties.AFFGEOID +'</td></tr>'+
 						'<tr><td class="key">GEOID:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
 						'</table>';
-		layer.bindPopup(popupHTML,{closeButton: false});
+		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});
 
 	    layer.on({
 	        mouseover: 	highlightMSAFromMap,
@@ -169,7 +169,7 @@ var mns = new function() {
 	 *	Zoom and fit the map to the MSA bounds
 	 */
 	var zoomToMSAonMap = function(msa) {
-		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()", msa, msas[msa][0]);
+		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()",arguments.callee.caller.toString(), current, msa, msas[msa][0]);
 		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
 		try {
 			if (map && prop(msaIndex[msa].bounds))
@@ -196,7 +196,7 @@ var mns = new function() {
 
 
 	/**
-	 *	Load geojson|topojson file and display in a tract layer
+	 *	Load geojson|topojson file
 	 *	@param Int msa The msa to load
 	 *	@param String src The url to remote file
 	 */
@@ -224,6 +224,19 @@ var mns = new function() {
 			//restyleTractLayer()
 		});
 	}
+
+	this.updateMap = function(){
+		if (MAP_DEBUG) console.log("updateMapData()");
+
+		tractLayer.eachLayer(function (layer) {  
+
+			onEachTractFeature(layer.feature, layer)
+			
+			
+		});
+	}
+
+
 	// set properties, events for tracts
 	function onEachTractFeature(feature, layer) {
 		//if (MAP_DEBUG) console.log(" --> onEachTractFeature() feature, layer", feature, layer)
@@ -232,23 +245,26 @@ var mns = new function() {
 		tractTIDindex[feature.properties.TID] = layer;
 		tractRIDindex[feature.properties.RID] = layer;
 
+		// get the data for the feature
 		var tractData = currentScenario[cleanTID(feature.properties.TID)];
+		// if no data, return
+		if (!prop(tractData)) return;
 
 		// add popup
-		var popupHTML = '<h6 class="text-center">Tract</h6>'+
-						'<table>'+
-						'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
+		var popupHTML = '<table>'+
+						'<thead>'+
+							'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
+						'</thead>'+
+						'<tbody>'+
+							'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
+							'<tr><td class="key">Estimate</td><td class="val">'+ tractData.tEst +'</td><td class="val">'+ tractData.rEst +'</td></tr>'+
+							'<tr><td class="key">Margin of Error</td><td class="val">±'+ tractData.tMar +'</td><td class="val">±'+ tractData.rMar +'</td></tr>'+
+							'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
+						'</tbody>'+
 
-						'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
-						'<tr><td class="key">Estimate</td><td class="val">'+ tractData.tEst +'</td><td class="val">'+ tractData.rEst +'</td></tr>'+
-						'<tr><td class="key">Margin of Error</td><td class="val">'+ tractData.tMar +'</td><td class="val">'+ tractData.rMar +'</td></tr>'+
-						'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
-
-						'<tr><td class="key"></td><td class="val"></td><td class="val">'+ JSON.stringify(tractData) +'</td></tr>'+
+						//'<tr><td class="key"></td><td class="val"></td><td class="val">'+ JSON.stringify(tractData) +'</td></tr>'+
 						'</table>';
-		layer.bindPopup(popupHTML,{closeButton: false});
-                
-
+		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});
 
 
 		//console.log("onEachTractFeature()",feature,layer);
@@ -348,46 +364,6 @@ var mns = new function() {
 		"opacity": 0.75
 	};
 
-// 	function restyleTractLayer() {
-
-// 	    tractLayer.eachLayer(function(layer) {
-
-
-// 			console.log("selectMapFeature() --> ",layer.feature)
-// 			if (layer.feature && layer.feature.properties.TID){
-
-// 				var _tid = cleanTID(layer.feature.properties.TID);
-
-
-// 				var est = currentScenarioTIDs[_tid].tractEstimate;
-
-
-// 				console.log("selectMapFeature() --> tid = ",_tid)
-// 				layer.setStyle({
-// 		         //   fillColor: blues(est),
-// 		            fillOpacity: 0.8,
-// 		            weight: 0.5
-// 			    });
-// 			}
-
-
-
-// 	        //var est = currentScenarioTIDs[_tid].tractEstimate;
-// // var est = 3;
-
-// // 	        // Your function that determines a fill color for a particular
-// // 	        // property name and value.
-// // 	 //       var myFillColor = getColor(propertyName, propertyValue);
-
-// // 	        layer.setStyle({
-// // 	            fillColor: blues(est),
-// // 	            fillOpacity: 0.8,
-// // 	            weight: 0.5
-// // 	        });
-// 	    });
-// 	}
-	
-
 	/**
 	 *	Set initial tract style on load or click
 	 */
@@ -400,37 +376,33 @@ var mns = new function() {
 		
 
 
-		if ( !prop(currentScenario) || !currentScenario[_tid] ){
-
-			console.log(" ---> currentScenario NOT LOADED")
+		if ( prop(currentScenario) && currentScenario[_tid] ){
 
 
-	//		console.log(" ---> currentScenarioTIDs = ",currentScenarioTIDs)
-	//		console.log(" ---> currentScenarioTIDs[_tid] = ",currentScenarioTIDs[_tid] )
+
+			// use TID (without "g") as a reference with currentScenario to get estimate
+			var est = currentScenario[_tid].tEst;
+			// return a style object
+		    return {
+		        fillColor: blues(est), 
+		        weight: 1,
+		        opacity: 1,
+		        color: 'white',
+		        fillOpacity: 0.7
+		    };
+		// if no TID, currentScenario, or data found
+	    } else {
+			if (MAP_DEBUG) console.log(" --> scenario NOT YET LOADED")
+			// return a default style object
 			return {
 		        fillColor: "#000000",
 		        weight: 1,
 		        opacity: 1,
 		        color: 'white',
-		        dashArray: '3',
 		        fillOpacity: 0.7
 		    };
 		}
-		else {
-
-			// use TID (without "g") as a reference with currentScenario to get estimate
-			var est = currentScenario[_tid].tEst;
-			//console.log("TID",cleanTID(data.properties.TID))
-			//console.log("currentScenarioTIDs",currentScenarioTIDs)
-			//console.log("currentScenarioTIDs[cleanTID(data.properties.TID)]",currentScenarioTIDs[cleanTID(data.properties.TID)])
-		    return {
-		        fillColor: blues(est), //"#000000",
-		        weight: 1,
-		        opacity: 1,
-		        color: 'white',
-		        fillOpacity: 0.8
-		    };
-	    }
+		
 	}
 
 

@@ -124,7 +124,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 
 	<div class="row">
 		<div class="col-md-12">
-			<div id="table"></div>
+			<h4>Raw data</h4>
 			<textarea class="form-control" rows="30" id="output"></textarea>
 		</div>
 	</div>	
@@ -139,7 +139,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.js"></script>
 <script src="<?php print $rootDir; ?>vendor/d3/d3.min.js"></script>
 
-
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/topojson.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/d3-axis.v1.min.js"></script>

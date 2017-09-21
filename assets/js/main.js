@@ -46,7 +46,7 @@ $(document).ready(function(){
 			dataChange("menu",current.msa,p[0],p[1]);
 		} 
 	});
-	init(); // load data, map, page
+	init();
 });
 
 
@@ -356,7 +356,7 @@ function optionHTML(val,text){
  *	Get data from server
  */
 function getScenarioData(){
-	var url = "http://localhost/RegionalismMap/code/regionalization-webdata-tools/data/scenarios/" + current.msa +"_"+ current.scenario +"_"+ current.data +".json";
+	var url = rootDir + "/data/scenarios/" + current.msa +"_"+ current.scenario +"_"+ current.data +".json";
 	if (MAIN_DEBUG) console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
 		if (error) return console.warn(error);		// handle error
@@ -367,10 +367,12 @@ function getScenarioData(){
 
 		// currentScenario = cleanData(json.response);			// clean data
 
-		 updateChart();								// update chart
+		updateChart(); // update chart
+	//	if (mns.tractLayer)
+	//		mns.updateMap(); // update chart
 		
 		// testing
-		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json) );
+		$("#output").val( JSON.stringify(json).replace("},","},\n") );
 	});
 }
 

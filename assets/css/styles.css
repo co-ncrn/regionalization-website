@@ -7,3 +7,8 @@
 .dropdown_left { float: left; width: 6%; margin: 5px 0; }
 .dropdown_right { float: left; width: 93%; margin: 5px 0; }
 .download_link, .download_link:hover { font-size: 88%; margin-left: 8px; color: #333; text-decoration: none }
+
+
+
+
+#output { font-size: 75%; }

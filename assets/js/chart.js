@@ -165,17 +165,16 @@ function buildChart() {
 var accent,blues,extent;
 function updateColorScales(){
 	//accent = d3.scaleOrdinal(d3.schemeAccent);
-	blues = d3.scaleOrdinal(d3.schemeBlues[9]);
+	//blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 
 	//extent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
 	extent = d3.extent(currentScenarioArray.map(function (item) {
 		return (item.value.tEst);
 	}))
+	//console.log("updateColorScales() --> extent = ",extent)
 
-	console.log("updateColorScales() --> extent = ",extent)
-
-	blues = d3.scaleOrdinal()
+	blues = d3.scaleQuantile()
 		.domain([extent[0], extent[1]])
 		.range(d3.schemeBlues[9])
 	;
@@ -217,7 +216,13 @@ function updateChart() {
 		.attr("title",function(d,i) { return d.value.TID; })
 		.text(function(d) { return d.value.TID; })
 		//.text(function(d) { return d.TID.substring(4); })
-		.attr("style", function (d) { return "background: "+blues(d.value["tEst"]) }) // set bg color
+		.attr("style", function (d) { 
+				/*console.log(d.value["tEst"],blues(d.value["tEst"])); */ 
+
+				var c = d3.color( blues(d.value["tEst"]) ); // create color
+				c.opacity = 0.5; // set opacity
+				return "background: "+ c; // set bg color
+			}) 
 		;
 	d3.selectAll(".rid")
 		.data(currentScenarioArray)
