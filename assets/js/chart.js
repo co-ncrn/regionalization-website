@@ -230,6 +230,15 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.text(function(d) { return d.value.RID; })
+
+		.attr("style", function (d) { 
+				/*console.log(d.value["tEst"],blues(d.value["tEst"])); */ 
+
+				var c = d3.color( blues(d.value["rEst"]) ); // create color
+				c.opacity = 0.5; // set opacity
+				return "background: "+ c; // set bg color
+			}) 
+
 		;
 	d3.selectAll(".est")
 		.data(currentScenarioArray)
@@ -297,6 +306,9 @@ function updateChart() {
 		d3.selectAll(".tid").classed("highlight", true);
 		d3.selectAll(".rid").classed("highlight", false);
 
+		tractOrRegion = "tract";
+		mns.updateMap();
+
 		//if (CHART_DEBUG) console.log(d.TID)
 		mns.highlightTractFromChart("g"+d.value.TID); // highlight tract on map
 
@@ -307,6 +319,9 @@ function updateChart() {
 	function selectRID(d,i){
 		d3.selectAll("td.tid").classed("highlight", false);
 		d3.selectAll("td.rid").classed("highlight", true);
+		tractOrRegion = "region";
+		mns.updateMap();
+
 	//	var s = d3.select(this).attr("current_source");
 	//	load_data(s,"region",tabulate);
 	}

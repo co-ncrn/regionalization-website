@@ -1,6 +1,9 @@
 
 
 
+table, tr, th, td { border-collapse: collapse; border:none !important; margin: 0; padding: 0; }
+
+
 /* LEAFLET POP TABLES */
 #map .key { min-width: 100px; }
 #map .val { min-width: 70px; }

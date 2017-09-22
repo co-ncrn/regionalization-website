@@ -362,14 +362,15 @@ function getScenarioData(){
 		if (error) return console.warn(error);		// handle error
 		console.log("getScenarioData() --> json = ",json);
 
+
+		// data has arrived
+		// currentScenario = cleanData(json.response);			// DELETE
 		currentScenario = json;
 		currentScenarioArray = d3.entries(currentScenario); 
 
-		// currentScenario = cleanData(json.response);			// clean data
-
 		updateChart(); // update chart
-	//	if (mns.tractLayer)
-	//		mns.updateMap(); // update chart
+	
+			mns.updateMap(); // update map
 		
 		// testing
 		$("#output").val( JSON.stringify(json).replace("},","},\n") );

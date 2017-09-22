@@ -226,18 +226,23 @@ var mns = new function() {
 	}
 
 	this.updateMap = function(){
-		if (MAP_DEBUG) console.log("updateMapData()");
+		//console.log("updateMap()");
+		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function (layer) {  
-
+			console.log("updateMapData() --> eachLayer()",layer.feature, layer);
+			
+			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer)
-			
-			
+
+			// reset layer style based on new data
+			layer.setStyle( initialTractStyle(layer.feature) )
 		});
 	}
 
-
-	// set properties, events for tracts
+	/**
+	 *	Set properties, popup, events for each tract feature
+	 */
 	function onEachTractFeature(feature, layer) {
 		//if (MAP_DEBUG) console.log(" --> onEachTractFeature() feature, layer", feature, layer)
 
@@ -261,8 +266,6 @@ var mns = new function() {
 							'<tr><td class="key">Margin of Error</td><td class="val">±'+ tractData.tMar +'</td><td class="val">±'+ tractData.rMar +'</td></tr>'+
 							'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
 						'</tbody>'+
-
-						//'<tr><td class="key"></td><td class="val"></td><td class="val">'+ JSON.stringify(tractData) +'</td></tr>'+
 						'</table>';
 		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});
 
@@ -369,19 +372,30 @@ var mns = new function() {
 	 */
 	function initialTractStyle(data) {
 
-		var _tid = cleanTID(data.properties.TID);
-		var _rid = data.properties.RID;
-	//	console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+		var id, _tid, _rid, est;
 
-		
+		console.log("initialTractStyle() --> data = ", data);
+		_tid = cleanTID(data.properties.TID);
+		_rid = data.properties.RID;
+		console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+
+		if (tractOrRegion == "tract")
+			id = _tid;
+		else if (tractOrRegion == "region")
+			id = _rid;
 
 
 		if ( prop(currentScenario) && currentScenario[_tid] ){
 
+			console.log("initialTractStyle() --> setting style based on data");
+
+			// use TID (without "g") or RID as a reference with currentScenario to get estimate
+			if (tractOrRegion == "tract")
+				est = currentScenario[_tid].tEst;
+			else if (tractOrRegion == "region")
+				est = currentScenario[_tid].rEst;
 
 
-			// use TID (without "g") as a reference with currentScenario to get estimate
-			var est = currentScenario[_tid].tEst;
 			// return a style object
 		    return {
 		        fillColor: blues(est), 
@@ -392,7 +406,7 @@ var mns = new function() {
 		    };
 		// if no TID, currentScenario, or data found
 	    } else {
-			if (MAP_DEBUG) console.log(" --> scenario NOT YET LOADED")
+			console.log("initialTractStyle() --> NO DATA");
 			// return a default style object
 			return {
 		        fillColor: "#000000",
