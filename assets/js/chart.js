@@ -303,7 +303,14 @@ function updateChart() {
 	}
 
 	function selectTID(d,i){
-		d3.selectAll(".tid").classed("highlight", true);
+
+
+
+
+		d3.selectAll(".tid")
+			.classed("highlight", true)
+			//.attr("style",function(){ console.log( d3.select(this).attr("style")); })
+		;
 		d3.selectAll(".rid").classed("highlight", false);
 
 		tractOrRegion = "tract";

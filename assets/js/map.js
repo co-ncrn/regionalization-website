@@ -321,13 +321,13 @@ var mns = new function() {
 		layer.setStyle({
 	        fillOpacity: 0.4
 	    });
-	    layer.openPopup();
+	   // layer.openPopup();
 	}
 	// reset tract style to original
 	this.resetTractStyleFromChart = function(tid) {
 		var layer = tractTIDindex[tid];
 	    tractLayer.resetStyle(layer);
-	    layer.closePopup();
+	  //  layer.closePopup();
 	}
 
 
