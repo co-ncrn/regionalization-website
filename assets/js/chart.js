@@ -170,9 +170,13 @@ function updateColorScales(){
 	//extent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
 	extent = d3.extent(currentScenarioArray.map(function (item) {
+		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
 		return (item.value[tractOrRegion+"Est"]);
 	}))
 	//console.log("updateColorScales() --> extent = ",extent)
+
+	// find midpoint between extents, use parseFloats so strings don't concat
+	extentMiddle = parseFloat(extent[0]) + ((parseFloat(extent[1]) - parseFloat(extent[0]))/2); 
 
 	blues = d3.scaleQuantile()
 		.domain([extent[0], extent[1]])
@@ -188,13 +192,15 @@ function updateColorScales(){
 
 
 
-
+/**
+ * 	Reformat Tract ID with periods to make it more readable
+ *	reference: https://www.census.gov/geo/reference/geoidentifiers.html
+ *	So... 18105000901 => 18.105.000901 [state.county.tract]
+ */
 function reformatTID(str){
-	// reference
-	// https://www.census.gov/geo/reference/geoidentifiers.html
-	// 18105000901 => 18.105.000901
-
-
+	str = 		  str.substr(0, 2) + // state 
+			"." + str.substr(2, 3) + // county 
+			"." + str.substr(5);
 	return str;
 }
 
@@ -222,7 +228,7 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.attr("title",function(d,i) { return reformatTID(d.value.TID); })
-		.text(function(d) { return reformatTID(d.value.TID).substring(5); /* remove state */ })
+		.text(function(d) { return reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
 		.attr("style", function (d) { 
 				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 
@@ -250,7 +256,6 @@ function updateChart() {
 				}
 				return "background: "+ c; // set bg color
 			}) 
-
 		;
 	d3.selectAll(".est")
 		.data(currentScenarioArray)
@@ -320,11 +325,13 @@ function updateChart() {
 
 
 	function highlightTractOrRegionHeader(){
-		var mid = extent[0] + ((extent[1] - extent[0])/2); // find midpoint between extents
-		if (tractOrRegion == "t")
-			d3.select(".thTID").style("background",blues(mid)); // set color of the tract header
-		else
-			d3.select(".thTID").style("background",blues(mid)); // set color of the region header
+		if (tractOrRegion == "t"){
+			d3.select(".thTID").style("background",blues(extentMiddle));
+			d3.select(".thRID").style("background","rgba(0,0,0,.05)");
+		} else {
+			d3.select(".thTID").style("background","rgba(0,0,0,.05)");
+			d3.select(".thRID").style("background",blues(extentMiddle));
+		}
 	}
 
 	function selectTID(d,i){

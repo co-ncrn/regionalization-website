@@ -255,8 +255,6 @@ var mns = new function() {
 		// if no data, return
 		if (!prop(tractData)) return;
 
-		console.log("TID check tractData.TID = ",tractData.TID)
-
 		// add popup
 		var popupHTML = '<table class="table-bordered">'+
 						'<thead>'+

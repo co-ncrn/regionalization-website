@@ -32,8 +32,8 @@ max-width: 100%;
 
 /* HEADERS */
 #chart th { font-weight: normal; text-align: center; margin: 0; padding: 4px; }
-#chart th.thTID { min-width: 30px; max-width: 60px; background: rgba(0,0,0,.05); }
-#chart th.thRID { min-width: 35px; max-width: 60px; background: rgba(0,0,0,.05); }
+#chart th.thTID { min-width: 30px; max-width: 60px; width: 68px; background: rgba(0,0,0,.05); }
+#chart th.thRID { min-width: 35px; max-width: 60px; width: 60px; background: rgba(0,0,0,.05); }
 #chart th.thTID:hover, #chart th.thRID:hover { cursor: pointer; }
 #chart th.thEST { min-width: 50px; max-width: 60px;  }
 #chart th.thERR { min-width: 30px; max-width: 60px; }
@@ -42,8 +42,8 @@ max-width: 100%;
 /* ROWS */
 #chart tbody tr { padding: 0; border: none; }
 #chart tbody td { padding: 0 6px 0 4px; text-align: center; border: none; }
-#chart tbody td.tid { min-width: 30px; max-width: 80px; }
-#chart tbody td.rid { min-width: 35px; max-width: 60px; padding: 0; }
+#chart tbody td.tid { min-width: 30px; max-width: 80px; width: 60px; }
+#chart tbody td.rid { min-width: 35px; max-width: 60px; width: 60px; }
 #chart tbody td.est, 
 #chart tbody td.err { text-align: right; }
 
@@ -71,7 +71,7 @@ max-width: 100%;
 
 /* INTERACTIVE */
 
-.tid:hover, .rid:hover { cursor: pointer; cursor: hand; } 
+.tid:hover, .thTID:hover, .rid:hover, .thRID:hover  { cursor: pointer; } 
 /*td.highlight { background-color: #900 }*/
 
 
@@ -86,7 +86,7 @@ max-width: 100%;
 
 
 
-/*
+/**/
 
 .button_sliding_bg_left, .button_sliding_bg_right {
     background: #fff;
@@ -95,12 +95,12 @@ max-width: 100%;
     text-align: center;
     cursor: pointer;
     box-shadow: inset 0 0 0 0 #a8d3dd;
-	-webkit-transition: all ease 0.8s;
-	-moz-transition: all ease 0.8s;
-	transition: all ease 0.9s;
+	-webkit-transition: all ease 0.5s;
+	-moz-transition: all ease 0.5s;
+	transition: all ease 0.4s;
 }
-*/
- /**/
+
+ /*
 .button_sliding_bg_left:hover {
    box-shadow: inset -200px 0 0 0 #a8d3dd;
 }
@@ -108,4 +108,4 @@ max-width: 100%;
 .button_sliding_bg_right:hover {
     box-shadow: inset 200px 0 0 0 #a8d3dd;
 }
-
+*/

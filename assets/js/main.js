@@ -372,7 +372,7 @@ function getScenarioData(){
 		currentScenarioArray = d3.entries(currentScenario); 
 
 		updateChart(); // update chart
-		if (mns.tractLayer)
+		//if (mns.tractLayer)
 			mns.updateMap(); // update map
 		
 		// testing
