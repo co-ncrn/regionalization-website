@@ -363,13 +363,16 @@ function getScenarioData(){
 		console.log("getScenarioData() --> json = ",json);
 
 
+// DO I NEED THIS?
+//		data = remove_rows(data,"inf"); 		// remove rows with "inf" (infinity)
+
 		// data has arrived
 		// currentScenario = cleanData(json.response);			// DELETE
 		currentScenario = json;
 		currentScenarioArray = d3.entries(currentScenario); 
 
 		updateChart(); // update chart
-	
+		if (mns.tractLayer)
 			mns.updateMap(); // update map
 		
 		// testing

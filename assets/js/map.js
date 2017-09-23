@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastLayer = null,
 
-		MAP_DEBUG = true
+		MAP_DEBUG = false
 		;
 
 
@@ -230,7 +230,7 @@ var mns = new function() {
 		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function (layer) {  
-			console.log("updateMapData() --> eachLayer()",layer.feature, layer);
+			if (MAP_DEBUG) console.log("updateMap() --> eachLayer()",layer.feature, layer);
 			
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer)
@@ -286,9 +286,7 @@ var mns = new function() {
 	    //if (MAP_DEBUG) console.log(" --> highlightTractFromMap() layer.feature = ",layer.feature)
 
 	    // slightly shift fill
-	    layer.setStyle({
-	        fillOpacity: 0.4
-	    });
+	    layer.setStyle(tractHighlightStyle);
 
 	    layer.openPopup();
 
@@ -318,10 +316,12 @@ var mns = new function() {
 		var layer = tractTIDindex[tid];
 	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
 	    //var style = testStyle(tid);
-		layer.setStyle({
-	        fillOpacity: 0.4
-	    });
+		layer.setStyle(tractHighlightStyle);
 	   // layer.openPopup();
+
+	   	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+	        layer.bringToFront();
+	    }
 	}
 	// reset tract style to original
 	this.resetTractStyleFromChart = function(tid) {
@@ -366,28 +366,43 @@ var mns = new function() {
 		"weight": 1,
 		"opacity": 0.75
 	};
+	var tractHighlightStyle = {
+	    fillOpacity: 0.4,
+	    opacity: 1,
+	    weight: 2,
+	//	color: "#990000" // stroke color
+	}
 
 	/**
-	 *	Set initial tract style on load or click
+	 *	Set initial tract style on load, hover
 	 */
 	function initialTractStyle(data) {
 
 		var id, _tid, _rid, est;
 
-		console.log("initialTractStyle() --> data = ", data);
+		if (MAP_DEBUG) console.log("initialTractStyle() --> data = ", data);
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-		console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+		if (MAP_DEBUG) console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
 		if (tractOrRegion == "tract")
 			id = _tid;
 		else if (tractOrRegion == "region")
 			id = _rid;
 
+		// set default style
+		var defaultStyle = {
+	        fillColor: "#000000",
+	        weight: 1,
+	        opacity: .5,
+	        color: 'white',
+	        fillOpacity: 0.7
+	    };
+
 
 		if ( prop(currentScenario) && currentScenario[_tid] ){
 
-			console.log("initialTractStyle() --> setting style based on data");
+			if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
 
 			// use TID (without "g") or RID as a reference with currentScenario to get estimate
 			if (tractOrRegion == "tract")
@@ -395,28 +410,16 @@ var mns = new function() {
 			else if (tractOrRegion == "region")
 				est = currentScenario[_tid].rEst;
 
+			// update style color
+			defaultStyle.fillColor = blues(est);
 
-			// return a style object
-		    return {
-		        fillColor: blues(est), 
-		        weight: 1,
-		        opacity: 1,
-		        color: 'white',
-		        fillOpacity: 0.7
-		    };
-		// if no TID, currentScenario, or data found
-	    } else {
-			console.log("initialTractStyle() --> NO DATA");
-			// return a default style object
-			return {
-		        fillColor: "#000000",
-		        weight: 1,
-		        opacity: 1,
-		        color: 'white',
-		        fillOpacity: 0.7
-		    };
+	    } // if no TID, currentScenario, or data found 
+	    else {
+			console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE");
+			// no changes to default style
 		}
-		
+		// return a style object
+		return defaultStyle;
 	}
 
 
