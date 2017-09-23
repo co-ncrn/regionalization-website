@@ -189,6 +189,14 @@ function updateColorScales(){
 
 
 
+function reformatTID(str){
+	// reference
+	// https://www.census.gov/geo/reference/geoidentifiers.html
+	// 18105000901 => 18.105.000901
+
+
+	return str;
+}
 
 
 
@@ -213,14 +221,16 @@ function updateChart() {
 		.classed("button_sliding_bg_left",true)
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
-		.attr("title",function(d,i) { return d.value.TID; })
-		.text(function(d) { return d.value.TID; })
-		//.text(function(d) { return d.TID.substring(4); })
+		.attr("title",function(d,i) { return reformatTID(d.value.TID); })
+		.text(function(d) { return reformatTID(d.value.TID).substring(5); /* remove state */ })
 		.attr("style", function (d) { 
-				/*console.log(d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); */ 
+				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 
-				var c = d3.color( blues(d.value[tractOrRegion+"Est"]) ); // create color
-				c.opacity = 0.5; // set opacity
+				var c = "#ffffffff"; // default (white)
+				if (tractOrRegion == "t"){
+					c = d3.color( blues(d.value["tEst"]) ); // create color
+					c.opacity = 0.5; // set opacity
+				}
 				return "background: "+ c; // set bg color
 			}) 
 		;
@@ -230,12 +240,14 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.text(function(d) { return d.value.RID; })
-
 		.attr("style", function (d) { 
-				/*console.log(d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); */ 
-
-				var c = d3.color( blues(d.value["rEst"]) ); // create color
-				c.opacity = 0.5; // set opacity
+				//console.log(".rid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
+				
+				var c = "#ffffffff"; // default (white)
+				if (tractOrRegion == "r"){
+					var c = d3.color( blues(d.value["rEst"]) ); // create color
+					c.opacity = 0.5; // set opacity
+				}
 				return "background: "+ c; // set bg color
 			}) 
 
@@ -288,71 +300,77 @@ function updateChart() {
 
 
 
+
+
 	//************ INTERACTION ************
 
-
-	d3.selectAll(".tid")
-	    .on("mouseover", selectTID)
-	    .on("mouseout", resetTID);
-	d3.selectAll(".rid")
-	    .on("mouseover", selectRID);
 
 		
 	function selectRow(r){
 		//d3.selectAll("td.tid").classed("highlight", true);
 	}
 
+	d3.selectAll(".tid")
+	    .on("mouseover", selectTID)
+	    .on("mouseout", resetTID);
+	d3.selectAll(".rid")
+	    .on("mouseover", selectRID)
+	    .on("mouseout", resetRID);
+
+
+
+	function highlightTractOrRegionHeader(){
+		var mid = extent[0] + ((extent[1] - extent[0])/2); // find midpoint between extents
+		if (tractOrRegion == "t")
+			d3.select(".thTID").style("background",blues(mid)); // set color of the tract header
+		else
+			d3.select(".thTID").style("background",blues(mid)); // set color of the region header
+	}
+
 	function selectTID(d,i){
-		console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
-
-
-
-		d3.selectAll(".tid")
-			.classed("highlight", true)
-			//.attr("style",function(){ console.log( d3.select(this).attr("style")); })
-		;
-		d3.selectAll(".rid").classed("highlight", false);
-
-
-
-		//if (CHART_DEBUG) console.log(d.TID)
-		mns.highlightTractFromChart("g"+d.value.TID); // highlight tract on map
-
-
+		//console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
 
 		// switch to display tract data in boxplot
 		if (tractOrRegion == "r"){
-			tractOrRegion = "t";
-			mns.updateMap();
-			updateChart();
+			tractOrRegion = "t";	// change to tracts
+			mns.updateMap(); 		// update map
+			updateChart();			// update chart
+			// update classes
+			d3.selectAll(".tid").classed("highlight", true);	
+			d3.selectAll(".rid").classed("highlight", false);
+			// update classes on map popup
+			d3.selectAll("td.t").classed("bold", true);	
+			d3.selectAll("td.r").classed("bold", false);
 		}
-		console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
+		// (always) highlight tract on map after map update
+		mns.highlightTractFromChart("g"+d.value.TID); 
 
-	//	var s = d3.select(this).attr("current_source");
-	//	load_data(s,"tract",tabulate);
+		highlightTractOrRegionHeader();
 	}
+	function resetTID(d){
+		mns.resetTractStyleFromChart("g"+d.value.TID) 
+	}
+
 	function selectRID(d,i){
-		console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
-
-		d3.selectAll("td.tid").classed("highlight", false);
-		d3.selectAll("td.rid").classed("highlight", true);
-
+		//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
 
 		// switch to display region data in boxplot
 		if (tractOrRegion == "t"){
-			tractOrRegion = "r";
-			mns.updateMap();
-			updateChart();
+			tractOrRegion = "r";	// change to tracts
+			mns.updateMap(); 		// update map
+			updateChart();			// update chart
+			d3.selectAll("td.tid").classed("highlight", false);
+			d3.selectAll("td.rid").classed("highlight", true);
+			// update classes on map popup
+			d3.selectAll("td.t").classed("bold", false);	
+			d3.selectAll("td.r").classed("bold", true);
 		}
-		console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
+		// (always) highlight tract on map after map update
+		mns.highlightTractFromChart("g"+d.value.TID); 
 
-
-	//	var s = d3.select(this).attr("current_source");
-	//	load_data(s,"region",tabulate);
+		highlightTractOrRegionHeader();
 	}
-
-	function resetTID(d){
-		
+	function resetRID(d){
 		mns.resetTractStyleFromChart("g"+d.value.TID) 
 	}
 

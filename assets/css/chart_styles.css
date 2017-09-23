@@ -1,22 +1,28 @@
 
 
 
-table, tr, th, td { border-collapse: collapse; border:none !important; margin: 0; padding: 0; }
-
+#chart table, #chart tr, #chart th, #chart td, /* only #chart */
+table, th /* all tables */ { border-collapse: collapse; border:none !important; margin: 0; padding: 0; }
 
 /* LEAFLET POP TABLES */
-#map .key { min-width: 100px; }
-#map .val { min-width: 70px; }
+#map .key { min-width: 100px; padding: 2px 3px; text-align: left; }
+#map .val { min-width: 70px; padding: 2px 3px; text-align: right; }
 
 
 
 
+/* FIXES */
+
+/* fixed header row */
+#chart table thead tr { display:block; }
+#chart table th, table td { width:100px; /* fixed width */ }
+#chart table tbody { display:block; height:600px; overflow:auto; /* set tbody to auto */ }
 
 
 
 
 /* TABLE */
-#chart-container { clear: all; margin-top: 15px; height:600px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
+#chart-container { clear: all; margin-top: 15px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
 
 max-width: 100%;
 /*overflow-x: hidden;*/
@@ -26,8 +32,9 @@ max-width: 100%;
 
 /* HEADERS */
 #chart th { font-weight: normal; text-align: center; margin: 0; padding: 4px; }
-#chart th.thTID { min-width: 30px; max-width: 60px; }
-#chart th.thRID { min-width: 35px; max-width: 60px; padding: 2px; }
+#chart th.thTID { min-width: 30px; max-width: 60px; background: rgba(0,0,0,.05); }
+#chart th.thRID { min-width: 35px; max-width: 60px; background: rgba(0,0,0,.05); }
+#chart th.thTID:hover, #chart th.thRID:hover { cursor: pointer; }
 #chart th.thEST { min-width: 50px; max-width: 60px;  }
 #chart th.thERR { min-width: 30px; max-width: 60px; }
 #chart th.thSVG { min-width: 100px; max-width: 70%; width:70%; }
@@ -35,10 +42,13 @@ max-width: 100%;
 /* ROWS */
 #chart tbody tr { padding: 0; border: none; }
 #chart tbody td { padding: 0 6px 0 4px; text-align: center; border: none; }
-#chart tbody td.tid { }
-#chart tbody td.rid { padding: 0; }
+#chart tbody td.tid { min-width: 30px; max-width: 80px; }
+#chart tbody td.rid { min-width: 35px; max-width: 60px; padding: 0; }
 #chart tbody td.est, 
 #chart tbody td.err { text-align: right; }
+
+
+#chart tbody td.bold { font-weight: bold; } 
 
 /* SVG CELL */
 #chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 30%; }
@@ -53,6 +63,9 @@ max-width: 100%;
 
 .axis text { font-size: 12px; }
 .axis path { display: none; }
+
+
+
 
 
 

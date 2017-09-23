@@ -255,14 +255,16 @@ var mns = new function() {
 		// if no data, return
 		if (!prop(tractData)) return;
 
+		console.log("TID check tractData.TID = ",tractData.TID)
+
 		// add popup
-		var popupHTML = '<table>'+
+		var popupHTML = '<table class="table-bordered">'+
 						'<thead>'+
 							'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
 						'</thead>'+
 						'<tbody>'+
 							'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
-							'<tr><td class="key">Estimate</td><td class="val">'+ tractData.tEst +'</td><td class="val">'+ tractData.rEst +'</td></tr>'+
+							'<tr><td class="key">Estimate</td><td class="val t">'+ tractData.tEst +'</td><td class="val r">'+ tractData.rEst +'</td></tr>'+
 							'<tr><td class="key">Margin of Error</td><td class="val">±'+ tractData.tMar +'</td><td class="val">±'+ tractData.rMar +'</td></tr>'+
 							'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
 						'</tbody>'+
@@ -313,11 +315,12 @@ var mns = new function() {
 
 	// highlight tract
 	this.highlightTractFromChart = function(tid) {
+		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
 		var layer = tractTIDindex[tid];
 	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
 	    //var style = testStyle(tid);
 		layer.setStyle(tractHighlightStyle);
-	   // layer.openPopup();
+	  	layer.openPopup();
 
 	   	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 	        layer.bringToFront();
@@ -325,9 +328,10 @@ var mns = new function() {
 	}
 	// reset tract style to original
 	this.resetTractStyleFromChart = function(tid) {
+		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
 		var layer = tractTIDindex[tid];
 	    tractLayer.resetStyle(layer);
-	  //  layer.closePopup();
+	  	layer.closePopup();
 	}
 
 
@@ -367,7 +371,7 @@ var mns = new function() {
 		"opacity": 0.75
 	};
 	var tractHighlightStyle = {
-	    fillOpacity: 0.4,
+	    //fillOpacity: 0.4,
 	    opacity: 1,
 	    weight: 2,
 	//	color: "#990000" // stroke color
