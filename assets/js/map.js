@@ -385,9 +385,9 @@ var mns = new function() {
 		_rid = data.properties.RID;
 		if (MAP_DEBUG) console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
-		if (tractOrRegion == "tract")
+		if (tractOrRegion == "t")
 			id = _tid;
-		else if (tractOrRegion == "region")
+		else if (tractOrRegion == "r")
 			id = _rid;
 
 		// set default style
@@ -405,9 +405,9 @@ var mns = new function() {
 			if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
 
 			// use TID (without "g") or RID as a reference with currentScenario to get estimate
-			if (tractOrRegion == "tract")
+			if (tractOrRegion == "t")
 				est = currentScenario[_tid].tEst;
-			else if (tractOrRegion == "region")
+			else if (tractOrRegion == "r")
 				est = currentScenario[_tid].rEst;
 
 			// update style color

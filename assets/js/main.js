@@ -11,7 +11,7 @@ var msas = {}, 											// all the MSAs
 	currentScenario = {},							// current scenario data, once loaded
 	currentScenarioTIDs = {},	
 	currentScenarioArray = [],	
-	tractOrRegion = "tract",
+	tractOrRegion = "t",
 	websiteName = "ACS Regionalization",
 	MAIN_DEBUG = false
 	;

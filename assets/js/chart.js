@@ -94,8 +94,8 @@ function buildChart() {
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMin"]); });
-	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMax"]); });
+	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMin"]); });
+	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMax"]); });
 	xExtent = [xMin,xMax];
 	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
@@ -170,7 +170,7 @@ function updateColorScales(){
 	//extent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
 	extent = d3.extent(currentScenarioArray.map(function (item) {
-		return (item.value.tEst);
+		return (item.value[tractOrRegion+"Est"]);
 	}))
 	//console.log("updateColorScales() --> extent = ",extent)
 
@@ -217,9 +217,9 @@ function updateChart() {
 		.text(function(d) { return d.value.TID; })
 		//.text(function(d) { return d.TID.substring(4); })
 		.attr("style", function (d) { 
-				/*console.log(d.value["tEst"],blues(d.value["tEst"])); */ 
+				/*console.log(d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); */ 
 
-				var c = d3.color( blues(d.value["tEst"]) ); // create color
+				var c = d3.color( blues(d.value[tractOrRegion+"Est"]) ); // create color
 				c.opacity = 0.5; // set opacity
 				return "background: "+ c; // set bg color
 			}) 
@@ -232,7 +232,7 @@ function updateChart() {
 		.text(function(d) { return d.value.RID; })
 
 		.attr("style", function (d) { 
-				/*console.log(d.value["tEst"],blues(d.value["tEst"])); */ 
+				/*console.log(d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); */ 
 
 				var c = d3.color( blues(d.value["rEst"]) ); // create color
 				c.opacity = 0.5; // set opacity
@@ -243,11 +243,11 @@ function updateChart() {
 	d3.selectAll(".est")
 		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.value.tEst; });
+		.text(function(d) { return d.value[tractOrRegion+"Est"]; });
 	d3.selectAll(".err")
 		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.value.tMar; });
+		.text(function(d) { return d.value[tractOrRegion+"Mar"]; });
 
 
 	d3.selectAll(".svgCell")
@@ -260,26 +260,26 @@ function updateChart() {
 	// select svgs by class, rebind data, and set transitions
 	d3.selectAll(".svgBarHorz")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value["tMarMin"] )}) 
+			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )}) 
 			.attr("y", height/2 ) 
-			.attr("width", function(d,i){ return xScale( d.value["tMarMax"] ) - xScale( d.value["tMarMin"] ) }) 
+			.attr("width", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] ) - xScale( d.value[tractOrRegion+"MarMin"] ) }) 
 			.attr("height", barW);
 	d3.selectAll(".svgBarVert1")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value["tMarMin"] )}) 
+			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )}) 
 			.attr("y", 7 ) 
 			.attr("width", barW) 
 			.attr("height", barHV);	
 	d3.selectAll(".svgBarVert2")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value["tMarMax"] )}) 
+			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] )}) 
 			.attr("y", 7 ) 
 			.attr("width", barW) 
 			.attr("height", barHV);		
 	d3.selectAll(".svgTri")
 		.data(currentScenarioArray).transition(t)
 			.attr('transform',function(d,i){ 
-				return "translate("+ xScale( d.value["tEst"] ) +","+ barHV*2 +") "; 
+				return "translate("+ xScale( d.value[tractOrRegion+"Est"] ) +","+ barHV*2 +") "; 
 			});
 
 
@@ -303,7 +303,7 @@ function updateChart() {
 	}
 
 	function selectTID(d,i){
-
+		console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
 
 
 
@@ -313,21 +313,39 @@ function updateChart() {
 		;
 		d3.selectAll(".rid").classed("highlight", false);
 
-		tractOrRegion = "tract";
-		mns.updateMap();
+
 
 		//if (CHART_DEBUG) console.log(d.TID)
 		mns.highlightTractFromChart("g"+d.value.TID); // highlight tract on map
 
 
+
+		// switch to display tract data in boxplot
+		if (tractOrRegion == "r"){
+			tractOrRegion = "t";
+			mns.updateMap();
+			updateChart();
+		}
+		console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
+
 	//	var s = d3.select(this).attr("current_source");
 	//	load_data(s,"tract",tabulate);
 	}
 	function selectRID(d,i){
+		console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
+
 		d3.selectAll("td.tid").classed("highlight", false);
 		d3.selectAll("td.rid").classed("highlight", true);
-		tractOrRegion = "region";
-		mns.updateMap();
+
+
+		// switch to display region data in boxplot
+		if (tractOrRegion == "t"){
+			tractOrRegion = "r";
+			mns.updateMap();
+			updateChart();
+		}
+		console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
+
 
 	//	var s = d3.select(this).attr("current_source");
 	//	load_data(s,"region",tabulate);
@@ -347,7 +365,7 @@ function updateChart() {
 		// remove rows not needed
 	rows.exit().remove(); 	
 
-	create_axes(currentScenarioArray,yScale,xScale,"tMar","tEst");
+	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
 }
 
 /**
@@ -365,8 +383,8 @@ function updateChartScales() {
 		.range([margin.top,height-margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMin"]); });
-	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value["tMarMax"]); });
+	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMin"]); });
+	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMax"]); });
 	xExtent = [xMin,xMax];
 	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
