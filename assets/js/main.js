@@ -12,6 +12,7 @@ var msas = {}, 											// all the MSAs
 	currentScenarioTIDs = {},	
 	currentScenarioArray = [],	
 	tractOrRegion = "t",
+	numberTracks = 0,
 	websiteName = "ACS Regionalization",
 	MAIN_DEBUG = false
 	;
@@ -285,6 +286,18 @@ function updateTitle(){
 	$("h1").html( current.msa +":"+ current.scenario +":"+ current.data)
 }
 
+/**
+ *	Update Debugger
+ */
+function updateDebug(){
+	$(".debug").html( "Debugging: "+ current.msa +":"+ current.scenario +":"+ current.data +
+					  "; numberTracks="+ numberTracks +
+					  "; numberChartTIDs="+ d3.selectAll(".tid").size() +
+					  "; numberChartRIDs="+ d3.selectAll(".rid").size() +
+					  ";\ntractOrRegion="+ tractOrRegion
+					  );
+}
+
 
 var currentData = null;
 
@@ -363,13 +376,17 @@ function getScenarioData(){
 		console.log("getScenarioData() --> json = ",json);
 
 
-// DO I NEED THIS?
+
+
+
+// DO I STILL NEED THIS?
 //		data = remove_rows(data,"inf"); 		// remove rows with "inf" (infinity)
 
 		// data has arrived
 		// currentScenario = cleanData(json.response);			// DELETE
 		currentScenario = json;
 		currentScenarioArray = d3.entries(currentScenario); 
+		numberTracks = currentScenarioArray.length;
 
 		updateChart(); // update chart
 		if (mns.tractLayer)

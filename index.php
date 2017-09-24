@@ -98,6 +98,11 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 				
 			</div>
 
+			<div class=" clearfix">
+				<pre class="debug ">
+
+				</pre>
+			</div>
 
 			<div id="chart-container">
 				<div id="chart">

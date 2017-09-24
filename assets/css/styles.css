@@ -18,3 +18,4 @@
 /* TESTING */
 
 #output { font-size: 75%; }
+.debug { font-size: 70%; background: #333; color: steelblue; padding: 3px; }

@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastLayer = null,
 
-		MAP_DEBUG = true
+		MAP_DEBUG = false
 		;
 
 
@@ -414,7 +414,7 @@ var mns = new function() {
 
 	    } // if no TID, currentScenario, or data found 
 	    else {
-			console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
+			if (MAP_DEBUG) console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
 			// no changes to default style
 		}
 		// return a style object
