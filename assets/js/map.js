@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastLayer = null,
 
-		MAP_DEBUG = false
+		MAP_DEBUG = true
 		;
 
 
@@ -381,8 +381,6 @@ var mns = new function() {
 	function initialTractStyle(data) {
 
 		var id, _tid, _rid, est;
-
-		if (MAP_DEBUG) console.log("initialTractStyle() --> data = ", data);
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
 		if (MAP_DEBUG) console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
@@ -403,8 +401,7 @@ var mns = new function() {
 
 
 		if ( prop(currentScenario) && currentScenario[_tid] ){
-
-			if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
+			//if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
 
 			// use TID (without "g") or RID as a reference with currentScenario to get estimate
 			if (tractOrRegion == "t")
@@ -417,7 +414,7 @@ var mns = new function() {
 
 	    } // if no TID, currentScenario, or data found 
 	    else {
-			console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE");
+			console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
 			// no changes to default style
 		}
 		// return a style object
