@@ -8,7 +8,8 @@
 
 var chartBuilt = false,
 	limit = 20, // data limit
-	CHART_DEBUG = false
+	svgHeight = 20, // height for all svg elements
+	CHART_DEBUG = true
 	;
 
 
@@ -37,10 +38,10 @@ $(".thSVG").width(sizes.chartContainer * .7);
 
 
 	// svg properties
-margin = { top: 0, right: 10, bottom: 0, left: 10 },
-	width = sizes.thSVG - margin.left - margin.right,
-    height = 20 - margin.top - margin.bottom,
-    barW = 1.5, barHV = 8;
+	margin = { top: 0, right: 10, bottom: 0, left: 10 },
+		width = sizes.thSVG - margin.left - margin.right,
+	    height = svgHeight - margin.top - margin.bottom,
+	    svgStroke = 1.5, barHV = 8;
 }
 setSize();
 
@@ -62,8 +63,8 @@ var theadtr = table.select('thead tr');
 var	tbody = table.select('tbody');
 
 
-// add svg to thSVG
-theadtr.select('.thSVG').append("svg").attr("height",20);
+// add svg to thSVG for xAxis
+theadtr.select('.thSVG').append("svg").attr("height",svgHeight);
 
 
 
@@ -78,34 +79,13 @@ theadtr.select('.thSVG').append("svg").attr("height",20);
 var rows, yScale, xScale, xMin, xMax, xExtent;
 
 /**
- * 	Build / Update HTML table inside the SVG chart
+ * 	Build HTML table inside the SVG chart. Update comes later.
  */
 function buildChart() {
-
 	if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray);
 
 
-
-	//************ SCALES ************
-
-	// Y-SCALE: based on number of data
-	yScale = d3.scaleLinear()
-		.domain([0,currentScenarioArray.length])
-		.range([margin.top,height-margin.bottom]);
-
-	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMin"]); });
-	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMax"]); });
-	xExtent = [xMin,xMax];
-	//if (CHART_DEBUG) console.log(xExtent);
-	xScale = d3.scaleLinear()
-		.domain(xExtent).nice()
-		.range([margin.left,width-margin.right]);
-
-
-
-
-	//************ TABLE ************
+	//************ INIT TABLE ************
 
 	// set the update selection:
 	rows = tbody.selectAll('tr')
@@ -115,23 +95,15 @@ function buildChart() {
 	var rowsEnter = rows.enter()
 	    .append('tr');
 
-	rowsEnter.append('td')
-	    .attr("class", "tid")
-	    //.text(function(d) { return d.value.TID; });
-	rowsEnter.append('td')
-	    .attr("class", "rid")
-	    //.text(function(d) { return d.value.RID; });
-	rowsEnter.append('td')
-	    .attr("class", "est")
-	    //.text(function(d) { return d.value["tEst"]; });
-	rowsEnter.append('td')
-	    .attr("class", "err")
-	    //.text(function(d) { return d.value["tMar"];; });
+	// add a td for each column
+	rowsEnter.append('td').attr("class", "tid");
+	rowsEnter.append('td').attr("class", "rid");
+	rowsEnter.append('td').attr("class", "est");
+	rowsEnter.append('td').attr("class", "err");
 
 
 
-
-	//************ SVG ************
+	//************ INIT SVG BOXPLOT ************
 
 	// append svg cell
 	var svg = rowsEnter.append('td')
@@ -142,8 +114,8 @@ function buildChart() {
  	
  	// append horizontal bar to svg
 	svg.append('rect').attr("class", "svgBar svgBarHorz");
-	svg.append('rect').attr("class", "svgBar svgBarVert1");
-	svg.append('rect').attr("class", "svgBar svgBarVert2");
+	svg.append('rect').attr("class", "svgBar svgBarVertLeft");
+	svg.append('rect').attr("class", "svgBar svgBarVertRight");
 
 	// append triangle to svg
 	var tri = d3.symbol()
@@ -155,9 +127,7 @@ function buildChart() {
 	    .attr("class", "svgTri")
 		.attr('fill', "black");
 
-
-
-
+	// set chartBuilt true
 	chartBuilt = true;
 }
 
@@ -218,8 +188,7 @@ function updateChart() {
 	updateColorScales();
 	updateChartScales();
 
-	// transitions über alles! (IOW, reusable by the selects below)
-	var t = d3.transition().duration(600);
+
 
 	// select all columns by class, (re)bind the data
 	d3.selectAll(".tid")
@@ -272,7 +241,8 @@ function updateChart() {
 		.attr("row",function(d,i) { return i; })
 
 
-
+	// transitions über alles! (used by the selects below)
+	var t = d3.transition().duration(600);
 
 	// select svgs by class, rebind data, and set transitions
 	d3.selectAll(".svgBarHorz")
@@ -280,18 +250,18 @@ function updateChart() {
 			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )}) 
 			.attr("y", height/2 ) 
 			.attr("width", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] ) - xScale( d.value[tractOrRegion+"MarMin"] ) }) 
-			.attr("height", barW);
-	d3.selectAll(".svgBarVert1")
+			.attr("height", svgStroke);
+	d3.selectAll(".svgBarVertLeft")
 		.data(currentScenarioArray).transition(t)
 			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )}) 
 			.attr("y", 7 ) 
-			.attr("width", barW) 
+			.attr("width", svgStroke) 
 			.attr("height", barHV);	
-	d3.selectAll(".svgBarVert2")
+	d3.selectAll(".svgBarVertRight")
 		.data(currentScenarioArray).transition(t)
 			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] )}) 
 			.attr("y", 7 ) 
-			.attr("width", barW) 
+			.attr("width", svgStroke) 
 			.attr("height", barHV);		
 	d3.selectAll(".svgTri")
 		.data(currentScenarioArray).transition(t)
@@ -390,6 +360,10 @@ function updateChart() {
 		// remove rows not needed
 	rows.exit().remove(); 	
 
+
+
+	updateDebug();
+
 	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
 }
 
@@ -416,6 +390,12 @@ function updateChartScales() {
 		.domain(xExtent).nice()
 		.range([margin.left,width-margin.right]);
 }
+
+
+
+
+
+
 
 
 /* 
