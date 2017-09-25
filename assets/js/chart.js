@@ -129,6 +129,26 @@ function enterChart() {
 }
 
 
+function CVColorScale(cv){
+	var color;
+	// High Reliability: Small CVs, less than or equal to 12 percent, are flagged green to indicate 
+	// that the sampling error is small relative to the estimate and the estimate is reasonably reliable.
+	if (cv <= 12)
+		color = "#5f9a1c";
+	// Medium Reliability: Estimates with CVs between 12 and 40 are flagged yellow—use with caution.
+	else if (cv <= 40)
+		color = "#ff9900";
+	// Low Reliability: Large CVs, over 40 percent, are flagged red to indicate that the sampling error 
+	// is large relative to the estimate. The estimate is considered very unreliable.
+	else if (cv > 40)
+		color = "#ff0000";
+	else
+		color = "#000";
+
+	//console.log("CV = ",cv,"color = ",color)
+	return color;
+}
+
 var accent,blues,extent;
 function updateColorScales(){
 	//accent = d3.scaleOrdinal(d3.schemeAccent);
@@ -186,10 +206,6 @@ function updateChart() {
 	updateChartScales();
 
 
-
-
-
-
 	// select all columns by class, (re)bind the data
 	d3.selectAll(".tid")
 		.data(currentScenarioArray)
@@ -233,7 +249,11 @@ function updateChart() {
 	d3.selectAll(".err")
 		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.value[tractOrRegion+"Mar"]; });
+		.text(function(d) { return "±"+ d.value[tractOrRegion+"Mar"]; })
+		.attr("style", function (d) { 
+				return "color: "+ CVColorScale( d.value[tractOrRegion+"CV"] * 100 ); // set bg color
+			}) 
+		;
 
 
 	d3.selectAll(".svgCell")
