@@ -293,8 +293,7 @@ function updateDebug(){
 	$(".debug").html( "Debugging: "+ current.msa +":"+ current.scenario +":"+ current.data +
 					  "; numberTracks="+ numberTracks +
 					  "; numberChartTIDs="+ d3.selectAll(".tid").size() +
-					  "; numberChartRIDs="+ d3.selectAll(".rid").size() +
-					  ";\ntractOrRegion="+ tractOrRegion
+					  "; tractOrRegion="+ tractOrRegion
 					  );
 }
 

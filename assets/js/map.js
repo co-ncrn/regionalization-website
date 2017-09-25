@@ -89,17 +89,14 @@ var mns = new function() {
 		var popupHTML = '<h6 class="text-center">'+ feature.properties.NAME +'</h6>'+
 						'<table>'+
 						'<tr><td class="key">MSA Name:</td><td class="val">'+ feature.properties.NAME +'</td></tr>'+
-						'<tr><td class="key">MSA code:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
-						'<tr><td class="key">CSAFP:</td><td class="val">'+ feature.properties.CSAFP +'</td></tr>'+
-						'<tr><td class="key">CBSAFP:</td><td class="val">'+ feature.properties.CBSAFP +'</td></tr>'+
-						'<tr><td class="key">AFFGEOID:</td><td class="val">'+ feature.properties.AFFGEOID +'</td></tr>'+
-						'<tr><td class="key">GEOID:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
+						'<tr><td class="key">MSA/GEOID:</td><td class="val">'+ feature.properties.GEOID +'</td></tr>'+
 						'</table>';
 		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});
 
 	    layer.on({
 	        mouseover: 	highlightMSAFromMap,
 	        mouseout: 	resetMSAStyle,
+	        //mousemove: 	moveMSAPopup, 
 	        click: 		msaFeatureClicked
 	    });
 	}
@@ -119,7 +116,9 @@ var mns = new function() {
 		    });
 		}
 
-		layer.openPopup();
+		//layer.openPopup(); // centers popup
+		var popup = e.target.getPopup(); // instead, set popup
+	    popup.setLatLng(e.latlng).openOn(map); // at position of mouse
 
 	    // track recently clicked layer
 	    lastLayer = layer;
@@ -141,7 +140,12 @@ var mns = new function() {
 			lastLayer.closePopup();
 		}
 	}
-
+	// follow mouse with popup
+	function moveMSAPopup(e){
+		 //e.target.closePopup();
+	    var popup = e.target.getPopup();
+	    popup.setLatLng(e.latlng).openOn(map);
+	}
 
 	/**
 	 *	When a user clicks on an MSA feature in the map

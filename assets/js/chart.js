@@ -180,13 +180,17 @@ function reformatTID(str){
  * 	Build / Update HTML table inside the SVG chart
  */
 function updateChart() {
-	if (!chartBuilt) buildChart();
+	//if (!chartBuilt) 
+		buildChart();
 
 	if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
 	if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
 
 	updateColorScales();
 	updateChartScales();
+
+
+
 
 
 
@@ -197,7 +201,7 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.attr("title",function(d,i) { return reformatTID(d.value.TID); })
-		.text(function(d) { return reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
+		.text(function(d,i) { return i; /* reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
 		.attr("style", function (d) { 
 				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 

@@ -130,7 +130,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 	<div class="row">
 		<div class="col-md-12">
 			<h4>Raw data</h4>
-			<textarea class="form-control" rows="30" id="output"></textarea>
+			<textarea class="form-control" rows="20" id="output"></textarea>
 		</div>
 	</div>	
 
