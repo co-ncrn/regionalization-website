@@ -30,11 +30,19 @@
 #presentation:-ms-fullscreen #map { height: 100vh; }
 #presentation:fullscreen #map { height: 100vh; }
 
+
 #presentation:-webkit-full-screen #chart-container, #presentation:-webkit-full-screen #chart, 
 #presentation:-webkit-full-screen #chart table, #presentation:-webkit-full-screen tbody { height:100vh; }
-#presentation:-moz-full-screen #map { height: 100vh; }
-#presentation:-ms-fullscreen #map { height: 100vh; }
-#presentation:fullscreen #map { height: 100vh; }
+
+#presentation:-moz-full-screen #chart-container, #presentation:-moz-full-screen #chart, 
+#presentation:-moz-full-screen #chart table, #presentation:-moz-full-screen tbody { height:100vh; }
+
+#presentation:-ms-fullscreen #chart-container, #presentation:-ms-fullscreen #chart, 
+#presentation:-ms-fullscreen #chart table, #presentation:-ms-fullscreen tbody { height:100vh; }
+
+#presentation:fullscreen #chart-container, #presentation:fullscreen #chart, 
+#presentation:fullscreen #chart table, #presentation:fullscreen tbody { height:100vh; }
+
 
 
 
