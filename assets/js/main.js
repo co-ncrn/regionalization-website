@@ -387,9 +387,7 @@ function getScenarioData(){
 		currentScenarioArray = d3.entries(currentScenario); 
 		numberTracks = currentScenarioArray.length;
 
-		updateChart(); // update chart
-		if (mns.tractLayer)
-			mns.updateMap(); // update map
+		updateChart(); // update chart (and eventually map, from chart.js)
 		
 		// testing
 		$("#output").val( JSON.stringify(json).replace("},","},\n") );

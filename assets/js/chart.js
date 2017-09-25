@@ -357,12 +357,15 @@ function updateChart() {
 
 
 
-		// remove rows not needed
+	// remove rows not needed
 	rows.exit().remove(); 	
 
 
-
+	//testing
 	updateDebug();
+
+	// update map after chart to give topojson time to load
+	mns.updateMap();
 
 	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
 }

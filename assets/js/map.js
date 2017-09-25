@@ -240,7 +240,8 @@ var mns = new function() {
 			onEachTractFeature(layer.feature, layer)
 
 			// reset layer style based on new data
-			layer.setStyle( initialTractStyle(layer.feature) )
+			if (prop(layer.feature))
+				layer.setStyle( initialTractStyle(layer.feature) )
 		});
 	}
 
@@ -260,7 +261,7 @@ var mns = new function() {
 		if (!prop(tractData)) return;
 
 		// add popup
-		var popupHTML = '<table class="table-bordered">'+
+		var popupHTML = '<table class="">'+
 						'<thead>'+
 							'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
 						'</thead>'+
@@ -396,7 +397,7 @@ var mns = new function() {
 
 		// set default style
 		var defaultStyle = {
-	        fillColor: "#000000",
+	        //fillColor: "#000000",
 	        weight: 1,
 	        opacity: .5,
 	        color: 'white',
