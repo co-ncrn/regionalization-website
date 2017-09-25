@@ -60,7 +60,7 @@ max-width: 100%;
 
 /* SVG CELL */
 #chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 30%; }
-#chart tbody td.svgCell svg { height: 20; border: none; }
+#chart tbody td.svgCell svg { height: 23; border: none; }
 #chart tbody td.svgCell .svgBar { fill: red; }
 
 /* SVG SPECIFC */

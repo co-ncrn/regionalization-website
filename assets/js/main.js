@@ -208,7 +208,7 @@ window.onpopstate = function(event) {
  *	Return the params from the current URL
  */
 function getUrlPath() {
-    var fullpath = window.location.href, //window.location.pathname,
+    var fullpath = window.location.href.replace("#",""), //window.location.pathname,
     	page = [],
     	location = {};
  

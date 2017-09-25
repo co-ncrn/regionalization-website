@@ -120,8 +120,7 @@ function enterChart() {
 	var tri = d3.symbol()
         .type(d3.symbolTriangle)
         .size(15);
-	svg.append('path'); //?
-	svg.selectAll('path')		
+	svg.append('path')	
 		.attr('d',tri)
 	    .attr("class", "svgTri")
 		.attr('fill', "black");
@@ -204,6 +203,13 @@ function updateChart() {
 
 	updateColorScales();
 	updateChartScales();
+
+	// update class on each row
+	var rows = tbody.selectAll('tr')
+		.data(currentScenarioArray)
+		.attr("class", function(d,i){
+	    	return "g"+d.value.TID; // need "g" because numbers can't be a class
+	    });
 
 
 	// select all columns by class, (re)bind the data
@@ -299,8 +305,6 @@ function updateChart() {
 
 	//************ INTERACTION ************
 
-
-		
 	function selectRow(r){
 		//d3.selectAll("td.tid").classed("highlight", true);
 	}
@@ -314,68 +318,8 @@ function updateChart() {
 
 
 
-	function highlightTractOrRegionHeader(){
-		if (tractOrRegion == "t"){
-			d3.select(".thTID").style("background",blues(extentMiddle));
-			d3.select(".thRID").style("background","rgba(0,0,0,.05)");
-		} else {
-			d3.select(".thTID").style("background","rgba(0,0,0,.05)");
-			d3.select(".thRID").style("background",blues(extentMiddle));
-		}
-	}
 
-	function selectTID(d,i){
-		//console.log("selectTID() --> tractOrRegion = ",tractOrRegion);
-
-		// switch to display tract data in boxplot
-		if (tractOrRegion == "r"){
-			tractOrRegion = "t";	// change to tracts
-			mns.updateMap(); 		// update map
-			updateChart();			// update chart
-			// update classes
-			d3.selectAll(".tid").classed("highlight", true);	
-			d3.selectAll(".rid").classed("highlight", false);
-			// update classes on map popup
-			d3.selectAll("td.t").classed("bold", true);	
-			d3.selectAll("td.r").classed("bold", false);
-		}
-		// (always) highlight tract on map after map update
-		mns.highlightTractFromChart("g"+d.value.TID); 
-
-		highlightTractOrRegionHeader();
-	}
-	function resetTID(d){
-		mns.resetTractStyleFromChart("g"+d.value.TID) 
-	}
-
-	function selectRID(d,i){
-		//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
-
-		// switch to display region data in boxplot
-		if (tractOrRegion == "t"){
-			tractOrRegion = "r";	// change to tracts
-			mns.updateMap(); 		// update map
-			updateChart();			// update chart
-			d3.selectAll("td.tid").classed("highlight", false);
-			d3.selectAll("td.rid").classed("highlight", true);
-			// update classes on map popup
-			d3.selectAll("td.t").classed("bold", false);	
-			d3.selectAll("td.r").classed("bold", true);
-		}
-		// (always) highlight tract on map after map update
-		mns.highlightTractFromChart("g"+d.value.TID); 
-
-		highlightTractOrRegionHeader();
-	}
-	function resetRID(d){
-		mns.resetTractStyleFromChart("g"+d.value.TID) 
-	}
-
-
-
-
-
-
+	//************ FINAL ************
 
 	// remove rows not needed
 	rows.exit().remove(); 	
@@ -389,6 +333,82 @@ function updateChart() {
 
 	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
 }
+
+
+
+function highlightTractOrRegionHeader(){
+	if (tractOrRegion == "t"){
+		d3.select(".thTID").style("background",blues(extentMiddle));
+		d3.select(".thRID").style("background","rgba(0,0,0,.05)");
+	} else {
+		d3.select(".thTID").style("background","rgba(0,0,0,.05)");
+		d3.select(".thRID").style("background",blues(extentMiddle));
+	}
+}
+
+function highlightTractOnChart(properties){
+	var _row = d3.select("."+properties.TID); // reference
+	_row.attr("original-bg-color", _row.style("background")); // save current bg color
+	if (prop(properties.TID))
+		_row.style("background", "rgba(0,0,0,.1)");	
+}
+function removeHighlightTractOnChart(properties){
+	var _row = d3.select("."+properties.TID); // reference
+	if (prop(properties.TID))
+		_row.style("background", _row.attr("original-bg-color")); // set it to saved bg color	
+}
+
+function selectTID(d,i){
+	console.log("selectTID() --> d,i",d,i);
+
+	// switch to display tract data in boxplot
+	if (tractOrRegion == "r"){
+		tractOrRegion = "t";	// change to tracts
+		mns.updateMap(); 		// update map
+		updateChart();			// update chart
+		// update classes
+		d3.selectAll(".tid").classed("highlight", true);	
+		d3.selectAll(".rid").classed("highlight", false);
+		// update classes on map popup
+		d3.selectAll(".t").style("font-weight", "bold");	
+		d3.selectAll(".r").style("font-weight", "normal");	
+	}
+	// (always) highlight tract on map after map update
+	mns.highlightTractFromChart("g"+d.value.TID); 
+
+	highlightTractOrRegionHeader();
+}
+function resetTID(d){
+	mns.resetTractStyleFromChart("g"+d.value.TID) 
+}
+
+function selectRID(d,i){
+	//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
+
+	// switch to display region data in boxplot
+	if (tractOrRegion == "t"){
+		tractOrRegion = "r";	// change to tracts
+		mns.updateMap(); 		// update map
+		updateChart();			// update chart
+		d3.selectAll("td.tid").classed("highlight", false);
+		d3.selectAll("td.rid").classed("highlight", true);
+		// update classes on map popup
+		d3.selectAll(".t").style("font-weight", "bold");		
+		d3.selectAll(".r").style("font-weight", "normal");	
+	}
+	// (always) highlight tract on map after map update
+	mns.highlightTractFromChart("g"+d.value.TID); 
+
+	highlightTractOrRegionHeader();
+}
+function resetRID(d){
+	mns.resetTractStyleFromChart("g"+d.value.TID) 
+}
+
+
+
+
+
 
 /**
  * 	Build / Update HTML table inside the SVG chart

@@ -279,6 +279,7 @@ var mns = new function() {
 	    layer.on({
 	        mouseover: highlightTractFromMap,
 	        mouseout: resetTractStyleFromMap,
+	       // mousemove: moveTractPopup,
 	        click: zoomToTractFeature
 	    });
 	}
@@ -293,7 +294,11 @@ var mns = new function() {
 	    // slightly shift fill
 	    layer.setStyle(tractHighlightStyle);
 
-	    layer.openPopup();
+	   	//layer.openPopup(); // centers popup
+		var popup = e.target.getPopup(); // instead, set popup
+	    popup.setLatLng(e.latlng).openOn(map); // at position of mouse
+
+	    highlightTractOnChart(layer.feature.properties);
 
 	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 	        layer.bringToFront();
@@ -305,12 +310,21 @@ var mns = new function() {
 		//if (MAP_DEBUG) console.log("resetTractStyleFromMap()", layer.options);
 	    tractLayer.resetStyle(layer);
 	    layer.closePopup();
+
+	    removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
 	}
 	// zoom to an tract
 	function zoomToTractFeature(e) {
 	    map.fitBounds(e.target.getBounds());
 	}
 
+
+	// follow mouse with popup
+	function moveTractPopup(e){
+		 //e.target.closePopup();
+	    var popup = e.target.getPopup();
+	    popup.setLatLng(e.latlng).openOn(map);
+	}
 
 
 
