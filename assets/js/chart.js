@@ -197,7 +197,7 @@ function updateChart() {
 		.attr("current_source",current.data)
 		.attr("row",function(d,i) { return i; })
 		.attr("title",function(d,i) { return reformatTID(d.value.TID); })
-		.text(function(d,i) { return i; /* reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
+		.text(function(d,i) { return /* i; */ reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
 		.attr("style", function (d) { 
 				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 
