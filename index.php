@@ -23,6 +23,10 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <link href="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/chart_styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
 
 <style>
 #map { height: 680px; }
@@ -67,63 +71,67 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <h2 class="header_callout">Reducing Uncertainty in the American Community Survey Using Data-Driven Regionalization</h2>
 
 
+	<div id="presentation">
+		<div class="row">
+			<div class="col-md-7">
+				<div id="map"></div>
+			</div>
+			<div class="col-md-5">
+				<div class="sources clearfix">
 
-	<div class="row">
-		<div class="col-md-7">
-			<div id="map"></div>
-		</div>
-		<div class="col-md-5">
-			<div class="sources clearfix">
+					<label for="msa_select_box" title="Select a Metropolitan Statistical Area (MSA)" class="dropdown_left">
+							<img src="<?php print $rootDir; ?>assets/img/icon_geo_point.png">
+					</label>
+					<div class="form-group dropdown_right">
+						<select id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
+					</div>
 
-				<label for="msa_select_box" title="Select a Metropolitan Statistical Area (MSA)" class="dropdown_left">
-						<img src="<?php print $rootDir; ?>assets/img/icon_geo_point.png">
-				</label>
-				<div class="form-group dropdown_right">
-					<select id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
+					<label for="scenario_select_box" title="Select an ACS scenario and dataset" class="dropdown_left">
+						<img src="<?php print $rootDir; ?>assets/img/icon_bar_graph.png">
+					</label>
+					<div class="form-group dropdown_right">
+						<select id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
+					</div>
+
+					<div class="dropdown_left">
+						<a title="Download data for this Metropolitan Area">
+							<img src="<?php print $rootDir; ?>assets/img/icon_download.png"></a></div>
+					<div class="form-group dropdown_right">
+						<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a> 
+
+						<a href="#" id="toggle_fullscreen"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true" title="Toggle Fullscreen"></i></a>
+					</div>
+					
 				</div>
 
-				<label for="scenario_select_box" title="Select an ACS scenario and dataset" class="dropdown_left">
-					<img src="<?php print $rootDir; ?>assets/img/icon_bar_graph.png">
-				</label>
-				<div class="form-group dropdown_right">
-					<select id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
+
+				<div class=" clearfix">
+					<pre class="debug ">
+
+					</pre>
 				</div>
 
-				<div class="dropdown_left">
-					<a title="Download data for this Metropolitan Area">
-						<img src="<?php print $rootDir; ?>assets/img/icon_download.png"></a></div>
-				<div class="form-group dropdown_right">
-					<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
+				<div id="chart-container">
+					<div id="chart">
+						
+						<table class="table-striped table-hover">
+							<thead>
+								<tr>
+									<th class="thTID" title="Tract ID (state.county.tract)">Tract</th>
+									<th class="thRID" title="Region ID">Region</th>
+									<th class="thEST">Estimate</th>
+									<th class="thERR">Error</th>
+									<th class="thSVG"></th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+
+					</div>
 				</div>
+				<div class="info"></div>
 				
 			</div>
-
-			<div class=" clearfix">
-				<pre class="debug ">
-
-				</pre>
-			</div>
-
-			<div id="chart-container">
-				<div id="chart">
-					
-					<table class="table-striped table-hover">
-						<thead>
-							<tr>
-								<th class="thTID" title="Tract ID (state.county.tract)">Tract</th>
-								<th class="thRID" title="Region ID">Region</th>
-								<th class="thEST">Estimate</th>
-								<th class="thERR">Error</th>
-								<th class="thSVG"></th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-
-				</div>
-			</div>
-			<div class="info"></div>
-			
 		</div>
 	</div>
 

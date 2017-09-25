@@ -24,7 +24,7 @@ table, th /* all tables */ { border-collapse: collapse; border:none !important; 
 /* fixed header row */
 #chart table thead tr { display:block; }
 #chart table th, table td { width:100px; /* fixed width */ }
-#chart table tbody { display:block; height:600px; overflow:auto; /* set tbody to auto */ }
+#chart table tbody { display:block; height:540px; overflow:auto; /* set tbody to auto */ }
 
 
 

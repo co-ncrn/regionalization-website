@@ -14,6 +14,29 @@
 .download_link, .download_link:hover { font-size: 88%; margin-left: 8px; color: #333; text-decoration: none }
 
 
+/* ICONS */
+.fa {opacity: .45}
+
+
+
+/* FULLSCREEN */
+#presentation:-webkit-full-screen { width: 100vw; height: 100vh; /*background-color: red;*/ }
+#presentation:-moz-full-screen { width: 100vw; height: 100vh; }
+#presentation:-ms-fullscreen { width: 100vw; height: 100vh; }
+#presentation:fullscreen { width: 100vw; height: 100vh; }
+
+#presentation:-webkit-full-screen #map { height:100vh; }
+#presentation:-moz-full-screen #map { height: 100vh; }
+#presentation:-ms-fullscreen #map { height: 100vh; }
+#presentation:fullscreen #map { height: 100vh; }
+
+#presentation:-webkit-full-screen #chart-container, #presentation:-webkit-full-screen #chart, 
+#presentation:-webkit-full-screen #chart table, #presentation:-webkit-full-screen tbody { height:100vh; }
+#presentation:-moz-full-screen #map { height: 100vh; }
+#presentation:-ms-fullscreen #map { height: 100vh; }
+#presentation:fullscreen #map { height: 100vh; }
+
+
 
 /* TESTING */
 
