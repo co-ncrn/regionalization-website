@@ -6,8 +6,7 @@
  *																		  *
  **************************************************************************/
 
-var chartBuilt = false,
-	limit = 20, // data limit
+var limit = 20, // data limit for testing
 	svgHeight = 20, // height for all svg elements
 	CHART_DEBUG = true
 	;
@@ -15,7 +14,7 @@ var chartBuilt = false,
 
 var margin
 
-// resize elements
+// resize chart elements based on browser size
 d3.select(window).on('resize', setSize); 
 function setSize() {
 	// get sizes
@@ -29,8 +28,8 @@ function setSize() {
 
 	//if (CHART_DEBUG) console.log("setSize() sizes = ",sizes);
 
-$("table").width(sizes.chartContainer);
-$(".thSVG").width(sizes.chartContainer * .7);
+	$("table").width(sizes.chartContainer);
+	$(".thSVG").width(sizes.chartContainer * .7);
 
 	//d3.select('table').attr("width", sizes.chartContainer);
 	//d3.select('thSVG').attr("width", sizes.thSVG);
@@ -81,7 +80,7 @@ var rows, yScale, xScale, xMin, xMax, xExtent;
 /**
  * 	Build HTML table inside the SVG chart. Update comes later.
  */
-function buildChart() {
+function enterChart() {
 	if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray);
 
 
@@ -127,8 +126,6 @@ function buildChart() {
 	    .attr("class", "svgTri")
 		.attr('fill', "black");
 
-	// set chartBuilt true
-	chartBuilt = true;
 }
 
 
@@ -180,8 +177,7 @@ function reformatTID(str){
  * 	Build / Update HTML table inside the SVG chart
  */
 function updateChart() {
-	//if (!chartBuilt) 
-		buildChart();
+	enterChart();
 
 	if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
 	if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
