@@ -223,7 +223,8 @@ function updateChart() {
 		.attr("style", function (d) { 
 				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 
-				var c = "#ffffffff"; // default (white)
+				saveOriginalRowColor("g"+d.value.TID);
+				var c = getOriginalRowColor("g"+d.value.TID); // default (white)
 				if (tractOrRegion == "t"){
 					c = d3.color( blues(d.value["tEst"]) ); // create color
 					c.opacity = 0.5; // set opacity
@@ -240,7 +241,7 @@ function updateChart() {
 		.attr("style", function (d) { 
 				//console.log(".rid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/ 
 				
-				var c = "#ffffffff"; // default (white)
+				var c = getOriginalRowColor("g"+d.value.TID); // default (white)
 				if (tractOrRegion == "r"){
 					var c = d3.color( blues(d.value["rEst"]) ); // create color
 					c.opacity = 0.5; // set opacity
@@ -346,16 +347,26 @@ function highlightTractOrRegionHeader(){
 	}
 }
 
+function saveOriginalRowColor(_tid){
+	var _row = d3.select("."+_tid); // reference
+	_row.attr("original-bg-color", _row.style("background")); // save current bg color
+}
+function getOriginalRowColor(_tid){
+	var _row = d3.select("."+_tid); // reference
+	return _row.attr("original-bg-color"); // return original bg color
+}
+
+
 function highlightTractOnChart(properties){
 	var _row = d3.select("."+properties.TID); // reference
-	_row.attr("original-bg-color", _row.style("background")); // save current bg color
+	saveOriginalRowColor(properties.TID);
 	if (prop(properties.TID))
 		_row.style("background", "rgba(0,0,0,.1)");	
 }
 function removeHighlightTractOnChart(properties){
 	var _row = d3.select("."+properties.TID); // reference
 	if (prop(properties.TID))
-		_row.style("background", _row.attr("original-bg-color")); // set it to saved bg color	
+		_row.style("background", getOriginalRowColor(properties.TID)); // set it to saved bg color	
 }
 
 function selectTID(d,i){

@@ -20,3 +20,6 @@ https://blog.webkid.io/maps-with-leaflet-and-topojson/
 
 Topojson on a leaflet map
 http://bl.ocks.org/mpmckenna8/af23032b41f0ea1212563b523e859228
+
+Thinking with Joins
+https://bost.ocks.org/mike/join/

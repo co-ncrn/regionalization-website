@@ -21,6 +21,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <link href="<?php print $rootDir; ?>vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/chosen/chosen.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>vendor/Leaflet.EasyButton/src/easy-button.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/chart_styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -99,7 +100,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 					<div class="form-group dropdown_right">
 						<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a> 
 
-						<a href="#" id="toggle_fullscreen"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true" title="Toggle Fullscreen"></i></a>
+						<!--<a href="#" id="toggle_fullscreen"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true" title="Toggle Fullscreen"></i></a>-->
 					</div>
 					
 				</div>
@@ -150,6 +151,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>vendor/tether/dist/js/tether.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.js"></script>
+<script src="<?php print $rootDir; ?>vendor/Leaflet.EasyButton/src/easy-button.js"></script>
 <script src="<?php print $rootDir; ?>vendor/d3/d3.min.js"></script>
 
 <script src="https://d3js.org/d3-color.v1.min.js"></script>

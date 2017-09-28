@@ -22,7 +22,8 @@
     "leaflet-ajax": "^2.1.0",
     "d3": "^4.8.0",
     "bootstrap": "v4.0.0-alpha.6",
-    "d3-scale": "^1.0.6"
+    "d3-scale": "^1.0.6",
+    "Leaflet.EasyButton": "^2.2.2"
   },
   "devDependencies": {
     "tether": "^1.4.0"

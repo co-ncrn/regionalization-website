@@ -497,7 +497,8 @@ function roundDecimal(num){
 
 
 
-$('#toggle_fullscreen').on('click', function(){
+//$('#toggle_fullscreen').on('click',
+var toggle_fullscreen = function(){
 	// if already full screen; exit
 	if (
 		document.fullscreenElement ||
@@ -528,7 +529,7 @@ $('#toggle_fullscreen').on('click', function(){
 			element.msRequestFullscreen();
 		}
 	}
-});
+};
 
 
 

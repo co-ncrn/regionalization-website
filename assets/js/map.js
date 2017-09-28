@@ -45,6 +45,9 @@ var mns = new function() {
 	}).addTo(map);
 
 
+	L.easyButton('fa-arrows-alt fa-lg', function(btn, map){
+		toggle_fullscreen();
+	}).addTo(map);
 
 
 /**************************************************************************
