@@ -12,7 +12,7 @@ var limit = 20, // data limit for testing
 	;
 
 
-var margin
+var margin;
 
 // resize chart elements based on browser size
 d3.select(window).on('resize', setSize); 
@@ -129,45 +129,58 @@ function enterChart() {
 
 
 function CVColorScale(cv){
-	var color;
+	var color, percent = cv*100;
 	// High Reliability: Small CVs, less than or equal to 12 percent, are flagged green to indicate 
 	// that the sampling error is small relative to the estimate and the estimate is reasonably reliable.
-	if (cv <= 12)
+	if (percent <= 12)
 		color = "#5f9a1c";
 	// Medium Reliability: Estimates with CVs between 12 and 40 are flagged yellow—use with caution.
-	else if (cv <= 40)
+	else if (percent <= 40)
 		color = "#ff9900";
 	// Low Reliability: Large CVs, over 40 percent, are flagged red to indicate that the sampling error 
 	// is large relative to the estimate. The estimate is considered very unreliable.
-	else if (cv > 40)
+	else if (percent > 40)
 		color = "#ff0000";
 	else
 		color = "#000";
 
-	//console.log("CV = ",cv,"color = ",color)
+	//console.log("CV = ",cv,"percent = ",percent,"color = ",color)
 	return color;
 }
 
-var accent,blues,extent;
+var accent,blues,reds,estExtent,marExtent;
 function updateColorScales(){
 	//accent = d3.scaleOrdinal(d3.schemeAccent);
 	//blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 
-	//extent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
+	//estExtent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
-	extent = d3.extent(currentScenarioArray.map(function (item) {
+	estExtent = d3.extent(currentScenarioArray.map(function (item) {
 		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
 		return (item.value[tractOrRegion+"Est"]);
 	}))
-	//console.log("updateColorScales() --> extent = ",extent)
 
-	// find midpoint between extents, use parseFloats so strings don't concat
-	extentMiddle = parseFloat(extent[0]) + ((parseFloat(extent[1]) - parseFloat(extent[0]))/2); 
+	marExtent = d3.extent(currentScenarioArray.map(function (item) {
+		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
+		return (item.value[tractOrRegion+"Mar"]);
+	}))
+	//console.log("updateColorScales() --> estExtent = ",estExtent,"marExtent = ",marExtent)
 
+	// find midpoint between estExtents, use parseFloats so strings don't concat
+	estExtentMiddle = parseFloat(estExtent[0]) + ((parseFloat(estExtent[1]) - parseFloat(estExtent[0]))/2); 
+	marExtentMiddle = parseFloat(marExtent[0]) + ((parseFloat(marExtent[1]) - parseFloat(marExtent[0]))/2); 
+
+	// a scale for the estimates
 	blues = d3.scaleQuantile()
-		.domain([extent[0], extent[1]])
+		.domain([estExtent[0], estExtent[1]])
 		.range(d3.schemeBlues[9])
 	;
+	/*
+	reds = d3.scaleQuantile()
+		.domain([marExtent[0], marExtent[1]])
+		.range(d3.schemeReds[9])
+	;
+	*/
 }
 
 
@@ -252,13 +265,14 @@ function updateChart() {
 	d3.selectAll(".est")
 		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.value[tractOrRegion+"Est"]; });
+		.text(function(d) { return padFloat(d.value[tractOrRegion+"Est"]); })
+		;
 	d3.selectAll(".err")
 		.data(currentScenarioArray)
 		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return "±"+ d.value[tractOrRegion+"Mar"]; })
+		.text(function(d) { return "±"+ padFloat( d.value[tractOrRegion+"Mar"] ); })
 		.attr("style", function (d) { 
-				return "color: "+ CVColorScale( d.value[tractOrRegion+"CV"] * 100 ); // set bg color
+				return "color: "+ CVColorScale( d.value[tractOrRegion+"CV"] ); // set bg color
 			}) 
 		;
 
@@ -310,6 +324,9 @@ function updateChart() {
 		//d3.selectAll("td.tid").classed("highlight", true);
 	}
 
+	d3.selectAll("tr")
+	    .on("mouseover", selectTIDorRID)
+	    .on("mouseout", resetTIDorRID);
 	d3.selectAll(".tid")
 	    .on("mouseover", selectTID)
 	    .on("mouseout", resetTID);
@@ -339,11 +356,11 @@ function updateChart() {
 
 function highlightTractOrRegionHeader(){
 	if (tractOrRegion == "t"){
-		d3.select(".thTID").style("background",blues(extentMiddle));
+		d3.select(".thTID").style("background",blues(estExtentMiddle));
 		d3.select(".thRID").style("background","rgba(0,0,0,.05)");
 	} else {
 		d3.select(".thTID").style("background","rgba(0,0,0,.05)");
-		d3.select(".thRID").style("background",blues(extentMiddle));
+		d3.select(".thRID").style("background",blues(estExtentMiddle));
 	}
 }
 
@@ -368,54 +385,66 @@ function removeHighlightTractOnChart(properties){
 	if (prop(properties.TID))
 		_row.style("background", getOriginalRowColor(properties.TID)); // set it to saved bg color	
 }
-
+/**
+ * Change selection on chart/map to show TRACTS
+ */
 function selectTID(d,i){
-	console.log("selectTID() --> d,i",d,i);
+	//console.log("selectTID() --> d,i",d,i);
 
 	// switch to display tract data in boxplot
 	if (tractOrRegion == "r"){
 		tractOrRegion = "t";	// change to tracts
-		mns.updateMap(); 		// update map
-		updateChart();			// update chart
 		// update classes
 		d3.selectAll(".tid").classed("highlight", true);	
 		d3.selectAll(".rid").classed("highlight", false);
 		// update classes on map popup
 		d3.selectAll(".t").style("font-weight", "bold");	
 		d3.selectAll(".r").style("font-weight", "normal");	
+		selectTIDorRID(d,i);
 	}
-	// (always) highlight tract on map after map update
-	mns.highlightTractFromChart("g"+d.value.TID); 
-
-	highlightTractOrRegionHeader();
+	
 }
 function resetTID(d){
 	mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
-
+/**
+ * Change selection on chart/map to show REGIONS
+ */
 function selectRID(d,i){
 	//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
 
 	// switch to display region data in boxplot
 	if (tractOrRegion == "t"){
 		tractOrRegion = "r";	// change to tracts
-		mns.updateMap(); 		// update map
-		updateChart();			// update chart
+		
 		d3.selectAll("td.tid").classed("highlight", false);
 		d3.selectAll("td.rid").classed("highlight", true);
 		// update classes on map popup
 		d3.selectAll(".t").style("font-weight", "bold");		
 		d3.selectAll(".r").style("font-weight", "normal");	
+		selectTIDorRID(d,i);
 	}
-	// (always) highlight tract on map after map update
-	mns.highlightTractFromChart("g"+d.value.TID); 
-
-	highlightTractOrRegionHeader();
+	
 }
 function resetRID(d){
 	mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
 
+/**
+ * Change selection on chart/map to show TRACTS / REGIONS
+ */
+function selectTIDorRID(d){
+	if (d == null) return;
+	mns.updateMap(); 		// update map
+	updateChart();			// update chart
+	// (always) highlight tract on map after map update
+	mns.highlightTractFromChart("g"+d.value.TID); 
+	highlightTractOrRegionHeader();
+}
+function resetTIDorRID(d){
+	if (d == null) return;
+	mns.resetTractStyleFromChart("g"+d.value.TID) 
+}
 
 
 

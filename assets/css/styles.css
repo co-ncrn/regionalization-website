@@ -1,6 +1,14 @@
 
 
 
+/* MAP */
+
+.leaflet-touch .leaflet-bar button { line-height: 26px } /* fix position of fa button */
+.leaflet-control-container { position: absolute; right: 56px } /* move map controls to right side */
+
+
+
+
 /* SITE HEADER */
 
 .header_callout { font-size: 100%; font-style: italic; text-align: center; margin: 30px; }
@@ -16,6 +24,7 @@
 
 /* ICONS */
 .fa {opacity: .85}
+
 
 
 

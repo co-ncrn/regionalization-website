@@ -12,6 +12,7 @@ var msas = {}, 											// all the MSAs
 	currentScenarioTIDs = {},	
 	currentScenarioArray = [],	
 	tractOrRegion = "t",
+	estimateOrMargin = "e",
 	numberTracks = 0,
 	websiteName = "ACS Regionalization",
 	MAIN_DEBUG = false
@@ -74,7 +75,7 @@ function init(){
 /**
  *	Controls all changes to data displayed
  */
-function dataChange(origin,msa,scenario,data,tractOrRegion){
+function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 	if (!prop(origin)) return; // origin required
 	if (MAIN_DEBUG) console.log("\n\ndataChange()",origin,msa,scenario,data);
 	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
@@ -132,7 +133,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion){
 		if (origin != "load") updateUrl('add');		
 	}
 
-	if (updateData || tractOrRegion != ""){
+	if (updateData || tractOrRegion != "" || estimateOrMargin != ""){
 		// if data or tractOrRegion changes then update scales
 		updateChartScales();
 	}
@@ -292,8 +293,10 @@ function updateTitle(){
 function updateDebug(){
 	$(".debug").html( "Debugging: "+ current.msa +":"+ current.scenario +":"+ current.data +
 					  "; numberTracks="+ numberTracks +
-					  "; numberChartTIDs="+ d3.selectAll(".tid").size() +
-					  "; tractOrRegion="+ tractOrRegion
+					  //"; numberChartTIDs="+ d3.selectAll(".tid").size() +
+					  "; tractOrRegion="+ tractOrRegion +
+					  "; estimateOrMargin="+ estimateOrMargin
+
 					  );
 }
 
@@ -415,6 +418,24 @@ function getScenarioDataAPI(){
 }
 
 
+/**
+ *	Pad floating point values to be four numbers long
+ */
+function padFloat(num){
+	var str = ""+num;
+	// confirm num is float
+	if (str.indexOf(".") !== 1) return str;
+	// pad float depending on length
+	if (str.length <= 3){
+		str = str + "000";
+	} else if (str.length <= 4){
+		str = str + "00";
+	} else if (str.length <= 5){
+		str = str + "0";
+	}
+	return str;
+}
+
 
 /**
  *	Clean data from API (need to eventually make these changes permanent in DB)
@@ -493,6 +514,17 @@ function roundDecimal(num){
 	num = Math.round(num * decimal) / decimal;
 	return num;
 }
+
+
+$('.estimateOrMarginBtn').on('click', function(){
+	if (estimateOrMargin == "e")
+		estimateOrMargin = "m";
+	else if (estimateOrMargin == "m")
+		estimateOrMargin = "e";
+	console.log("estimateOrMargin",estimateOrMargin)
+	mns.updateMap(); 
+	updateChart();
+});
 
 
 

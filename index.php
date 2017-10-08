@@ -120,8 +120,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 								<tr>
 									<th class="thTID" title="Tract ID (state.county.tract)">Tract</th>
 									<th class="thRID" title="Region ID">Region</th>
-									<th class="thEST">Estimate</th>
-									<th class="thERR">Error</th>
+									<th class="thEST estimateOrMarginBtn">Estimate</th>
+									<th class="thERR estimateOrMarginBtn">Error</th>
 									<th class="thSVG"></th>
 								</tr>
 							</thead>

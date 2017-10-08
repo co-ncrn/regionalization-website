@@ -50,6 +50,8 @@ var mns = new function() {
 	}).addTo(map);
 
 
+
+
 /**************************************************************************
  *																		  *
  * 	MSAs															  	  *
@@ -402,15 +404,19 @@ var mns = new function() {
 	 */
 	function initialTractStyle(data) {
 
-		var id, _tid, _rid, est;
+		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
 		if (MAP_DEBUG) console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
+/*
 		if (tractOrRegion == "t")
 			id = _tid;
 		else if (tractOrRegion == "r")
 			id = _rid;
+*/
+
+
 
 		// set default style
 		var defaultStyle = {
@@ -425,15 +431,24 @@ var mns = new function() {
 		if ( prop(currentScenario) && currentScenario[_tid] ){
 			//if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
 
+			// determine whether to store tract / region AND estimate / margin
+			if (estimateOrMargin == "e")
+				defaultStyle.fillColor = blues( currentScenario[_tid][tractOrRegion+"Est"] );
+			else if (estimateOrMargin == "m"){
+				var num = currentScenario[_tid][tractOrRegion+"CV"]; // color by CV, but display MOE
+				defaultStyle.fillColor = CVColorScale(num);
+			}
+
+/*
 			// use TID (without "g") or RID as a reference with currentScenario to get estimate
 			if (tractOrRegion == "t")
-				est = currentScenario[_tid].tEst;
+				d = currentScenario[_tid].tEst;
 			else if (tractOrRegion == "r")
-				est = currentScenario[_tid].rEst;
+				d = currentScenario[_tid].rEst;
 
 			// update style color
-			defaultStyle.fillColor = blues(est);
-
+			defaultStyle.fillColor = blues(d);
+*/
 	    } // if no TID, currentScenario, or data found 
 	    else {
 			if (MAP_DEBUG) console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
