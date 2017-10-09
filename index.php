@@ -120,13 +120,13 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 							<thead>
 								<tr>
 									<th class="thTID" title="Tract ID (state.county.tract)">
-										<button class="btn btn-sm btn-secondary">&nbsp;Tract&nbsp;</button>
+										<button class="btn btn-sm btn-primary">&nbsp;Tract&nbsp;</button>
 									</th>
 									<th class="thRID" title="Region ID">
 										<button class="btn btn-sm btn-secondary">Region</button>
 									</th>
 									<th class="thEST ">
-										<button class="btn btn-sm btn-secondary">Estimate</button>
+										<button class="btn btn-sm btn-primary">Estimate</button>
 									</th>
 									<th class="thMAR ">
 										<button class="btn btn-sm btn-secondary">Error</button>
