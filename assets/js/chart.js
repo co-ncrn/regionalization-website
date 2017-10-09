@@ -383,31 +383,22 @@ function updateChart() {
  */
 function highlightHeaders(){
 
-	var activeClass = "btn-primary";
-
-	// remove all
-	d3.select(".thTID button").classed(activeClass, false);
-	d3.select(".thRID button").classed(activeClass, false);
-	d3.select(".thEST button").classed(activeClass, false);
-	d3.select(".thMAR button").classed(activeClass, false);
+	var activeClass = "btn-primary",
+		inactiveClass = "btn-secondary";
 
 	if (tractOrRegion == "t"){
-		// d3.select(".thTID button").style("background",blues(estExtentMiddle));
-		// d3.select(".thRID button").style("background","rgba(0,0,0,.05)");
-		d3.select(".thTID button").classed(activeClass, true);
+		$('.thTID button').removeClass(inactiveClass).addClass(activeClass);
+		$('.thRID button').removeClass(activeClass).addClass(inactiveClass);
 	} else {
-		// d3.select(".thTID button").style("background","rgba(0,0,0,.05)");
-		// d3.select(".thRID button").style("background",blues(estExtentMiddle));
-		d3.select(".thRID button").classed(activeClass, true);
+		$('.thTID button').removeClass(activeClass).addClass(inactiveClass);
+		$('.thRID button').removeClass(inactiveClass).addClass(activeClass);
 	}
 	if (estimateOrMargin == "e"){
-		// d3.select(".thEST button").style("background",blues(estExtentMiddle));
-		// d3.select(".thMAR button").style("background","rgba(0,0,0,.05)");
-		d3.select(".thEST button").classed(activeClass, true);
+		$('.thEST button').removeClass(inactiveClass).addClass(activeClass);
+		$('.thMAR button').removeClass(activeClass).addClass(inactiveClass);
 	} else {
-		// d3.select(".thEST button").style("background","rgba(0,0,0,.05)");
-		// d3.select(".thMAR button").style("background",blues(estExtentMiddle));
-		d3.select(".thMAR button").classed(activeClass, true);
+		$('.thEST button').removeClass(activeClass).addClass(inactiveClass);
+		$('.thMAR button').removeClass(inactiveClass).addClass(activeClass);
 	}
 }
 $('.thTID button').on('click', function(){

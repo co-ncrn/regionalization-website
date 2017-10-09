@@ -119,10 +119,18 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 						<table class="table-striped table-hover">
 							<thead>
 								<tr>
-									<th class="thTID" title="Tract ID (state.county.tract)"><button class="btn btn-sm">&nbsp;Tract&nbsp;</button></th>
-									<th class="thRID" title="Region ID"><button class="btn btn-sm">Region</button></th>
-									<th class="thEST "><button class="btn btn-sm estimateOrMarginBtn">Estimate</button></th>
-									<th class="thMAR "><button class="btn btn-sm estimateOrMarginBtn">Error</button></th>
+									<th class="thTID" title="Tract ID (state.county.tract)">
+										<button class="btn btn-sm">&nbsp;Tract&nbsp;</button>
+									</th>
+									<th class="thRID" title="Region ID">
+										<button class="btn btn-sm">Region</button>
+									</th>
+									<th class="thEST ">
+										<button class="btn btn-sm">Estimate</button>
+									</th>
+									<th class="thMAR ">
+										<button class="btn btn-sm">Error</button>
+									</th>
 									<th class="thSVG"></th>
 								</tr>
 							</thead>
