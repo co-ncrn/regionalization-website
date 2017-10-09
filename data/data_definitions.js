@@ -28,7 +28,7 @@ var dataDict = {
 	"vehiclpp":"Vehicles per person",
 	"avgcmmte":"Average travel time to work",
 	"drvlone":"Percent of population who drove to work alone",
-	"transit":"Perecent of population who take public transit to work",
+	"transit":"Percent of population who take public transit to work",
 	"pop":"Total population",
 	"avgrooms":"Average rooms per housing unit",
 	"avghmval":"Average home value of owner-occupied units",
