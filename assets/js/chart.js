@@ -13,7 +13,7 @@ var limit = 20, // data limit for testing
 	;
 
 
-var margin, sizes, svgRatio = .6;
+var margin, sizes, svgRatio = .67;
 
 // resize chart elements based on browser size
 d3.select(window).on('resize', resizeTable); 
