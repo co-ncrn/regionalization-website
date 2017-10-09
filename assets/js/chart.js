@@ -13,7 +13,7 @@ var limit = 20, // data limit for testing
 	;
 
 
-var margin,sizes;
+var margin, sizes, svgRatio = .6;
 
 // resize chart elements based on browser size
 d3.select(window).on('resize', resizeTable); 
@@ -29,35 +29,34 @@ function resizeTable() {
 
 	console.log("\nresizeTable() sizes = ",sizes);
 
+	// expand table
 	$("table").width(sizes.chartContainer);
-	$(".thSVG").width(sizes.chartContainer * .7);
-	$(".thSVG svg").width(sizes.chartContainer * .7);
-	$(".svgCell").width(sizes.chartContainer * .7);
-	$(".svgCell svg").width(sizes.chartContainer * .7);
 
-	//d3.select('table').attr("width", sizes.chartContainer);
-	//d3.select('thSVG').attr("width", sizes.thSVG);
+	// resize headers to match data in colums
+	$(".thTID").innerWidth($(".tid").width());
+	$(".thRID").width($(".rid").width());
+	$(".thEST").width($(".est").width());
+	$(".thMAR").width($(".err").width());
 
+	// resize SVG headers/cells
+	$(".thSVG").width(sizes.chartContainer * svgRatio);
+	$(".thSVG svg").width(sizes.chartContainer * svgRatio);
+	$(".svgCell").width(sizes.chartContainer * svgRatio);
+	$(".svgCell svg").width(sizes.chartContainer * svgRatio);
 
-
-$(".thTID").innerWidth($(".tid").width());
-$(".thRID").width($(".rid").width());
-$(".thEST").width($(".est").width());
-$(".thMAR").width($(".err").width());
-
+	// update SVG sizes in chart
 	if (prop(loaded) && loaded == true){
 		updateChart();
 	}
 
-
-	// svg properties
+	// set svg properties
 	margin = { top: 0, right: 10, bottom: 0, left: 10 },
 	width = sizes.thSVG - margin.left - margin.right,
     height = svgHeight - margin.top - margin.bottom,
     svgStroke = 1.5, barHV = 8;
 }
-resizeTable();
-setTimeout (resizeTable,1000);
+resizeTable(); // get initial table sizes
+setTimeout (resizeTable,1000); // and do it again once data is set
 
 
 
@@ -341,13 +340,24 @@ function updateChart() {
 
 	d3.selectAll("tr")
 	    .on("mouseover", selectTIDorRID)
-	    .on("mouseout", resetTIDorRID);
+	    .on("mouseout", resetTIDorRID)
+	    ;
 	d3.selectAll(".tid")
 	    .on("mouseover", selectTID)
-	    .on("mouseout", resetTID);
+	    .on("mouseout", resetTID)
+	    ;
 	d3.selectAll(".rid")
 	    .on("mouseover", selectRID)
-	    .on("mouseout", resetRID);
+	    .on("mouseout", resetRID)
+	    ;
+	d3.selectAll(".est")
+	    .on("mouseover", selectEST)
+	    //.on("mouseout", resetEST)
+	    ;
+	d3.selectAll(".err")
+	    .on("mouseover", selectMAR)
+	    //.on("mouseout", resetEST)
+	    ;
 
 
 
@@ -372,19 +382,32 @@ function updateChart() {
  * @return {[type]} [description]
  */
 function highlightHeaders(){
+
+	var activeClass = "btn-primary";
+
+	// remove all
+	d3.select(".thTID button").classed(activeClass, false);
+	d3.select(".thRID button").classed(activeClass, false);
+	d3.select(".thEST button").classed(activeClass, false);
+	d3.select(".thMAR button").classed(activeClass, false);
+
 	if (tractOrRegion == "t"){
-		d3.select(".thTID button").style("background",blues(estExtentMiddle));
-		d3.select(".thRID button").style("background","rgba(0,0,0,.05)");
+		// d3.select(".thTID button").style("background",blues(estExtentMiddle));
+		// d3.select(".thRID button").style("background","rgba(0,0,0,.05)");
+		d3.select(".thTID button").classed(activeClass, true);
 	} else {
-		d3.select(".thTID button").style("background","rgba(0,0,0,.05)");
-		d3.select(".thRID button").style("background",blues(estExtentMiddle));
+		// d3.select(".thTID button").style("background","rgba(0,0,0,.05)");
+		// d3.select(".thRID button").style("background",blues(estExtentMiddle));
+		d3.select(".thRID button").classed(activeClass, true);
 	}
 	if (estimateOrMargin == "e"){
-		d3.select(".thEST button").style("background",blues(estExtentMiddle));
-		d3.select(".thMAR button").style("background","rgba(0,0,0,.05)");
+		// d3.select(".thEST button").style("background",blues(estExtentMiddle));
+		// d3.select(".thMAR button").style("background","rgba(0,0,0,.05)");
+		d3.select(".thEST button").classed(activeClass, true);
 	} else {
-		d3.select(".thEST button").style("background","rgba(0,0,0,.05)");
-		d3.select(".thMAR button").style("background",blues(estExtentMiddle));
+		// d3.select(".thEST button").style("background","rgba(0,0,0,.05)");
+		// d3.select(".thMAR button").style("background",blues(estExtentMiddle));
+		d3.select(".thMAR button").classed(activeClass, true);
 	}
 }
 $('.thTID button').on('click', function(){
@@ -400,12 +423,23 @@ $('.thMAR button').on('click', function(){
 	toggleEstimateOrMargin("m");
 });
 function toggleEstimateOrMargin(state){
-	if (state == estimateOrMargin) return; 	// if different
+	if (state == estimateOrMargin) return; 	// if same, exit
 	estimateOrMargin = state;				// update
 	console.log("estimateOrMargin",estimateOrMargin)
 	mns.updateMap(); 
 	updateChart();
 	highlightHeaders();
+}
+
+function selectEST(){
+	console.log("selectEST() --> estimateOrMargin=",estimateOrMargin);
+	if (estimateOrMargin == "e") return; 	// if same, exit
+	toggleEstimateOrMargin("e");
+}
+function selectMAR(){
+	console.log("selectMAR() --> estimateOrMargin=",estimateOrMargin);
+	if (estimateOrMargin == "m") return; 	// if same, exit
+	toggleEstimateOrMargin("m");
 }
 
 
@@ -493,6 +527,7 @@ function resetTIDorRID(d){
 	if (prop(d))
 		mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
+
 
 
 

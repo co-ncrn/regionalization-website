@@ -48,18 +48,14 @@ overflow-x: hidden;/**/
 #chart tbody { margin-top: 4px; }
 #chart tbody tr { padding: 0; border: none;}
 #chart thead th { font-weight: normal; text-align: center; margin: 0; padding: 4px 2px; }
-#chart tbody td { padding: 0 3px; margin:0; text-align: center; border: none; }
+#chart tbody td { padding: 0 4px; margin:0; text-align: center; border: none; }
 #chart thead th.thTID, #chart tbody td.tid { min-width: 40px; max-width: 80px; width: 60px; }
 #chart thead th.thRID, #chart tbody td.rid { min-width: 45px; max-width: 60px; width: 60px; }
-#chart thead th.thEST, #chart tbody td.est { min-width: 45px; max-width: 60px; width: 60px; }
+#chart thead th.thEST, #chart tbody td.est { min-width: 45px; max-width: 80px; width: 80px;  }
 #chart thead th.thMAR, #chart tbody td.err { min-width: 45px; max-width: 60px; width: 60px; }
+#chart thead th.thEST { padding: 4px 0 }
 
 
-
-
-#chart thead th button { position:relative; width: 100%; font-size: 90%; border: none; }
-/* remove button border in bootstrap */
-.btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
 
 
 #chart tbody td.bold { font-weight: bold; } 
@@ -67,11 +63,13 @@ overflow-x: hidden;/**/
 /* SVG CELLS */
 #chart thead th.thSVG, #chart tbody td.svgCell { text-align: left; margin:0; padding:0;  }
 #chart thead th.thSVG, #chart tbody td.svgCell { min-width: 100px; width:100%; max-width: 70%; width:70%;}
-#chart tbody td.svgCell svg { height: 23; border: none; }
+#chart tbody td.svgCell { height: 23; padding: 0; margin: 0;  }
+#chart tbody td.svgCell svg { border: none; position: relative; }
 #chart tbody td.svgCell .svgBar { fill: red; }
 
 /* SVG SPECIFC */
-.domain { stroke: #fff } /* removes strange stroke above svg */
+.domain { stroke: rgba(0,0,0,0) } /* removes strange stroke above svg */
+td { line-height: 0; }​  /* removes strange space below svg in table row */
 /* AXIS */
 .tick text { stroke-width: 1px; opacity: 1.0; }
 .tick line { stroke-width: 1px; opacity: .2; }
@@ -83,11 +81,16 @@ overflow-x: hidden;/**/
 
 
 
-
 /* INTERACTIVE */
 
-.tid:hover, .rid:hover, .thTID button:hover, .thRID button:hover, .thEST button:hover, .thMAR button:hover { cursor: pointer; }
-/*td.highlight { background-color: #900 }*/
+
+.thTID button:hover, .thRID button:hover, .thEST button:hover, .thMAR button:hover,
+.tid:hover, .rid:hover, .est:hover, .err:hover { cursor: pointer; }
+#chart thead th button { position:relative; width: 100%; font-size: 90%; border: none; }
+/* remove button border in bootstrap */
+.btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
+
+
 
 
 

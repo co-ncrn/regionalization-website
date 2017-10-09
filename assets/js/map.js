@@ -21,7 +21,7 @@ var mns = new function() {
 		tractRIDindex = {}, // reference to tracts by RID
 
 		lastMSAFeature = null,
-
+		hideLastMSAFeatureTimeOut = null,
 		MAP_DEBUG = false
 		;
 
@@ -162,12 +162,13 @@ var mns = new function() {
 	function hideLastMSAFeature(){
 		console.log("hideLastMSAFeature() --> ",lastMSAFeature)
 		if (prop(lastMSAFeature)) {
+			//clearTimeout(hideLastMSAFeatureTimeOut);
 			lastMSAFeature.setStyle({
 		        fillOpacity: 0
 		    });
 		}
 		else {
-			setTimeout(hideLastMSAFeature, 1000); // check again in a second
+			hideLastMSAFeatureTimeOut = setTimeout(hideLastMSAFeature, 1000); // check again in a second
 		}
 			
 
