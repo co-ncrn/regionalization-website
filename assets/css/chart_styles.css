@@ -23,8 +23,10 @@ table, th /* all tables */ { border-collapse: collapse; border:none !important; 
 
 /* fixed header row */
 #chart table thead tr { display:block; }
-#chart table th, table td { width:100px; /* fixed width */ }
+#chart table th, table td { width: 60px /* fixed width */ }
 #chart table tbody { display:block; height:540px; overflow:auto; /* set tbody to auto */ }
+
+
 
 
 
@@ -33,33 +35,38 @@ table, th /* all tables */ { border-collapse: collapse; border:none !important; 
 #chart-container { clear: all; margin-top: 15px;  overflow-y:auto; background: #fff; font: 12px sans-serif; 
 
 max-width: 100%;
-/*overflow-x: hidden;*/
+height: 500px; 
+
+overflow-x: hidden;/**/
 }
-#chart { }
 #chart table { border-collapse: collapse; width:100%; border: none;  }
 
-/* HEADERS */
-#chart th { font-weight: normal; text-align: center; margin: 0; padding: 4px; }
-#chart th.thTID { min-width: 30px; max-width: 60px; width: 68px; background: rgba(0,0,0,.05); }
-#chart th.thRID { min-width: 35px; max-width: 60px; width: 60px; background: rgba(0,0,0,.05); }
-#chart th.thTID:hover, #chart th.thRID:hover { cursor: pointer; }
-#chart th.thEST { min-width: 50px; max-width: 60px;  }
-#chart th.thERR { min-width: 30px; max-width: 60px; }
-#chart th.thSVG { min-width: 100px; max-width: 70%; width:70%; }
 
-/* ROWS */
-#chart tbody tr { padding: 0; border: none; }
-#chart tbody td { padding: 0 6px 0 4px; text-align: center; border: none; }
-#chart tbody td.tid { min-width: 30px; max-width: 80px; width: 60px; }
-#chart tbody td.rid { min-width: 35px; max-width: 60px; width: 60px; }
-#chart tbody td.est, 
-#chart tbody td.err { text-align: right; }
+
+
+/* COLUMNS __ NEW __ */ 
+#chart tbody { margin-top: 4px; }
+#chart tbody tr { padding: 0; border: none;}
+#chart thead th { font-weight: normal; text-align: center; margin: 0; padding: 4px 2px; }
+#chart tbody td { padding: 0 3px; margin:0; text-align: center; border: none; }
+#chart thead th.thTID, #chart tbody td.tid { min-width: 40px; max-width: 80px; width: 60px; }
+#chart thead th.thRID, #chart tbody td.rid { min-width: 45px; max-width: 60px; width: 60px; }
+#chart thead th.thEST, #chart tbody td.est { min-width: 45px; max-width: 60px; width: 60px; }
+#chart thead th.thMAR, #chart tbody td.err { min-width: 45px; max-width: 60px; width: 60px; }
+
+
+
+
+#chart thead th button { position:relative; width: 100%; font-size: 90%; border: none; }
+/* remove button border in bootstrap */
+.btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
 
 
 #chart tbody td.bold { font-weight: bold; } 
 
-/* SVG CELL */
-#chart tbody td.svgCell { text-align: left; margin:0; padding:0; width: 30%; }
+/* SVG CELLS */
+#chart thead th.thSVG, #chart tbody td.svgCell { text-align: left; margin:0; padding:0;  }
+#chart thead th.thSVG, #chart tbody td.svgCell { min-width: 100px; width:100%; max-width: 70%; width:70%;}
 #chart tbody td.svgCell svg { height: 23; border: none; }
 #chart tbody td.svgCell .svgBar { fill: red; }
 
@@ -79,7 +86,7 @@ max-width: 100%;
 
 /* INTERACTIVE */
 
-.tid:hover, .thTID:hover, .rid:hover, .thRID:hover  { cursor: pointer; } 
+.tid:hover, .rid:hover, .thTID button:hover, .thRID button:hover, .thEST button:hover, .thMAR button:hover { cursor: pointer; }
 /*td.highlight { background-color: #900 }*/
 
 

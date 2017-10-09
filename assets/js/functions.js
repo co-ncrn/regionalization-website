@@ -7,9 +7,7 @@
  
 // if TID has a g then remove
 function cleanTID(tid){
-
 	return tid.replace(/^g/, '');
-
 }
 
 

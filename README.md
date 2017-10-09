@@ -23,3 +23,6 @@ http://bl.ocks.org/mpmckenna8/af23032b41f0ea1212563b523e859228
 
 Thinking with Joins
 https://bost.ocks.org/mike/join/
+
+The American Community Survey, ESRI White Paper 2014
+https://www.esri.com/library/whitepapers/pdfs/the-american-community-survey.pdf

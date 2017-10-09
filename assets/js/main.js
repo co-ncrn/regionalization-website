@@ -291,13 +291,14 @@ function updateTitle(){
  *	Update Debugger
  */
 function updateDebug(){
-	$(".debug").html( "Debugging: "+ current.msa +":"+ current.scenario +":"+ current.data +
+	var str = "Debugging: "+ current.msa +":"+ current.scenario +":"+ current.data +
 					  "; numberTracks="+ numberTracks +
 					  //"; numberChartTIDs="+ d3.selectAll(".tid").size() +
 					  "; tractOrRegion="+ tractOrRegion +
 					  "; estimateOrMargin="+ estimateOrMargin
-
-					  );
+					  ;
+	//$(".debug").html(str);
+	console.log("updateDebug() -->",str);
 }
 
 
@@ -516,15 +517,6 @@ function roundDecimal(num){
 }
 
 
-$('.estimateOrMarginBtn').on('click', function(){
-	if (estimateOrMargin == "e")
-		estimateOrMargin = "m";
-	else if (estimateOrMargin == "m")
-		estimateOrMargin = "e";
-	console.log("estimateOrMargin",estimateOrMargin)
-	mns.updateMap(); 
-	updateChart();
-});
 
 
 
@@ -564,7 +556,7 @@ var toggle_fullscreen = function(){
 };
 
 
-
+loaded = true;
 
 
 

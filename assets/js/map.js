@@ -20,7 +20,7 @@ var mns = new function() {
 		tractTIDindex = {},	// reference to tracts by TID
 		tractRIDindex = {}, // reference to tracts by RID
 
-		lastLayer = null,
+		lastMSAFeature = null,
 
 		MAP_DEBUG = false
 		;
@@ -62,7 +62,7 @@ var mns = new function() {
 	 *	Load the MSA topojson and add it to the map
 	 */
 	function loadMSALayer(src) {
-		//if (MAP_DEBUG) console.log("loadMSALayer()",src);
+		//console.log("loadMSALayer()",src);
 
 		d3.json(src, function(error, data) {		// use D3 to load JSON
 			if (error) return console.warn(error);	// return if error
@@ -90,6 +90,12 @@ var mns = new function() {
 			"msa":layer.feature.properties.GEOID
 		}
 
+		// store reference to feature
+		if (feature.properties.GEOID == current.msa){
+			lastMSAFeature = layer;
+			console.log("store reference to feature",feature.properties.GEOID,current.msa,lastMSAFeature)
+		}
+
 		// add popup
 		var popupHTML = '<h6 class="text-center">'+ feature.properties.NAME +'</h6>'+
 						'<table>'+
@@ -111,11 +117,14 @@ var mns = new function() {
 	    var _msa = msaIndex[layer.feature.properties.GEOID].msa;
 	    //console.log("highlightMSAFromMap() layer = ",layer, " // msa = ",_msa)
 
+	    // don't do anything if this is the current msa
+	    if (_msa == current.msa) return;
+
 	    // show info
 		//info.update(layer.feature.properties);
 
 		// if msa is not set then don't do this
-		if (prop(current.msa) && current.msa != _msa){
+		if (prop(current.msa) && current.msa != parseInt(_msa)){
 		    layer.setStyle({
 		        fillOpacity: 0.4
 		    });
@@ -126,7 +135,7 @@ var mns = new function() {
 	    popup.setLatLng(e.latlng).openOn(map); // at position of mouse
 
 	    // track recently clicked layer
-	    lastLayer = layer;
+	    lastMSAFeature = layer;
 
 	    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 	        layer.bringToFront();
@@ -134,16 +143,35 @@ var mns = new function() {
 	}
 	// reset msa style
 	function resetMSAStyle(e) {
-		//if (MAP_DEBUG) console.log("resetMSAStyle() --> ",lastLayer,e.target.options);
+	    // don't do anything if this is the current msa
+	    if (prop(e) && prop(e.feature) && e.feature.properties.GEOID == current.msa) return;
+
+		console.log("resetMSAStyle() --> ",lastMSAFeature,"e",e);
+
 
 		if (prop(e)){
 			msaLayer.resetStyle(e.target);
 			e.target.closePopup();
 		}
-		else if (lastLayer != null) {
-			msaLayer.resetStyle(lastLayer);
-			lastLayer.closePopup();
+		else if (lastMSAFeature != null) {
+			msaLayer.resetStyle(lastMSAFeature);
+			lastMSAFeature.closePopup();
 		}
+	}
+	// hide an msa feature
+	function hideLastMSAFeature(){
+		console.log("hideLastMSAFeature() --> ",lastMSAFeature)
+		if (prop(lastMSAFeature)) {
+			lastMSAFeature.setStyle({
+		        fillOpacity: 0
+		    });
+		}
+		else {
+			setTimeout(hideLastMSAFeature, 1000); // check again in a second
+		}
+			
+
+		
 	}
 	// follow mouse with popup
 	function moveMSAPopup(e){
@@ -164,7 +192,7 @@ var mns = new function() {
 			//if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
 	
 		    // track recently clicked msa layer
-		    lastLayer = layer;
+		    lastMSAFeature = layer;
 
 			// reset any previous msas selected
 			resetMSAStyle();
@@ -217,8 +245,8 @@ var mns = new function() {
 			if (MAP_DEBUG) console.log(" --> d3.json",error,data); // testing
 			if (tractLayer != null)
 				map.removeLayer(tractLayer)			// remove current layer from map
-			tractTIDindex = {};							// reset TID references
-			tractRIDindex = {};							// reset RID references
+			tractTIDindex = {};						// reset TID references
+			tractRIDindex = {};						// reset RID references
 
 //console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 
@@ -231,6 +259,16 @@ var mns = new function() {
 			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
 			resetMSAStyle();						// make sure the MSA is not visible
 			//restyleTractLayer()
+			
+			hideLastMSAFeature()
+			console.log("lastMSAFeature",lastMSAFeature);
+
+			// bring to front
+		    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+		        tractLayer.bringToFront();
+		    }
+
+
 		});
 	}
 
@@ -273,8 +311,8 @@ var mns = new function() {
 						'<tbody>'+
 							'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
 							'<tr><td class="key">Estimate</td><td class="val t">'+ tractData.tEst +'</td><td class="val r">'+ tractData.rEst +'</td></tr>'+
-							'<tr><td class="key">Margin of Error</td><td class="val">±'+ tractData.tMar +'</td><td class="val">±'+ tractData.rMar +'</td></tr>'+
-							'<tr><td class="key">CV</td><td class="val">'+ tractData.tCV +'</td><td class="val">'+ tractData.rCV +'</td></tr>'+
+							'<tr><td class="key">Margin of Error</td><td class="val">±'+ padFloat(tractData.tMar) +'</td><td class="val">±'+ padFloat(tractData.rMar) +'</td></tr>'+
+							'<tr><td class="key">CV</td><td class="val">'+ padFloat(tractData.tCV) +'</td><td class="val">'+ padFloat(tractData.rCV) +'</td></tr>'+
 						'</tbody>'+
 						'</table>';
 		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});

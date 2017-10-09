@@ -8,17 +8,18 @@
 
 var limit = 20, // data limit for testing
 	svgHeight = 20, // height for all svg elements
+	loaded = false,
 	CHART_DEBUG = true
 	;
 
 
-var margin;
+var margin,sizes;
 
 // resize chart elements based on browser size
-d3.select(window).on('resize', setSize); 
-function setSize() {
+d3.select(window).on('resize', resizeTable); 
+function resizeTable() {
 	// get sizes
-	var sizes = {
+	sizes = {
 		"chartContainer": $("#chart-container").width(),
 		"chart": $("#chart").width(),
 		"table": $("table").width(),
@@ -26,23 +27,37 @@ function setSize() {
 		"svgCell": $(".svgCell").width(),
 	}
 
-	//if (CHART_DEBUG) console.log("setSize() sizes = ",sizes);
+	console.log("\nresizeTable() sizes = ",sizes);
 
 	$("table").width(sizes.chartContainer);
 	$(".thSVG").width(sizes.chartContainer * .7);
+	$(".thSVG svg").width(sizes.chartContainer * .7);
+	$(".svgCell").width(sizes.chartContainer * .7);
+	$(".svgCell svg").width(sizes.chartContainer * .7);
 
 	//d3.select('table').attr("width", sizes.chartContainer);
 	//d3.select('thSVG').attr("width", sizes.thSVG);
 
 
 
+$(".thTID").innerWidth($(".tid").width());
+$(".thRID").width($(".rid").width());
+$(".thEST").width($(".est").width());
+$(".thMAR").width($(".err").width());
+
+	if (prop(loaded) && loaded == true){
+		updateChart();
+	}
+
+
 	// svg properties
 	margin = { top: 0, right: 10, bottom: 0, left: 10 },
-		width = sizes.thSVG - margin.left - margin.right,
-	    height = svgHeight - margin.top - margin.bottom,
-	    svgStroke = 1.5, barHV = 8;
+	width = sizes.thSVG - margin.left - margin.right,
+    height = svgHeight - margin.top - margin.bottom,
+    svgStroke = 1.5, barHV = 8;
 }
-setSize();
+resizeTable();
+setTimeout (resizeTable,1000);
 
 
 
@@ -81,7 +96,7 @@ var rows, yScale, xScale, xMin, xMax, xExtent;
  * 	Build HTML table inside the SVG chart. Update comes later.
  */
 function enterChart() {
-	if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray);
+	//if (CHART_DEBUG) console.log("enterChart() -> currentScenarioArray = ",currentScenarioArray);
 
 
 	//************ INIT TABLE ************
@@ -211,8 +226,8 @@ function reformatTID(str){
 function updateChart() {
 	enterChart();
 
-	if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
-	if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
+	//if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
+	//if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
 
 	updateColorScales();
 	updateChartScales();
@@ -343,26 +358,58 @@ function updateChart() {
 	rows.exit().remove(); 	
 
 
-	//testing
-	updateDebug();
-
-	// update map after chart to give topojson time to load
-	mns.updateMap();
+	
+	updateDebug();		//testing
+	mns.updateMap();	// update map after chart to give topojson time to load
+	highlightHeaders(); // update headers
 
 	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
 }
 
 
-
-function highlightTractOrRegionHeader(){
+/**
+ * Set the header styles based on current state(s)
+ * @return {[type]} [description]
+ */
+function highlightHeaders(){
 	if (tractOrRegion == "t"){
-		d3.select(".thTID").style("background",blues(estExtentMiddle));
-		d3.select(".thRID").style("background","rgba(0,0,0,.05)");
+		d3.select(".thTID button").style("background",blues(estExtentMiddle));
+		d3.select(".thRID button").style("background","rgba(0,0,0,.05)");
 	} else {
-		d3.select(".thTID").style("background","rgba(0,0,0,.05)");
-		d3.select(".thRID").style("background",blues(estExtentMiddle));
+		d3.select(".thTID button").style("background","rgba(0,0,0,.05)");
+		d3.select(".thRID button").style("background",blues(estExtentMiddle));
+	}
+	if (estimateOrMargin == "e"){
+		d3.select(".thEST button").style("background",blues(estExtentMiddle));
+		d3.select(".thMAR button").style("background","rgba(0,0,0,.05)");
+	} else {
+		d3.select(".thEST button").style("background","rgba(0,0,0,.05)");
+		d3.select(".thMAR button").style("background",blues(estExtentMiddle));
 	}
 }
+$('.thTID button').on('click', function(){
+	selectTID();
+});
+$('.thRID button').on('click', function(){
+	selectRID();
+});
+$('.thEST button').on('click', function(){
+	toggleEstimateOrMargin("e");
+});
+$('.thMAR button').on('click', function(){
+	toggleEstimateOrMargin("m");
+});
+function toggleEstimateOrMargin(state){
+	if (state == estimateOrMargin) return; 	// if different
+	estimateOrMargin = state;				// update
+	console.log("estimateOrMargin",estimateOrMargin)
+	mns.updateMap(); 
+	updateChart();
+	highlightHeaders();
+}
+
+
+
 
 function saveOriginalRowColor(_tid){
 	var _row = d3.select("."+_tid); // reference
@@ -388,7 +435,7 @@ function removeHighlightTractOnChart(properties){
 /**
  * Change selection on chart/map to show TRACTS
  */
-function selectTID(d,i){
+function selectTID(d){
 	//console.log("selectTID() --> d,i",d,i);
 
 	// switch to display tract data in boxplot
@@ -400,17 +447,18 @@ function selectTID(d,i){
 		// update classes on map popup
 		d3.selectAll(".t").style("font-weight", "bold");	
 		d3.selectAll(".r").style("font-weight", "normal");	
-		selectTIDorRID(d,i);
+		selectTIDorRID(d);
 	}
 	
 }
 function resetTID(d){
-	mns.resetTractStyleFromChart("g"+d.value.TID) 
+	if (prop(d))
+		mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
 /**
  * Change selection on chart/map to show REGIONS
  */
-function selectRID(d,i){
+function selectRID(d){
 	//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
 
 	// switch to display region data in boxplot
@@ -422,28 +470,28 @@ function selectRID(d,i){
 		// update classes on map popup
 		d3.selectAll(".t").style("font-weight", "bold");		
 		d3.selectAll(".r").style("font-weight", "normal");	
-		selectTIDorRID(d,i);
+		selectTIDorRID(d);
 	}
-	
 }
 function resetRID(d){
-	mns.resetTractStyleFromChart("g"+d.value.TID) 
+	if (prop(d))
+		mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
 
 /**
  * Change selection on chart/map to show TRACTS / REGIONS
  */
 function selectTIDorRID(d){
-	if (d == null) return;
 	mns.updateMap(); 		// update map
 	updateChart();			// update chart
 	// (always) highlight tract on map after map update
-	mns.highlightTractFromChart("g"+d.value.TID); 
-	highlightTractOrRegionHeader();
+	if (prop(d))
+		mns.highlightTractFromChart("g"+d.value.TID); 
+	highlightHeaders();
 }
 function resetTIDorRID(d){
-	if (d == null) return;
-	mns.resetTractStyleFromChart("g"+d.value.TID) 
+	if (prop(d))
+		mns.resetTractStyleFromChart("g"+d.value.TID) 
 }
 
 
@@ -455,7 +503,7 @@ function resetTIDorRID(d){
  */
 function updateChartScales() {
 
-	if (CHART_DEBUG) console.log("updateChartScales()")
+	//if (CHART_DEBUG) console.log("updateChartScales()")
 
 	//************ SCALES ************
 
@@ -503,7 +551,7 @@ function create_axes(data,yScale,xScale,err,est){
 		.scale(xScale)
 		.ticks(ticks)		
 		.tickSizeInner(-height)
-		.tickSizeOuter(1000)
+		.tickSizeOuter(0)
 		.tickPadding(10)
 	;
 	// add X axis properties
@@ -522,9 +570,8 @@ function create_axes(data,yScale,xScale,err,est){
 		.scale(xScale)
 		.ticks(ticks)		
 		.tickSizeInner(-height)
-		.tickSizeOuter(0)
+		.tickSizeOuter(1000) // hide outer ticks way off screen
 		.tickPadding(10)
-		.tickFormat(function (d) { return ''; });
 	;
 //xAxisTicks.selectAll("text").remove();
 
