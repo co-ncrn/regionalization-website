@@ -90,11 +90,7 @@ overflow-x: hidden;/**/
 /* remove button border in bootstrap */
 .btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
 /* update bootstrap btn-primary color */
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited,
-.btn-primary:focus {
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
     background-color: rgba(66, 146, 198, 1);
     border-color: rgba(66, 146, 198, 1);
 }
