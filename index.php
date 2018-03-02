@@ -17,7 +17,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <title>Boxplot + Table</title>
 
 
-
+<!--
 <link href="<?php print $rootDir; ?>vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/chosen/chosen.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
@@ -25,6 +25,20 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <link href="<?php print $rootDir; ?>assets/css/chart_styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
 <link href="<?php print $rootDir; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+ -->
+
+
+
+<link href="<?php print $rootDir; ?>node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>node_modules/chosen-jquery/lib/chosen.min.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>node_modules/leaflet-easybutton/src/easy-button.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
+<link href="<?php print $rootDir; ?>assets/css/chart_styles.css" rel="stylesheet">
+<link href="<?php print $rootDir; ?>assets/css/styles.css" rel="stylesheet">
+
 
 
 
@@ -50,16 +64,16 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#">Data Quality</a>
+				<a class="nav-link" href="#data-quality">Data Quality</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">What is Margin of Error?</a>
+				<a class="nav-link" href="#margin-of-error">Margin of Error</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Regionalization</a>
+				<a class="nav-link" href="#regionalization">Regionalization</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Credits</a>
+				<a class="nav-link" href="#credits">Credits</a>
 			</li>
 		</ul>
 	</div>
@@ -98,11 +112,11 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 						<a title="Download data for this Metropolitan Area">
 							<img src="<?php print $rootDir; ?>assets/img/icon_download.png"></a></div>
 					<div class="form-group dropdown_right">
-						<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a> 
+						<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
 
 						<!--<a href="#" id="toggle_fullscreen"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true" title="Toggle Fullscreen"></i></a>-->
 					</div>
-					
+
 				</div>
 
 				<!--
@@ -115,7 +129,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 
 				<div id="chart-container">
 					<div id="chart">
-						
+
 						<table class="table-striped table-hover">
 							<thead>
 								<tr>
@@ -140,7 +154,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 					</div>
 				</div>
 				<div class="info"></div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -150,12 +164,12 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 			<h4>Raw data</h4>
 			<textarea class="form-control" rows="20" id="output"></textarea>
 		</div>
-	</div>	
+	</div>
 
 </div>
 
 
-<script src="<?php print $rootDir; ?>vendor/jquery/dist/jquery.min.js"></script>
+<!-- <script src="<?php print $rootDir; ?>vendor/jquery/dist/jquery.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/chosen/chosen.jquery.js"></script>
 <script src="<?php print $rootDir; ?>vendor/tether/dist/js/tether.min.js"></script>
 <script src="<?php print $rootDir; ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -165,9 +179,29 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
 <script src="<?php print $rootDir; ?>assets/js/topojson.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/d3-axis.v1.min.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/jquery.history.js"></script>
+ -->
+
+
+<script src="<?php print $rootDir; ?>node_modules/jquery/dist/jquery.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/chosen-jquery/lib/chosen.jquery.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/popper.js/dist/popper.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/leaflet/dist/leaflet.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/leaflet-easybutton/src/easy-button.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/d3/build/d3.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/d3-color/build/d3-color.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/topojson/dist/topojson.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/d3-axis/build/d3-axis.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/jquery-history/dist/jquery.history.min.js"></script>
+
+
+
+
 
 <script src="<?php print $rootDir; ?>data/data_definitions.js"></script>
 <script src="<?php print $rootDir; ?>assets/js/config.js"></script>
