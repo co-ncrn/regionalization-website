@@ -1,6 +1,14 @@
 
 
 
+
+
+/*
+font-family: 'Open Sans', sans-serif;
+ */
+
+
+
 /* MAP */
 
 .leaflet-touch .leaflet-bar button { line-height: 26px } /* fix position of fa button */
@@ -11,7 +19,7 @@
 
 /* SITE HEADER */
 
-.header_callout { font-size: 100%; font-style: italic; text-align: center; margin: 30px; }
+.header .callout { font: 1.6em/1.5em 'Roboto Slab', serif; text-align: center; margin: 30px; color: #666; }
 
 
 
@@ -40,16 +48,16 @@
 #presentation:fullscreen #map { height: 100vh; }
 
 
-#presentation:-webkit-full-screen #chart-container, #presentation:-webkit-full-screen #chart, 
+#presentation:-webkit-full-screen #chart-container, #presentation:-webkit-full-screen #chart,
 #presentation:-webkit-full-screen #chart table, #presentation:-webkit-full-screen tbody { height:100vh; }
 
-#presentation:-moz-full-screen #chart-container, #presentation:-moz-full-screen #chart, 
+#presentation:-moz-full-screen #chart-container, #presentation:-moz-full-screen #chart,
 #presentation:-moz-full-screen #chart table, #presentation:-moz-full-screen tbody { height:100vh; }
 
-#presentation:-ms-fullscreen #chart-container, #presentation:-ms-fullscreen #chart, 
+#presentation:-ms-fullscreen #chart-container, #presentation:-ms-fullscreen #chart,
 #presentation:-ms-fullscreen #chart table, #presentation:-ms-fullscreen tbody { height:100vh; }
 
-#presentation:fullscreen #chart-container, #presentation:fullscreen #chart, 
+#presentation:fullscreen #chart-container, #presentation:fullscreen #chart,
 #presentation:fullscreen #chart table, #presentation:fullscreen tbody { height:100vh; }
 
 
@@ -59,6 +67,3 @@
 
 #output { font-size: 75%; }
 .debug { font-size: 70%; background: #eee; color: steelblue; padding: 4px; }
-
-
-
