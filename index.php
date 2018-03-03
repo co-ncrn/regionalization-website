@@ -45,8 +45,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <meta property="og:image:height" content="300" />
 <meta property="og:description" content="<?php print $site['description']; ?>" />
 <meta property="og:site_name" content="<?php print $site['title']; ?>" />
-<meta property="fb:admins" content="833996433457830" />
-
+<meta property="fb:app_id" content="833996433457830" />
 
 
 <!--
