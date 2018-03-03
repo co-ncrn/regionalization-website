@@ -9,12 +9,12 @@
 var msas = {}, 											// all the MSAs
 	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
 	currentScenario = {},							// current scenario data, once loaded
-	currentScenarioTIDs = {},	
-	currentScenarioArray = [],	
+	currentScenarioTIDs = {},
+	currentScenarioArray = [],
 	tractOrRegion = "t",
 	estimateOrMargin = "e",
 	numberTracks = 0,
-	websiteName = "ACS Regionalization",
+	websiteName = "Reducing Uncertainty &ndash; ",
 	MAIN_DEBUG = false
 	;
 
@@ -46,7 +46,7 @@ $(document).ready(function(){
 		if (p.length == 2){
 			//if (MAIN_DEBUG) console.log( p.toString())
 			dataChange("menu",current.msa,p[0],p[1]);
-		} 
+		}
 	});
 	init();
 });
@@ -56,7 +56,7 @@ $(document).ready(function(){
  *	Initialize page, get data
  */
 function init(){
-	
+
 	// get _metadata for menus, etc.
 	//d3.json(api_url+ "_metadata", function(error, json) { // from API
 	d3.json(rootDir + "data/msas.json", function(error, json) { // flat JSON file
@@ -65,7 +65,7 @@ function init(){
 		if (MAIN_DEBUG) console.log("init() --> msas = ",msas);
 		$("#output").val( "all MSAs: \n"+ JSON.stringify(msas) );
 		createMSAMenu(msas); 			// create MSA menu
-	});	
+	});
 }
 
 
@@ -115,22 +115,22 @@ function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 		getScenarioData(); // do this before any map work
 	}
 	if (updateMSA){
-		// if origin is anything but "menu" 
-		if (origin != "menu") 
+		// if origin is anything but "menu"
+		if (origin != "menu")
 			// then update selected MSA in dropdown
-			$("#msa_select_box").val(msa).trigger('chosen:updated'); 
+			$("#msa_select_box").val(msa).trigger('chosen:updated');
 		// update scenario menu
-		updateScenarioMenu(msa); 
+		updateScenarioMenu(msa);
 		// load msa tracts topojson
 		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
 	}
 	if (updateScenario){
 		// update scenario menu
-		updateScenarioMenu(msa,scenario,data); 		
+		updateScenarioMenu(msa,scenario,data);
 	}
 	if (updateMSA || updateScenario || updateData){
-		// if origin is anything but "load" then update URL bar 
-		if (origin != "load") updateUrl('add');		
+		// if origin is anything but "load" then update URL bar
+		if (origin != "load") updateUrl('add');
 	}
 
 	if (updateData || tractOrRegion != "" || estimateOrMargin != ""){
@@ -169,7 +169,7 @@ function checkForCurrentPage(){
 function updateUrl(change){
 
 	// bind to StateChange Event
-	History.Adapter.bind(window,'statechange',function(){ 
+	History.Adapter.bind(window,'statechange',function(){
 		var State = History.getState();
 	});
 
@@ -177,27 +177,27 @@ function updateUrl(change){
 
 	if (prop(current.msa))
 		url += ""+ current.msa;
-	if (prop(current.scenario)) 
+	if (prop(current.scenario))
 		url += "/"+ current.scenario;
-	if (prop(current.data)) 
+	if (prop(current.data))
 		url += "/"+ current.data;
 
 	// change state
 	if (change == 'add'){
 		// data
-		History.replaceState({state:1}, websiteName +" - "+ url, rootDir + url);
+		History.pushState({state:1}, websiteName +" &ndash; "+ url, rootDir + url);
 	} else {
 		// default
-		History.replaceState({state:0}, websiteName + "", rootDir);
+		History.pushState({state:0}, websiteName + "", rootDir);
 	}
-	
+
 }
 /**
  *	if user clicks back/forward button then check the page again
  */
-window.onpopstate = function(event) {    
+window.onpopstate = function(event) {
     if(event && event.state) {
-        //location.reload(); 
+        //location.reload();
         checkForCurrentPage();
     }
 }
@@ -212,7 +212,7 @@ function getUrlPath() {
     var fullpath = window.location.href.replace("#",""), //window.location.pathname,
     	page = [],
     	location = {};
- 
+
  	// split on domain (the working directory OR domain name)
     if (fullpath.indexOf(domain) != -1) {
     	// get everything after domain
@@ -233,7 +233,7 @@ function getUrlPath() {
 	        else {
 				location.msa = page.trim();
 	        }
-        } 
+        }
     }
 	if (MAIN_DEBUG) console.log(" --> getUrlPath()",domain,fullpath,page,location);
     return location;
@@ -261,7 +261,7 @@ function getUrlPath() {
 function createMSAMenu(json){
 	if (MAIN_DEBUG) console.log("--> createMSAMenu()")
 	// default empty value in select menus
-	var msa_options = "<option val=''></option>";	
+	var msa_options = "<option val=''></option>";
 	// loop through msas
 	for (var key in json) {
 	    if (!json.hasOwnProperty(key)) continue;	// skip loop if the property is from prototype
@@ -348,13 +348,13 @@ function updateScenarioMenu(msa,scenario,data){
 	if (prop(scenario) ){
 		//if (MAIN_DEBUG) console.log("scenario",current.scenario +"-"+ current.data);
 		$("#scenario_select_box").val(current.scenario +"-"+ current.data).trigger('chosen:updated');
-	} 
+	}
 	// otherwise open it for input
 	else {
 		$('#scenario_select_box').trigger('chosen:open');
 	}
 
-	
+
 }
 function optionHTML(val,text){
 	var option = "";
@@ -388,11 +388,11 @@ function getScenarioData(){
 		// data has arrived
 		// currentScenario = cleanData(json.response);			// DELETE
 		currentScenario = json;
-		currentScenarioArray = d3.entries(currentScenario); 
+		currentScenarioArray = d3.entries(currentScenario);
 		numberTracks = currentScenarioArray.length;
 
 		updateChart(); // update chart (and eventually map, from chart.js)
-		
+
 		// testing
 		$("#output").val( JSON.stringify(json).replace("},","},\n") );
 	});
@@ -412,7 +412,7 @@ function getScenarioDataAPI(){
 		currentScenario = cleanData(json.response);			// clean data
 
 		updateChart();								// update chart
-		
+
 		// testing
 		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
 	});
@@ -475,7 +475,7 @@ function cleanData(data){
 		// create REGION scale (a min / max for each REGION)
 		data[i].regionErrorMin = data[i].regionEstimate - data[i].regionError;
 		data[i].regionErrorMax = data[i].regionEstimate + data[i].regionError;
-	
+
 		// round min, max
 		data[i].tractErrorMin = roundDecimal(data[i].tractErrorMin);
 		data[i].tractErrorMax = roundDecimal(data[i].tractErrorMax);
@@ -492,7 +492,7 @@ function cleanData(data){
 		//currentScenarioTIDs[ row.TID ] = row;
 		console.log("cleanData() --> row = ",row);
 	});
-	//if (MAIN_DEBUG) 
+	//if (MAIN_DEBUG)
 		console.log("cleanData() --> currentScenarioTIDs = ",currentScenarioTIDs);
 
 
@@ -504,7 +504,7 @@ function cleanData(data){
 function roundDecimal(num){
 
 	var decimal = 1000;
-	
+
 	if (num > 1000) {		var decimal = 1;
 	} else if (num > 100){ 	var decimal = 10;
 	} else if (num > 10){	var decimal = 10;
@@ -539,7 +539,7 @@ var toggle_fullscreen = function(){
 		} else if (document.msExitFullscreen) {
 			document.msExitFullscreen();
 		}
-	} 
+	}
 	// else go fullscreen
 	else {
 		element = $('#presentation').get(0);
@@ -557,6 +557,3 @@ var toggle_fullscreen = function(){
 
 
 loaded = true;
-
-
-
