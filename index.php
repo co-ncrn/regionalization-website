@@ -180,15 +180,21 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
-<script src="<?php print $rootDir; ?>assets/js/topojson.v1.min.js"></script>
-<script src="<?php print $rootDir; ?>assets/js/d3-axis.v1.min.js"></script>
-<script src="<?php print $rootDir; ?>assets/js/jquery.history.js"></script>
+<script src="<?php print $rootDir; ?>assets/libs/topojson.v1.min.js"></script>
+<script src="<?php print $rootDir; ?>assets/libs/d3-axis.v1.min.js"></script>
+<script src="<?php print $rootDir; ?>assets/libs/jquery.history.js"></script>
+
+
+<script src="<?php print $rootDir; ?>node_modules/jquery-history/dist/jquery.history.min.js"></script>
+
+
  -->
 
 
 <script src="<?php print $rootDir; ?>node_modules/jquery/dist/jquery.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/historyjs/scripts/bundled/html5/jquery.history.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/chosen-jquery/lib/chosen.jquery.min.js"></script>
-<script src="<?php print $rootDir; ?>node_modules/popper.js/dist/popper.min.js"></script>
+<script src="<?php print $rootDir; ?>node_modules/popper.js/dist/umd/popper.min.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/leaflet/dist/leaflet.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/leaflet-easybutton/src/easy-button.js"></script>
@@ -197,7 +203,6 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <script src="<?php print $rootDir; ?>node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/topojson/dist/topojson.min.js"></script>
 <script src="<?php print $rootDir; ?>node_modules/d3-axis/build/d3-axis.min.js"></script>
-<script src="<?php print $rootDir; ?>node_modules/jquery-history/dist/jquery.history.min.js"></script>
 
 
 
