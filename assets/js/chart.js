@@ -1,8 +1,7 @@
-/**************************************************************************
- *																		  *
- * 	CHART				 												  *
- *																		  *
- **************************************************************************/
+/*jshint esversion: 6 */
+
+/*  CHART
+******************************************************************************/
 
 var limit = 20, // data limit for testing
 	svgHeight = 20, // height for all svg elements
@@ -10,8 +9,7 @@ var limit = 20, // data limit for testing
 	CHART_DEBUG = true;
 
 
-var margin, sizes, svgRatio = .67;
-
+var margin, sizes, svgRatio = 0.67;
 
 
 
@@ -21,54 +19,11 @@ var margin, sizes, svgRatio = .67;
 
 
 // resize chart elements based on browser size
-d3.select(window).on('resize', resizeTable);
+d3.select(window).on('resize', Table.resize);
 
-function resizeTable() {
-	// get sizes
-	sizes = {
-		"chartContainer": $("#chart-container").width(),
-		"chart": $("#chart").width(),
-		"table": $("table").width(),
-		"thSVG": $(".thSVG").width(),
-		"svgCell": $(".svgCell").width(),
-	}
 
-	console.log("\nresizeTable() sizes = ", sizes);
 
-	// expand table
-	$("table").width(sizes.chartContainer);
 
-	// resize headers to match data in colums
-	$(".thTID").innerWidth($(".tid").width());
-	$(".thRID").width($(".rid").width());
-	$(".thEST").width($(".est").width());
-	$(".thMAR").width($(".err").width());
-
-	// resize SVG headers/cells
-	$(".thSVG").width(sizes.chartContainer * svgRatio);
-	$(".thSVG svg").width(sizes.chartContainer * svgRatio);
-	$(".svgCell").width(sizes.chartContainer * svgRatio);
-	$(".svgCell svg").width(sizes.chartContainer * svgRatio);
-
-	// update SVG sizes in chart
-	if (prop(loaded) && loaded == true) {
-		console.log("currentScenarioArray0", currentScenarioArray);
-		updateChart();
-	}
-
-	// set svg properties
-	margin = {
-			top: 0,
-			right: 10,
-			bottom: 0,
-			left: 10
-		},
-		width = sizes.thSVG - margin.left - margin.right,
-		height = svgHeight - margin.top - margin.bottom,
-		svgStroke = 1.5, barHV = 8;
-}
-resizeTable(); // get initial table sizes
-setTimeout(resizeTable, 1000); // and do it again once data is set
 
 
 

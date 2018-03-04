@@ -18,10 +18,6 @@ async_testing@>=0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/async_testing/-/async_testing-0.3.2.tgz#cfb35973230e1175ac65c1a5241085f344a8a8a5"
 
-ax5core@:
-  version "1.4.121"
-  resolved "https://registry.yarnpkg.com/ax5core/-/ax5core-1.4.121.tgz#699130ce8d299c5b7c9195bd763e566eaf66ade9"
-
 bal-util@1.x:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/bal-util/-/bal-util-1.18.0.tgz#4e2e2d90816d1a6b7e37174020042a2ce258421d"
@@ -450,14 +446,7 @@ inherits@2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
-jquery-history@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/jquery-history/-/jquery-history-1.0.1.tgz#83ed0f8ec78b523455dda4804748a1977e69f4ed"
-  dependencies:
-    ax5core ""
-    jquery ""
-
-jquery@, jquery@^3.3.1:
+jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
