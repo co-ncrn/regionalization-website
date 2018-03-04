@@ -41,8 +41,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://<?php print $site['domain']; ?>/" />
 <meta property="og:image" content="https://<?php print $site['domain']; ?>/assets/img/share.png" />
-<meta property="og:image:width" content="600" />
-<meta property="og:image:height" content="600" />
+<meta property="og:image:width" content="300" />
+<meta property="og:image:height" content="300" />
 <meta property="og:description" content="<?php print $site['description']; ?>" />
 <meta property="og:site_name" content="<?php print $site['title']; ?>" />
 <meta property="fb:app_id" content="833996433457830" />
