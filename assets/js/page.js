@@ -12,7 +12,7 @@ const Page = (function() {
 	//console.log("getScenarioFromUrl()",JSON.stringify(getScenarioFromUrl()) )
 	function checkForCurrentPage() {
 		var path = getScenarioFromUrl();
-		if (Site.debug) console.log(" --> Page.check() path = ", JSON.stringify(path))
+		if (Site.debug) console.log(" -> Page.check() path = ", JSON.stringify(path))
 
 		if (path.msa && path.scenario && path.data) {
 			dataChange("load", path.msa, path.scenario, path.data);
@@ -107,7 +107,7 @@ const Page = (function() {
 				}
 			}
 		}
-		if (Site.debug) console.log(" --> Page.getScenarioFromUrl()", Site.server, url, page, location);
+		if (Site.debug) console.log(" -> Page.getScenarioFromUrl()", Site.server, url, page, location);
 		return location;
 	}
 

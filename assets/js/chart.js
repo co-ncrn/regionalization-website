@@ -146,7 +146,7 @@ function updateColorScales() {
 		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
 		return (item.value[tractOrRegion + "Mar"]);
 	}))
-	//console.log("updateColorScales() --> estExtent = ",estExtent,"marExtent = ",marExtent)
+	//console.log("updateColorScales() -> estExtent = ",estExtent,"marExtent = ",marExtent)
 
 	// find midpoint between estExtents, use parseFloats so strings don't concat
 	estExtentMiddle = parseFloat(estExtent[0]) + ((parseFloat(estExtent[1]) - parseFloat(estExtent[0])) / 2);
@@ -193,8 +193,8 @@ function updateChart() {
 	console.log("currentScenarioArray1", currentScenarioArray);
 	enterChart();
 
-	//if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
-	//if (CHART_DEBUG) console.log("updateChart() --> currentScenarioArray = ",currentScenarioArray)
+	//if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario)
+	//if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray)
 
 	updateColorScales();
 	updateChartScales();
@@ -222,7 +222,7 @@ function updateChart() {
 			return /* i; */ reformatTID(d.value.TID).substring(7); /* remove "state.county." */
 		})
 		.attr("style", function(d) {
-			//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+			//console.log(".tid -> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
 
 			saveOriginalRowColor("g" + d.value.TID);
 			var c = getOriginalRowColor("g" + d.value.TID); // default (white)
@@ -243,7 +243,7 @@ function updateChart() {
 			return d.value.RID;
 		})
 		.attr("style", function(d) {
-			//console.log(".rid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+			//console.log(".rid -> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
 
 			var c = getOriginalRowColor("g" + d.value.TID); // default (white)
 			if (tractOrRegion == "r") {
@@ -415,13 +415,13 @@ function toggleEstimateOrMargin(state) {
 }
 
 function selectEST() {
-	console.log("selectEST() --> estimateOrMargin=", estimateOrMargin);
+	console.log("selectEST() -> estimateOrMargin=", estimateOrMargin);
 	if (estimateOrMargin == "e") return; // if same, exit
 	toggleEstimateOrMargin("e");
 }
 
 function selectMAR() {
-	console.log("selectMAR() --> estimateOrMargin=", estimateOrMargin);
+	console.log("selectMAR() -> estimateOrMargin=", estimateOrMargin);
 	if (estimateOrMargin == "m") return; // if same, exit
 	toggleEstimateOrMargin("m");
 }
@@ -456,7 +456,7 @@ function removeHighlightTractOnChart(properties) {
  * Change selection on chart/map to show TRACTS
  */
 function selectTID(d) {
-	//console.log("selectTID() --> d,i",d,i);
+	//console.log("selectTID() -> d,i",d,i);
 
 	// switch to display tract data in boxplot
 	if (tractOrRegion == "r") {
@@ -480,7 +480,7 @@ function resetTID(d) {
  * Change selection on chart/map to show REGIONS
  */
 function selectRID(d) {
-	//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
+	//console.log("selectRID() -> tractOrRegion = ",tractOrRegion);
 
 	// switch to display region data in boxplot
 	if (tractOrRegion == "t") {

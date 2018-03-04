@@ -146,7 +146,7 @@ var mns = new function() {
 	    // don't do anything if this is the current msa
 	    if (prop(e) && prop(e.feature) && e.feature.properties.GEOID == current.msa) return;
 
-		console.log("resetMSAStyle() --> ",lastMSAFeature,"e",e);
+		console.log("resetMSAStyle() -> ",lastMSAFeature,"e",e);
 
 
 		if (prop(e)){
@@ -160,7 +160,7 @@ var mns = new function() {
 	}
 	// hide an msa feature
 	function hideLastMSAFeature(){
-		console.log("hideLastMSAFeature() --> ",lastMSAFeature)
+		console.log("hideLastMSAFeature() -> ",lastMSAFeature)
 		if (prop(lastMSAFeature)) {
 			//clearTimeout(hideLastMSAFeatureTimeOut);
 			lastMSAFeature.setStyle({
@@ -207,8 +207,8 @@ var mns = new function() {
 	 *	Zoom and fit the map to the MSA bounds
 	 */
 	var zoomToMSAonMap = function(msa) {
-		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap()",arguments.callee.caller.toString(), current, msa, msas[msa][0]);
-		//if (MAP_DEBUG) console.log(" --> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
+		//if (MAP_DEBUG) console.log(" -> zoomToMSAonMap()",arguments.callee.caller.toString(), current, msa, msas[msa][0]);
+		//if (MAP_DEBUG) console.log(" -> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
 		try {
 			if (map && prop(msaIndex[msa].bounds))
 				map.fitBounds(msaIndex[msa].bounds);
@@ -243,7 +243,7 @@ var mns = new function() {
 
 		d3.json(src, function(error, data) {		// use D3 to load JSON
 			if (error) return console.warn(error);	// return if error
-			if (MAP_DEBUG) console.log(" --> d3.json",error,data); // testing
+			if (MAP_DEBUG) console.log(" -> d3.json",error,data); // testing
 			if (tractLayer != null)
 				map.removeLayer(tractLayer)			// remove current layer from map
 			tractTIDindex = {};						// reset TID references
@@ -278,7 +278,7 @@ var mns = new function() {
 		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function (layer) {
-			if (MAP_DEBUG) console.log("updateMap() --> eachLayer()",layer.feature, layer);
+			if (MAP_DEBUG) console.log("updateMap() -> eachLayer()",layer.feature, layer);
 
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer)
@@ -293,7 +293,7 @@ var mns = new function() {
 	 *	Set properties, popup, events for each tract feature
 	 */
 	function onEachTractFeature(feature, layer) {
-		//if (MAP_DEBUG) console.log(" --> onEachTractFeature() feature, layer", feature, layer)
+		//if (MAP_DEBUG) console.log(" -> onEachTractFeature() feature, layer", feature, layer)
 
 		// add references to TID, RID to call it from the chart later
 		tractTIDindex[feature.properties.TID] = layer;
@@ -332,8 +332,8 @@ var mns = new function() {
 		// reference to layer feature
 	    var layer = e.target;
 
-	    //if (MAP_DEBUG) console.log(" --> highlightTractFromMap() layer = ",layer)
-	    //if (MAP_DEBUG) console.log(" --> highlightTractFromMap() layer.feature = ",layer.feature)
+	    //if (MAP_DEBUG) console.log(" -> highlightTractFromMap() layer = ",layer)
+	    //if (MAP_DEBUG) console.log(" -> highlightTractFromMap() layer.feature = ",layer.feature)
 
 	    // slightly shift fill
 	    layer.setStyle(tractHighlightStyle);
@@ -446,7 +446,7 @@ var mns = new function() {
 		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-		if (MAP_DEBUG) console.log("initialTractStyle() --> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+		if (MAP_DEBUG) console.log("initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
 /*
 		if (tractOrRegion == "t")
@@ -468,7 +468,7 @@ var mns = new function() {
 
 
 		if ( prop(currentScenario) && currentScenario[_tid] ){
-			//if (MAP_DEBUG) console.log("initialTractStyle() --> setting style based on data");
+			//if (MAP_DEBUG) console.log("initialTractStyle() -> setting style based on data");
 
 			// determine whether to store tract / region AND estimate / margin
 			if (estimateOrMargin == "e")
@@ -490,7 +490,7 @@ var mns = new function() {
 */
 	    } // if no TID, currentScenario, or data found
 	    else {
-			if (MAP_DEBUG) console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
+			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
 			// no changes to default style
 		}
 		// return a style object
@@ -580,11 +580,11 @@ var mns = new function() {
 	 *	Temporary: List all features on the map	(only for testing, takes too long to cycle through them)
 	 */
  	function selectMapFeature(tid){
-		console.log("selectMapFeature() --> ",tid)
+		console.log("selectMapFeature() -> ",tid)
  		map.eachLayer(function (layer) {
-			console.log("selectMapFeature() --> ",layer.feature)
+			console.log("selectMapFeature() -> ",layer.feature)
 			if (layer.feature && layer.feature.properties.TID){
-				console.log("selectMapFeature() --> ",layer.feature.properties.tid)
+				console.log("selectMapFeature() -> ",layer.feature.properties.tid)
 				layer.setStyle({
 			        fillOpacity: 0.8
 			    });

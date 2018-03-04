@@ -27,14 +27,7 @@ var msas = {}, // all the MSAs
 
 
 
-$(document).ready(function() {
-	console.log("$(document).ready(function() {")
-
-
-	console.log(Page.getScenarioFromUrl());
-
-	Menu.addListeners();
-
+$(function() {
 	init();
 });
 
@@ -44,6 +37,9 @@ $(document).ready(function() {
  */
 function init() {
 	console.log("init()")
+
+	Menu.addListeners();
+
 
 	// Table.resize(); // get initial table size
 	// setTimeout(Table.resize, 1000); // and do it again once data is set
@@ -55,7 +51,7 @@ function init() {
 	d3.json(Site.rootDir + "data/msas.json", function(error, json) { // flat JSON file
 		if (error) return console.warn(error); // handle error
 		msas = json; // update MSAs
-		if (Site.debug) console.log("init() --> msas = ", msas);
+		if (Site.debug) console.log("init() -> d3.json -> msas = ", msas);
 		if (Site.debug) $("#rawDataOutput").val("all MSAs: \n" + JSON.stringify(msas));
 		Menu.createMSA(msas); // create MSA menu
 	});
@@ -71,7 +67,7 @@ function init() {
 function dataChange(origin, msa, scenario, data, tractOrRegion, estimateOrMargin) {
 	if (!prop(origin)) return; // origin required
 	if (Site.debug) console.log("\n\ndataChange()", origin, msa, scenario, data);
-	if (Site.debug) console.log(" --> current data ", JSON.stringify(current) + " --> current URL ", JSON.stringify(Page.getScenarioFromUrl()));
+	if (Site.debug) console.log(" -> current data ", JSON.stringify(current) + " -> current URL ", JSON.stringify(Page.getScenarioFromUrl()));
 
 	// should we update?
 	var updateMSA, updateScenario, updateData;
@@ -133,7 +129,7 @@ function dataChange(origin, msa, scenario, data, tractOrRegion, estimateOrMargin
 	}
 
 
-	if (Site.debug) console.log(" --> current data ", JSON.stringify(current) + " --> current URL ", JSON.stringify(Page.getScenarioFromUrl()));
+	if (Site.debug) console.log(" -> current data ", JSON.stringify(current) + " -> current URL ", JSON.stringify(Page.getScenarioFromUrl()));
 }
 
 
@@ -176,7 +172,7 @@ function updateDebug() {
 		"; tractOrRegion=" + tractOrRegion +
 		"; estimateOrMargin=" + estimateOrMargin;
 	//$(".debug").html(str);
-	console.log("updateDebug() -->", str);
+	console.log("updateDebug() ->", str);
 }
 
 
@@ -188,7 +184,7 @@ var currentData = null;
  *	Build the scenario menu based on MSA selection
  */
 function updateScenarioMenu(msa, scenario, data) {
-	if (Site.debug) console.log(" --> updateScenarioMenu()", msa);
+	if (Site.debug) console.log(" -> updateScenarioMenu()", msa);
 
 	if (Site.debug) $("#rawDataOutput").val(msa + ": \n" + JSON.stringify(msas[msa])); // testing
 
@@ -255,7 +251,7 @@ function getScenarioData() {
 	if (Site.debug) console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
 		if (error) return console.error(error); // handle error
-		console.log("!!!!!!!!!!!!!!getScenarioData() --> json = ", json);
+		console.log("!!!!!!!!!!!!!!getScenarioData() -> json = ", json);
 
 
 
@@ -371,10 +367,10 @@ function cleanData(data) {
 	//	currentScenarioTIDs = {};
 	data.forEach(function(row, i) {
 		//currentScenarioTIDs[ row.TID ] = row;
-		console.log("cleanData() --> row = ", row);
+		console.log("cleanData() -> row = ", row);
 	});
 	//if (Site.debug)
-	console.log("cleanData() --> currentScenarioTIDs = ", currentScenarioTIDs);
+	console.log("cleanData() -> currentScenarioTIDs = ", currentScenarioTIDs);
 
 
 	return data;

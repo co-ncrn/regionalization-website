@@ -9,7 +9,7 @@ var Menu = (function() {
 	 *	Build the MSA menu when the page loads
 	 */
 	function createMSA(msas) {
-		if (Site.debug) console.log(" --> Menu.createMSA()")
+		if (Site.debug) console.log(" -> Menu.createMSA()")
 		// default empty value in select menus
 		var msa_options = "<option val=''></option>";
 		// loop through msas
