@@ -26,3 +26,9 @@ https://bost.ocks.org/mike/join/
 
 The American Community Survey, ESRI White Paper 2014
 https://www.esri.com/library/whitepapers/pdfs/the-american-community-survey.pdf
+
+audreyr/favicon-cheat-sheet
+https://github.com/audreyr/favicon-cheat-sheet
+
+Must-Have Social Meta Tags for Twitter, Google+, Facebook and More
+https://moz.com/blog/meta-data-templates-123
