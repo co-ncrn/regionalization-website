@@ -1,8 +1,26 @@
 <?php
 
+//
+// // will eventually be domain name
+// //domain = "regionalization-website/";	// owen's computer
+// //domain = "http://207.38.84.184/";		// remote
+//
+// // api url
+// //api_url = "http://localhost/api/";	// for testing local
+// api_url = "http://207.38.84.184/api/";	// remote
+// api_url = "https://reducinguncertainty.org/api/";	// remote
+//
+// // root file directory
+// rootDir = "http://localhost/RegionalismMap/code/regionalization-website/";
+// //rootDir = "http://207.38.84.184/";	// remote
+//
+//
+
 $site = array(
-    'domain' => "reducinguncertainty.org",
+    'dataDir' => "/data/",
+    'debug' => true,
     'description' => "Reducing the Margin of Error in the American Community Survey",
+    'domain' => "reducinguncertainty.org",
     'rootDir' => "/",
     'title' => "Reducing Uncertainty"
 );
@@ -75,13 +93,15 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 var Site = (function() {
 
 	return {
-		domain: "<?php print $site['domain']; ?>",
-		description: "<?php print $site['description']; ?>",
+        dataDir: "<?php print $site['dataDir']; ?>",
+        debug: <?php print $site['debug']; ?>,
+        description: "<?php print $site['description']; ?>",
+        domain: "<?php print $site['domain']; ?>",
 		rootDir: "<?php print $site['rootDir']; ?>",
 		title: "<?php print $site['title']; ?>",
 	}
 
-});
+})();
 </script>
 
 
@@ -209,12 +229,14 @@ var Site = (function() {
 		</div>
 	</div>
 
+    <?php if (site['debug']) { ?>
 	<div class="row">
-		<div class="col-md-12">
-			<h4>Raw data</h4>
-			<textarea class="form-control" rows="20" id="output"></textarea>
-		</div>
+		<div class="col-md-12" id="rawData">
+            <h4>Raw data</h4>
+            <textarea class="form-control" rows="20" id="rawDataOutput"></textarea>
+        </div>
 	</div>
+    <?php } ?>
 
 </div>
 
@@ -260,6 +282,7 @@ var Site = (function() {
 
 <script src="<?php print $site['rootDir']; ?>data/data_definitions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/config.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/scenario.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script>

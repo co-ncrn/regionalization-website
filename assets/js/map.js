@@ -8,14 +8,14 @@
  *																		  *
  **************************************************************************/
 
-// Map NameSpace 
+// Map NameSpace
 var mns = new function() {
 
 
 
 	var msaLayer = {},		// the map layer for all MSAs
 		msaIndex = {},		// index of all MSA features for quick lookup
-		
+
 		tractLayer = {},	// reference to Topojson layer created by Leaflet
 		tractTIDindex = {},	// reference to tracts by TID
 		tractRIDindex = {}, // reference to tracts by RID
@@ -76,7 +76,7 @@ var mns = new function() {
 		});
 	}
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
-	loadMSALayer(rootDir+"data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
+	loadMSALayer(Site.rootDir+"data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
 
 	/**
 	 *	Set events, etc. for each MSA feature
@@ -84,7 +84,7 @@ var mns = new function() {
 	function onEachMSAFeature(feature, layer) {
 	    //console.log("onEachMSAFeature() feature = ",feature, " layer = ",layer)
 
-		// reference to bounds of each MSA 
+		// reference to bounds of each MSA
 		msaIndex[layer.feature.properties.GEOID] = {
 			"bounds": layer.getBounds(),
 			"msa":layer.feature.properties.GEOID
@@ -107,7 +107,7 @@ var mns = new function() {
 	    layer.on({
 	        mouseover: 	highlightMSAFromMap,
 	        mouseout: 	resetMSAStyle,
-	        //mousemove: 	moveMSAPopup, 
+	        //mousemove: 	moveMSAPopup,
 	        click: 		msaFeatureClicked
 	    });
 	}
@@ -170,9 +170,9 @@ var mns = new function() {
 		else {
 			hideLastMSAFeatureTimeOut = setTimeout(hideLastMSAFeature, 1000); // check again in a second
 		}
-			
 
-		
+
+
 	}
 	// follow mouse with popup
 	function moveMSAPopup(e){
@@ -191,7 +191,7 @@ var mns = new function() {
 		// if this is an actual MSA feature && there is a GEOID (MSA)
 		if (layer.feature.properties && layer.feature.properties.GEOID){
 			//if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
-	
+
 		    // track recently clicked msa layer
 		    lastMSAFeature = layer;
 
@@ -200,8 +200,8 @@ var mns = new function() {
 
 			// update the MSA across the interface
 			dataChange("map",layer.feature.properties.GEOID);
-		
-		} 
+
+		}
 	}
 	/**
 	 *	Zoom and fit the map to the MSA bounds
@@ -260,7 +260,7 @@ var mns = new function() {
 			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
 			resetMSAStyle();						// make sure the MSA is not visible
 			//restyleTractLayer()
-			
+
 			hideLastMSAFeature()
 			console.log("lastMSAFeature",lastMSAFeature);
 
@@ -277,9 +277,9 @@ var mns = new function() {
 		//console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;
 
-		tractLayer.eachLayer(function (layer) {  
+		tractLayer.eachLayer(function (layer) {
 			if (MAP_DEBUG) console.log("updateMap() --> eachLayer()",layer.feature, layer);
-			
+
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer)
 
@@ -488,7 +488,7 @@ var mns = new function() {
 			// update style color
 			defaultStyle.fillColor = blues(d);
 */
-	    } // if no TID, currentScenario, or data found 
+	    } // if no TID, currentScenario, or data found
 	    else {
 			if (MAP_DEBUG) console.log("initialTractStyle() --> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
 			// no changes to default style
@@ -545,7 +545,7 @@ var mns = new function() {
 		};
 	}
 
-	
+
 
 
 /**************************************************************************
@@ -554,25 +554,25 @@ var mns = new function() {
  *																		  *
  **************************************************************************/
 
- 
+
 	/**
 	 *	TopoJSON extends GeoJSON class
 	 */
-	L.TopoJSON = L.GeoJSON.extend({  
+	L.TopoJSON = L.GeoJSON.extend({
 		// update addData function to check for "Typology"
-		addData: function(jsonData) {    
+		addData: function(jsonData) {
 			// handle as TopoJSON
 			if (jsonData.type === "Topology") {
 				for (key in jsonData.objects) {
 					geojson = topojson.feature(jsonData, jsonData.objects[key]);
 					L.GeoJSON.prototype.addData.call(this, geojson);
 				}
-			}      
+			}
 			// handle as regular GeoJSON
 			else {
 				L.GeoJSON.prototype.addData.call(this, jsonData);
 			}
-		}  
+		}
 	});
 
 

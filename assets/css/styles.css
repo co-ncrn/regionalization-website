@@ -84,5 +84,5 @@ font-family: 'Open Sans', sans-serif;
 
 /* TESTING */
 
-#output { font-size: 75%; }
+#rawDataOutput { font-size: 75%; }
 .debug { font-size: 70%; background: #eee; color: steelblue; padding: 4px; }

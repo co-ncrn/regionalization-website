@@ -1,4 +1,4 @@
-
+/*jshint esversion: 6 */
 /**
  *	Main.js - last file to load, starts everything
  *	@author Owen Mundy
@@ -7,16 +7,16 @@
 
 
 var msas = {}, 											// all the MSAs
-	current = { "msa":"", "scenario":"", "data":"" }	// current scenario path
+	current = { "msa":"", "scenario":"", "data":"" },	// current scenario path
 	currentScenario = {},							// current scenario data, once loaded
 	currentScenarioTIDs = {},
 	currentScenarioArray = [],
 	tractOrRegion = "t",
 	estimateOrMargin = "e",
-	numberTracks = 0,
-	websiteName = "Reducing Uncertainty &ndash; ",
-	MAIN_DEBUG = false
+	numberTracks = 0
 	;
+
+
 
 
 
@@ -40,11 +40,11 @@ $(document).ready(function(){
 		dataChange("menu",params.selected,current.scenario,current.data);
 	});
 	$('#scenario_select_box').on('change', function(evt, params) {
-		if (MAIN_DEBUG) console.log("params.selected",params.selected);
+		if (Site.debug) console.log("params.selected",params.selected);
 		// split the params from the dropdown
 		var p = params.selected.split("-");
 		if (p.length == 2){
-			//if (MAIN_DEBUG) console.log( p.toString())
+			//if (Site.debug) console.log( p.toString())
 			dataChange("menu",current.msa,p[0],p[1]);
 		}
 	});
@@ -58,12 +58,12 @@ $(document).ready(function(){
 function init(){
 
 	// get _metadata for menus, etc.
-	//d3.json(api_url+ "_metadata", function(error, json) { // from API
-	d3.json(rootDir + "data/msas.json", function(error, json) { // flat JSON file
+	//d3.json(Site.dataDir+ "_metadata", function(error, json) { // from API
+	d3.json(Site.rootDir + "data/msas.json", function(error, json) { // flat JSON file
 		if (error) return console.warn(error);	// handle error
 		msas = json; 							// update MSAs
-		if (MAIN_DEBUG) console.log("init() --> msas = ",msas);
-		$("#output").val( "all MSAs: \n"+ JSON.stringify(msas) );
+		if (Site.debug) console.log("init() --> msas = ",msas);
+		if (Site.debug) $("#rawDataOutput").val( "all MSAs: \n"+ JSON.stringify(msas) );
 		createMSAMenu(msas); 			// create MSA menu
 	});
 }
@@ -77,8 +77,8 @@ function init(){
  */
 function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 	if (!prop(origin)) return; // origin required
-	if (MAIN_DEBUG) console.log("\n\ndataChange()",origin,msa,scenario,data);
-	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	if (Site.debug) console.log("\n\ndataChange()",origin,msa,scenario,data);
+	if (Site.debug) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 
 	// should we update?
 	var updateMSA, updateScenario, updateData;
@@ -112,6 +112,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 	}
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(current.scenario))){
+		console.log("about to call getScenarioData()")
 		getScenarioData(); // do this before any map work
 	}
 	if (updateMSA){
@@ -122,7 +123,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 		// update scenario menu
 		updateScenarioMenu(msa);
 		// load msa tracts topojson
-		mns.loadTractLayerData(current.msa, rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
+		mns.loadTractLayerData(current.msa, Site.rootDir + "data/tracts/topojson_quantized_1e6/"+ current.msa +"_tract.topojson");
 	}
 	if (updateScenario){
 		// update scenario menu
@@ -139,7 +140,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 	}
 
 
-	if (MAIN_DEBUG) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
+	if (Site.debug) console.log(" --> current data ", JSON.stringify(current) +" --> current URL ", JSON.stringify(getUrlPath()) );
 }
 
 
@@ -149,7 +150,7 @@ function dataChange(origin,msa,scenario,data,tractOrRegion,estimateOrMargin){
 //console.log("getUrlPath()",JSON.stringify(getUrlPath()) )
 function checkForCurrentPage(){
 	var path = getUrlPath();
-	if (MAIN_DEBUG) console.log(" --> checkForCurrentPage() path = ",JSON.stringify(path) )
+	if (Site.debug) console.log(" --> checkForCurrentPage() path = ",JSON.stringify(path) )
 
 	if (path.msa && path.scenario && path.data){
 		dataChange("load",path.msa,path.scenario,path.data);
@@ -167,6 +168,7 @@ function checkForCurrentPage(){
  *	update URL - Be careful, because as you do the root of the site changes
  */
 function updateUrl(change){
+	console.log("updateUrl()",change);
 
 	// bind to StateChange Event
 	History.Adapter.bind(window,'statechange',function(){
@@ -185,10 +187,10 @@ function updateUrl(change){
 	// change state
 	if (change == 'add'){
 		// data
-		History.pushState({state:1}, websiteName +" &ndash; "+ url, rootDir + url);
+		History.pushState({state:1}, Site.title +" &ndash; "+ url, Site.rootDir + url);
 	} else {
 		// default
-		History.pushState({state:0}, websiteName + "", rootDir);
+		History.pushState({state:0}, Site.title + "", Site.rootDir);
 	}
 
 }
@@ -200,7 +202,7 @@ window.onpopstate = function(event) {
         //location.reload();
         checkForCurrentPage();
     }
-}
+};
 
 
 
@@ -214,9 +216,9 @@ function getUrlPath() {
     	location = {};
 
  	// split on domain (the working directory OR domain name)
-    if (fullpath.indexOf(domain) != -1) {
+    if (fullpath.indexOf(Site.domain) != -1) {
     	// get everything after domain
-        page = fullpath.split(domain)[1];
+        page = fullpath.split(Site.domain)[1];
         // remove any trailing slashes
         page = page.replace(/\/$/, "").trim();
         // if data there
@@ -235,7 +237,7 @@ function getUrlPath() {
 	        }
         }
     }
-	if (MAIN_DEBUG) console.log(" --> getUrlPath()",domain,fullpath,page,location);
+	if (Site.debug) console.log(" --> getUrlPath()",Site.domain,fullpath,page,location);
     return location;
 }
 
@@ -259,13 +261,13 @@ function getUrlPath() {
  *	Build the MSA menu when the page loads
  */
 function createMSAMenu(json){
-	if (MAIN_DEBUG) console.log("--> createMSAMenu()")
+	if (Site.debug) console.log("--> createMSAMenu()")
 	// default empty value in select menus
 	var msa_options = "<option val=''></option>";
 	// loop through msas
 	for (var key in json) {
 	    if (!json.hasOwnProperty(key)) continue;	// skip loop if the property is from prototype
-	   	//if (MAIN_DEBUG) console.log(key,data[key])
+	   	//if (Site.debug) console.log(key,data[key])
 	    // add MSAs to select options
 		msa_options += optionHTML(key, key +" - "+ json[key][0].description);
 	}
@@ -310,11 +312,11 @@ var currentData = null;
  *	Build the scenario menu based on MSA selection
  */
 function updateScenarioMenu(msa,scenario,data){
-	if (MAIN_DEBUG) console.log(" --> updateScenarioMenu()", msa);
+	if (Site.debug) console.log(" --> updateScenarioMenu()", msa);
 
-	$("#output").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
+	if (Site.debug) $("#rawDataOutput").val( msa +": \n"+ JSON.stringify(msas[msa]) ); // testing
 
-	//if (MAIN_DEBUG) console.log(msas[msa][0])
+	//if (Site.debug) console.log(msas[msa][0])
 	currentData = msas[msa][0];
 
 	// use msa to update the scenario box
@@ -322,7 +324,7 @@ function updateScenarioMenu(msa,scenario,data){
 
 	// for each scenario
 	for (var i = 0; i <  msas[msa].length; i++) {
-		//if (MAIN_DEBUG) console.log( msas[msa][i]);
+		//if (Site.debug) console.log( msas[msa][i]);
 
 		var scenario = msas[msa][i].scenario;
 
@@ -331,7 +333,7 @@ function updateScenarioMenu(msa,scenario,data){
 
 		// for each data type
 		for (var j = 0; j <  msas[msa][i].data.length; j++) {
-			//if (MAIN_DEBUG) console.log( msas[msa][i].data[j]);
+			//if (Site.debug) console.log( msas[msa][i].data[j]);
 
 			var data = msas[msa][i].data[j];
 
@@ -346,7 +348,7 @@ function updateScenarioMenu(msa,scenario,data){
 
  	// if scenario/data then set it
 	if (prop(scenario) ){
-		//if (MAIN_DEBUG) console.log("scenario",current.scenario +"-"+ current.data);
+		//if (Site.debug) console.log("scenario",current.scenario +"-"+ current.data);
 		$("#scenario_select_box").val(current.scenario +"-"+ current.data).trigger('chosen:updated');
 	}
 	// otherwise open it for input
@@ -372,8 +374,8 @@ function optionHTML(val,text){
  *	Get data from server
  */
 function getScenarioData(){
-	var url = rootDir + "/data/scenarios/" + current.msa +"_"+ current.scenario +"_"+ current.data +".json";
-	if (MAIN_DEBUG) console.log("getScenarioData()", url);
+	var url = Site.rootDir + "/data/scenarios/" + current.msa +"_"+ current.scenario +"_"+ current.data +".json";
+	if (Site.debug) console.log("getScenarioData()", url);
 	d3.json(url, function(error, json) {
 		if (error) return console.warn(error);		// handle error
 		console.log("getScenarioData() --> json = ",json);
@@ -387,6 +389,8 @@ function getScenarioData(){
 
 		// data has arrived
 		// currentScenario = cleanData(json.response);			// DELETE
+
+console.log("currentScenarioArray, json",currentScenarioArray)
 		currentScenario = json;
 		currentScenarioArray = d3.entries(currentScenario);
 		numberTracks = currentScenarioArray.length;
@@ -394,29 +398,29 @@ function getScenarioData(){
 		updateChart(); // update chart (and eventually map, from chart.js)
 
 		// testing
-		$("#output").val( JSON.stringify(json).replace("},","},\n") );
+		if (Site.debug) $("#rawDataOutput").val( JSON.stringify(json).replace("},","},\n") );
 	});
 }
 
 
-/**
- *	Get data from server
- */
-function getScenarioDataAPI(){
-	var url = api_url + current.msa +"/"+ current.scenario +"/"+ current.data;
-	if (MAIN_DEBUG) console.log("getScenarioData()", url);
-	d3.json(url, function(error, json) {
-		if (error) return console.warn(error);		// handle error
-		if (MAIN_DEBUG) console.log(json.response);
-
-		currentScenario = cleanData(json.response);			// clean data
-
-		updateChart();								// update chart
-
-		// testing
-		$("#output").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
-	});
-}
+// /**
+//  *	Get data from server
+//  */
+// function getScenarioDataAPI(){
+// 	var url = Site.dataDir + current.msa +"/"+ current.scenario +"/"+ current.data;
+// 	if (Site.debug) console.log("getScenarioData()", url);
+// 	d3.json(url, function(error, json) {
+// 		if (error) return console.warn(error);		// handle error
+// 		if (Site.debug) console.log(json.response);
+//
+// 		currentScenario = cleanData(json.response);			// clean data
+//
+// 		updateChart();								// update chart
+//
+// 		// testing
+// 		if (Site.debug) $("#rawDataOutput").val( JSON.stringify(current) +": \n"+ JSON.stringify(json.response) );
+// 	});
+// }
 
 
 /**
@@ -442,11 +446,11 @@ function padFloat(num){
  *	Clean data from API (need to eventually make these changes permanent in DB)
  */
 function cleanData(data){
-	if (MAIN_DEBUG) console.log("cleanData() -> current = ",current);
+	if (Site.debug) console.log("cleanData() -> current = ",current);
 /*
 	// data fixing
 	data.forEach(function(row,i) {
-		if (MAIN_DEBUG) console.log("i=",i," // row = ",row);
+		if (Site.debug) console.log("i=",i," // row = ",row);
 
 		// now on server
 		// remove g from TID
@@ -492,7 +496,7 @@ function cleanData(data){
 		//currentScenarioTIDs[ row.TID ] = row;
 		console.log("cleanData() --> row = ",row);
 	});
-	//if (MAIN_DEBUG)
+	//if (Site.debug)
 		console.log("cleanData() --> currentScenarioTIDs = ",currentScenarioTIDs);
 
 
@@ -505,12 +509,12 @@ function roundDecimal(num){
 
 	var decimal = 1000;
 
-	if (num > 1000) {		var decimal = 1;
-	} else if (num > 100){ 	var decimal = 10;
-	} else if (num > 10){	var decimal = 10;
-	} else if (num > 1){	var decimal = 1000;
-	} else if (num > .1){ 	var decimal = 1000;
-	} else if (num > .01){ 	var decimal = 1000;
+	if (num > 1000) {		decimal = 1;
+	} else if (num > 100){ 	decimal = 10;
+	} else if (num > 10){	decimal = 10;
+	} else if (num > 1){	decimal = 1000;
+	} else if (num > 0.1){ 	decimal = 1000;
+	} else if (num > 0.01){ decimal = 1000;
 	}
 	num = Math.round(num * decimal) / decimal;
 	return num;
