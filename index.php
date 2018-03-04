@@ -87,12 +87,11 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100">
 
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css"> -->
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet-easybutton/src/easy-button.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/font-awesome/css/font-awesome.min.css">
-
-
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap4c-chosen/dist/css/component-chosen.min.css">
 
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles.css">
@@ -172,70 +171,90 @@ var Site = (function() {
 				<div id="map"></div>
 			</div>
 			<div class="col-md-5">
-				<div class="sources clearfix">
 
-					<label for="msa_select_box" title="Select a Metropolitan Statistical Area (MSA)" class="dropdown_left">
-							<img src="<?php print $site['rootDir']; ?>assets/img/icon_geo_point.png">
-					</label>
-					<div class="form-group dropdown_right">
-						<select id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
-					</div>
 
-					<label for="scenario_select_box" title="Select an ACS scenario and dataset" class="dropdown_left">
-						<img src="<?php print $site['rootDir']; ?>assets/img/icon_bar_graph.png">
-					</label>
-					<div class="form-group dropdown_right">
-						<select id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
-					</div>
+                <form>
 
-					<div class="dropdown_left">
-						<a title="Download data for this Metropolitan Area">
-							<img src="<?php print $site['rootDir']; ?>assets/img/icon_download.png"></a></div>
-					<div class="form-group dropdown_right">
-						<a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
 
-						<!--<a href="#" id="toggle_fullscreen"><i class="fa fa-arrows-alt fa-lg" aria-hidden="true" title="Toggle Fullscreen"></i></a>-->
-					</div>
 
-				</div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-1">
+                                <label for="msa_select_box">
+                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png">
+                                </label>
+                            </div>
+                            <div class="col-11">
+                                <select class="form-control form-control-chosen" id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
+                            </div>
+                        </div>
+                    </div>
 
-				<!--
-				<div class=" clearfix">
-					<pre class="debug ">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-1">
+                                <label for="scenario_select_box">
+                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png">
+                                </label>
+                            </div>
+                            <div class="col-11">
+                                <select class="form-control form-control-chosen" id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
+                            </div>
+                        </div>
+                    </div>
 
-					</pre>
-				</div>
-				-->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-1">
+                                <a title="Download data for this Metropolitan Area">
+                        			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
+                                </a>
+                            </div>
+                            <div class="col-11">
+                                <a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </form>
 
-				<div id="chart-container">
-					<div id="chart">
 
-						<table class="table-striped table-hover">
-							<thead>
-								<tr>
-									<th class="thTID" title="Tract ID (state.county.tract)">
-										<button class="btn btn-sm btn-primary">&nbsp;Tract&nbsp;</button>
-									</th>
-									<th class="thRID" title="Region ID">
-										<button class="btn btn-sm btn-secondary">Region</button>
-									</th>
-									<th class="thEST ">
-										<button class="btn btn-sm btn-primary">Estimate</button>
-									</th>
-									<th class="thMAR ">
-										<button class="btn btn-sm btn-secondary">Error</button>
-									</th>
-									<th class="thSVG"></th>
-								</tr>
-							</thead>
-							<tbody></tbody>
-						</table>
 
-					</div>
-				</div>
-				<div class="info"></div>
 
-			</div>
+
+                <div class="row">
+                    <div class="col-12">
+        				<div id="chart-container">
+        					<div id="chart">
+
+        						<table class="table-striped table-hover">
+        							<thead>
+        								<tr>
+        									<th class="thTID" title="Tract ID (state.county.tract)">
+        										<button class="btn btn-sm btn-primary">&nbsp;Tract&nbsp;</button>
+        									</th>
+        									<th class="thRID" title="Region ID">
+        										<button class="btn btn-sm btn-secondary">Region</button>
+        									</th>
+        									<th class="thEST ">
+        										<button class="btn btn-sm btn-primary">Estimate</button>
+        									</th>
+        									<th class="thMAR ">
+        										<button class="btn btn-sm btn-secondary">Error</button>
+        									</th>
+        									<th class="thSVG"></th>
+        								</tr>
+        							</thead>
+        							<tbody></tbody>
+        						</table>
+
+        					</div>
+        				</div>
+        				<div class="info"></div>
+
+        			</div>
+            	</div>
+        	</div>
 		</div>
 	</div>
 

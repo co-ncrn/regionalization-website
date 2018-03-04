@@ -35,6 +35,14 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+bootstrap-chosen@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-chosen/-/bootstrap-chosen-1.4.2.tgz#d7a184b21ecd952d586982339c60128f8827334d"
+
+bootstrap4c-chosen@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/bootstrap4c-chosen/-/bootstrap4c-chosen-1.0.6.tgz#997a330fdcceb561441bb7c8893c39e1a4c33970"
+
 bootstrap@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.0.0.tgz#ceb03842c145fcc1b9b4e15da2a05656ba68469a"
