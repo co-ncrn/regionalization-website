@@ -1,5 +1,3 @@
-
-
 /**************************************************************************
  *																		  *
  * 	CHART				 												  *
@@ -9,14 +7,22 @@
 var limit = 20, // data limit for testing
 	svgHeight = 20, // height for all svg elements
 	loaded = false,
-	CHART_DEBUG = true
-	;
+	CHART_DEBUG = true;
 
 
 var margin, sizes, svgRatio = .67;
 
+
+
+
+
+
+
+
+
 // resize chart elements based on browser size
 d3.select(window).on('resize', resizeTable);
+
 function resizeTable() {
 	// get sizes
 	sizes = {
@@ -27,7 +33,7 @@ function resizeTable() {
 		"svgCell": $(".svgCell").width(),
 	}
 
-	console.log("\nresizeTable() sizes = ",sizes);
+	console.log("\nresizeTable() sizes = ", sizes);
 
 	// expand table
 	$("table").width(sizes.chartContainer);
@@ -45,18 +51,24 @@ function resizeTable() {
 	$(".svgCell svg").width(sizes.chartContainer * svgRatio);
 
 	// update SVG sizes in chart
-	if (prop(loaded) && loaded == true){
+	if (prop(loaded) && loaded == true) {
+		console.log("currentScenarioArray0", currentScenarioArray);
 		updateChart();
 	}
 
 	// set svg properties
-	margin = { top: 0, right: 10, bottom: 0, left: 10 },
-	width = sizes.thSVG - margin.left - margin.right,
-    height = svgHeight - margin.top - margin.bottom,
-    svgStroke = 1.5, barHV = 8;
+	margin = {
+			top: 0,
+			right: 10,
+			bottom: 0,
+			left: 10
+		},
+		width = sizes.thSVG - margin.left - margin.right,
+		height = svgHeight - margin.top - margin.bottom,
+		svgStroke = 1.5, barHV = 8;
 }
 resizeTable(); // get initial table sizes
-setTimeout (resizeTable,1000); // and do it again once data is set
+setTimeout(resizeTable, 1000); // and do it again once data is set
 
 
 
@@ -73,11 +85,11 @@ setTimeout (resizeTable,1000); // and do it again once data is set
 // references to table
 var table = d3.select('#chart table');
 var theadtr = table.select('thead tr');
-var	tbody = table.select('tbody');
+var tbody = table.select('tbody');
 
 
 // add svg to thSVG for xAxis
-theadtr.select('.thSVG').append("svg").attr("height",svgHeight);
+theadtr.select('.thSVG').append("svg").attr("height", svgHeight);
 
 
 
@@ -102,11 +114,11 @@ function enterChart() {
 
 	// set the update selection:
 	rows = tbody.selectAll('tr')
-    	.data(currentScenarioArray);
+		.data(currentScenarioArray);
 
 	// set the enter selection:
 	var rowsEnter = rows.enter()
-	    .append('tr');
+		.append('tr');
 
 	// add a td for each column
 	rowsEnter.append('td').attr("class", "tid");
@@ -120,30 +132,30 @@ function enterChart() {
 
 	// append svg cell
 	var svg = rowsEnter.append('td')
-		.attr('class','svgCell')
-	    .append('svg')
-	    .attr("width", width)
-	    .attr("height", height);
+		.attr('class', 'svgCell')
+		.append('svg')
+		.attr("width", width)
+		.attr("height", height);
 
- 	// append horizontal bar to svg
+	// append horizontal bar to svg
 	svg.append('rect').attr("class", "svgBar svgBarHorz");
 	svg.append('rect').attr("class", "svgBar svgBarVertLeft");
 	svg.append('rect').attr("class", "svgBar svgBarVertRight");
 
 	// append triangle to svg
 	var tri = d3.symbol()
-        .type(d3.symbolTriangle)
-        .size(15);
+		.type(d3.symbolTriangle)
+		.size(15);
 	svg.append('path')
-		.attr('d',tri)
-	    .attr("class", "svgTri")
+		.attr('d', tri)
+		.attr("class", "svgTri")
 		.attr('fill', "black");
 
 }
 
 
-function CVColorScale(cv){
-	var color, percent = cv*100;
+function CVColorScale(cv) {
+	var color, percent = cv * 100;
 	// High Reliability: Small CVs, less than or equal to 12 percent, are flagged green to indicate
 	// that the sampling error is small relative to the estimate and the estimate is reasonably reliable.
 	if (percent <= 12)
@@ -162,33 +174,33 @@ function CVColorScale(cv){
 	return color;
 }
 
-var accent,blues,reds,estExtent,marExtent;
-function updateColorScales(){
+var accent, blues, reds, estExtent, marExtent;
+
+function updateColorScales() {
 	//accent = d3.scaleOrdinal(d3.schemeAccent);
 	//blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 
 	//estExtent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
 
-	estExtent = d3.extent(currentScenarioArray.map(function (item) {
+	estExtent = d3.extent(currentScenarioArray.map(function(item) {
 		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
-		return (item.value[tractOrRegion+"Est"]);
+		return (item.value[tractOrRegion + "Est"]);
 	}))
 
-	marExtent = d3.extent(currentScenarioArray.map(function (item) {
+	marExtent = d3.extent(currentScenarioArray.map(function(item) {
 		//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
-		return (item.value[tractOrRegion+"Mar"]);
+		return (item.value[tractOrRegion + "Mar"]);
 	}))
 	//console.log("updateColorScales() --> estExtent = ",estExtent,"marExtent = ",marExtent)
 
 	// find midpoint between estExtents, use parseFloats so strings don't concat
-	estExtentMiddle = parseFloat(estExtent[0]) + ((parseFloat(estExtent[1]) - parseFloat(estExtent[0]))/2);
-	marExtentMiddle = parseFloat(marExtent[0]) + ((parseFloat(marExtent[1]) - parseFloat(marExtent[0]))/2);
+	estExtentMiddle = parseFloat(estExtent[0]) + ((parseFloat(estExtent[1]) - parseFloat(estExtent[0])) / 2);
+	marExtentMiddle = parseFloat(marExtent[0]) + ((parseFloat(marExtent[1]) - parseFloat(marExtent[0])) / 2);
 
 	// a scale for the estimates
 	blues = d3.scaleQuantile()
 		.domain([estExtent[0], estExtent[1]])
-		.range(d3.schemeBlues[9])
-	;
+		.range(d3.schemeBlues[9]);
 	/*
 	reds = d3.scaleQuantile()
 		.domain([marExtent[0], marExtent[1]])
@@ -210,10 +222,10 @@ function updateColorScales(){
  *	reference: https://www.census.gov/geo/reference/geoidentifiers.html
  *	So... 18105000901 => 18.105.000901 [state.county.tract]
  */
-function reformatTID(str){
-	str = 		  str.substr(0, 2) + // state
-			"." + str.substr(2, 3) + // county
-			"." + str.substr(5);
+function reformatTID(str) {
+	str = str.substr(0, 2) + // state
+		"." + str.substr(2, 3) + // county
+		"." + str.substr(5);
 	return str;
 }
 
@@ -223,6 +235,7 @@ function reformatTID(str){
  * 	Build / Update HTML table inside the SVG chart
  */
 function updateChart() {
+	console.log("currentScenarioArray1", currentScenarioArray);
 	enterChart();
 
 	//if (CHART_DEBUG) console.log("updateChart() --> currentScenario = ",currentScenario)
@@ -234,66 +247,82 @@ function updateChart() {
 	// update class on each row
 	var rows = tbody.selectAll('tr')
 		.data(currentScenarioArray)
-		.attr("class", function(d,i){
-	    	return "g"+d.value.TID; // need "g" because numbers can't be a class
-	    });
+		.attr("class", function(d, i) {
+			return "g" + d.value.TID; // need "g" because numbers can't be a class
+		});
 
 
 	// select all columns by class, (re)bind the data
 	d3.selectAll(".tid")
 		.data(currentScenarioArray)
-		.classed("button_sliding_bg_left",true)
-		.attr("current_source",current.data)
-		.attr("row",function(d,i) { return i; })
-		.attr("title",function(d,i) { return reformatTID(d.value.TID); })
-		.text(function(d,i) { return /* i; */ reformatTID(d.value.TID).substring(7); /* remove "state.county." */ })
-		.attr("style", function (d) {
-				//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+		.classed("button_sliding_bg_left", true)
+		.attr("current_source", current.data)
+		.attr("row", function(d, i) {
+			return i;
+		})
+		.attr("title", function(d, i) {
+			return reformatTID(d.value.TID);
+		})
+		.text(function(d, i) {
+			return /* i; */ reformatTID(d.value.TID).substring(7); /* remove "state.county." */
+		})
+		.attr("style", function(d) {
+			//console.log(".tid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
 
-				saveOriginalRowColor("g"+d.value.TID);
-				var c = getOriginalRowColor("g"+d.value.TID); // default (white)
-				if (tractOrRegion == "t"){
-					c = d3.color( blues(d.value["tEst"]) ); // create color
-					c.opacity = 0.5; // set opacity
-				}
-				return "background: "+ c; // set bg color
-			})
-		;
+			saveOriginalRowColor("g" + d.value.TID);
+			var c = getOriginalRowColor("g" + d.value.TID); // default (white)
+			if (tractOrRegion == "t") {
+				c = d3.color(blues(d.value["tEst"])); // create color
+				c.opacity = 0.5; // set opacity
+			}
+			return "background: " + c; // set bg color
+		});
 	d3.selectAll(".rid")
 		.data(currentScenarioArray)
-		.classed("button_sliding_bg_right",true)
-		.attr("current_source",current.data)
-		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return d.value.RID; })
-		.attr("style", function (d) {
-				//console.log(".rid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+		.classed("button_sliding_bg_right", true)
+		.attr("current_source", current.data)
+		.attr("row", function(d, i) {
+			return i;
+		})
+		.text(function(d) {
+			return d.value.RID;
+		})
+		.attr("style", function(d) {
+			//console.log(".rid --> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
 
-				var c = getOriginalRowColor("g"+d.value.TID); // default (white)
-				if (tractOrRegion == "r"){
-					var c = d3.color( blues(d.value["rEst"]) ); // create color
-					c.opacity = 0.5; // set opacity
-				}
-				return "background: "+ c; // set bg color
-			})
-		;
+			var c = getOriginalRowColor("g" + d.value.TID); // default (white)
+			if (tractOrRegion == "r") {
+				var c = d3.color(blues(d.value["rEst"])); // create color
+				c.opacity = 0.5; // set opacity
+			}
+			return "background: " + c; // set bg color
+		});
 	d3.selectAll(".est")
 		.data(currentScenarioArray)
-		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return padFloat(d.value[tractOrRegion+"Est"]); })
-		;
+		.attr("row", function(d, i) {
+			return i;
+		})
+		.text(function(d) {
+			return padFloat(d.value[tractOrRegion + "Est"]);
+		});
 	d3.selectAll(".err")
 		.data(currentScenarioArray)
-		.attr("row",function(d,i) { return i; })
-		.text(function(d) { return "±"+ padFloat( d.value[tractOrRegion+"Mar"] ); })
-		.attr("style", function (d) {
-				return "color: "+ CVColorScale( d.value[tractOrRegion+"CV"] ); // set bg color
-			})
-		;
+		.attr("row", function(d, i) {
+			return i;
+		})
+		.text(function(d) {
+			return "±" + padFloat(d.value[tractOrRegion + "Mar"]);
+		})
+		.attr("style", function(d) {
+			return "color: " + CVColorScale(d.value[tractOrRegion + "CV"]); // set bg color
+		});
 
 
 	d3.selectAll(".svgCell")
 		.data(currentScenarioArray)
-		.attr("row",function(d,i) { return i; })
+		.attr("row", function(d, i) {
+			return i;
+		})
 
 
 	// transitions über alles! (used by the selects below)
@@ -302,30 +331,39 @@ function updateChart() {
 	// select svgs by class, rebind data, and set transitions
 	d3.selectAll(".svgBarHorz")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )})
-			.attr("y", height/2 )
-			.attr("width", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] ) - xScale( d.value[tractOrRegion+"MarMin"] ) })
-			.attr("height", svgStroke);
+		.attr("x", function(d, i) {
+			return xScale(d.value[tractOrRegion + "MarMin"])
+		})
+		.attr("y", height / 2)
+		.attr("width", function(d, i) {
+			return xScale(d.value[tractOrRegion + "MarMax"]) - xScale(d.value[tractOrRegion + "MarMin"])
+		})
+		.attr("height", svgStroke);
 	d3.selectAll(".svgBarVertLeft")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMin"] )})
-			.attr("y", 7 )
-			.attr("width", svgStroke)
-			.attr("height", barHV);
+		.attr("x", function(d, i) {
+			return xScale(d.value[tractOrRegion + "MarMin"])
+		})
+		.attr("y", 7)
+		.attr("width", svgStroke)
+		.attr("height", barHV);
 	d3.selectAll(".svgBarVertRight")
 		.data(currentScenarioArray).transition(t)
-			.attr("x", function(d,i){ return xScale( d.value[tractOrRegion+"MarMax"] )})
-			.attr("y", 7 )
-			.attr("width", svgStroke)
-			.attr("height", barHV);
+		.attr("x", function(d, i) {
+			return xScale(d.value[tractOrRegion + "MarMax"])
+		})
+		.attr("y", 7)
+		.attr("width", svgStroke)
+		.attr("height", barHV);
 	d3.selectAll(".svgTri")
 		.data(currentScenarioArray).transition(t)
-			.attr('transform',function(d,i){
-				return "translate("+ xScale( d.value[tractOrRegion+"Est"] ) +","+ barHV*2 +") ";
-			});
+		.attr('transform', function(d, i) {
+			return "translate(" + xScale(d.value[tractOrRegion + "Est"]) + "," + barHV * 2 + ") ";
+		});
 
 
 	// set all map colors
+	console.log("currentScenarioArray2", currentScenarioArray);
 	mns.setAllTractColors(currentScenarioArray);
 
 
@@ -334,30 +372,27 @@ function updateChart() {
 
 	//************ INTERACTION ************
 
-	function selectRow(r){
+	function selectRow(r) {
 		//d3.selectAll("td.tid").classed("highlight", true);
 	}
 
 	d3.selectAll("tr")
-	    .on("mouseover", selectTIDorRID)
-	    .on("mouseout", resetTIDorRID)
-	    ;
+		.on("mouseover", selectTIDorRID)
+		.on("mouseout", resetTIDorRID);
 	d3.selectAll(".tid")
-	    .on("mouseover", selectTID)
-	    .on("mouseout", resetTID)
-	    ;
+		.on("mouseover", selectTID)
+		.on("mouseout", resetTID);
 	d3.selectAll(".rid")
-	    .on("mouseover", selectRID)
-	    .on("mouseout", resetRID)
-	    ;
+		.on("mouseover", selectRID)
+		.on("mouseout", resetRID);
 	d3.selectAll(".est")
-	    .on("mouseover", selectEST)
-	    //.on("mouseout", resetEST)
-	    ;
+		.on("mouseover", selectEST)
+	//.on("mouseout", resetEST)
+	;
 	d3.selectAll(".err")
-	    .on("mouseover", selectMAR)
-	    //.on("mouseout", resetEST)
-	    ;
+		.on("mouseover", selectMAR)
+	//.on("mouseout", resetEST)
+	;
 
 
 
@@ -369,12 +404,12 @@ function updateChart() {
 
 
 
-	updateDebug();		//testing
-	mns.updateMap();	// update map after chart to give topojson time to load
+	updateDebug(); //testing
+	mns.updateMap(); // update map after chart to give topojson time to load
 	highlightHeaders(); // update headers
 
-	console.log("currentScenarioArray",currentScenarioArray)
-	create_axes(currentScenarioArray,yScale,xScale,tractOrRegion+"Mar",tractOrRegion+"Est");
+	console.log("currentScenarioArray3", currentScenarioArray);
+	Axes.create(currentScenarioArray, yScale, xScale, tractOrRegion + "Mar", tractOrRegion + "Est");
 }
 
 
@@ -382,19 +417,19 @@ function updateChart() {
  * Set the header styles based on current state(s)
  * @return {[type]} [description]
  */
-function highlightHeaders(){
+function highlightHeaders() {
 
 	var activeClass = "btn-primary",
 		inactiveClass = "btn-secondary";
 
-	if (tractOrRegion == "t"){
+	if (tractOrRegion == "t") {
 		$('.thTID button').removeClass(inactiveClass).addClass(activeClass);
 		$('.thRID button').removeClass(activeClass).addClass(inactiveClass);
 	} else {
 		$('.thTID button').removeClass(activeClass).addClass(inactiveClass);
 		$('.thRID button').removeClass(inactiveClass).addClass(activeClass);
 	}
-	if (estimateOrMargin == "e"){
+	if (estimateOrMargin == "e") {
 		$('.thEST button').removeClass(inactiveClass).addClass(activeClass);
 		$('.thMAR button').removeClass(activeClass).addClass(inactiveClass);
 	} else {
@@ -402,71 +437,75 @@ function highlightHeaders(){
 		$('.thMAR button').removeClass(inactiveClass).addClass(activeClass);
 	}
 }
-$('.thTID button').on('click', function(){
+$('.thTID button').on('click', function() {
 	selectTID();
 });
-$('.thRID button').on('click', function(){
+$('.thRID button').on('click', function() {
 	selectRID();
 });
-$('.thEST button').on('click', function(){
+$('.thEST button').on('click', function() {
 	toggleEstimateOrMargin("e");
 });
-$('.thMAR button').on('click', function(){
+$('.thMAR button').on('click', function() {
 	toggleEstimateOrMargin("m");
 });
-function toggleEstimateOrMargin(state){
-	if (state == estimateOrMargin) return; 	// if same, exit
-	estimateOrMargin = state;				// update
-	console.log("estimateOrMargin",estimateOrMargin)
+
+function toggleEstimateOrMargin(state) {
+	if (state == estimateOrMargin) return; // if same, exit
+	estimateOrMargin = state; // update
+	console.log("estimateOrMargin", estimateOrMargin)
 	mns.updateMap();
 	updateChart();
 	highlightHeaders();
 }
 
-function selectEST(){
-	console.log("selectEST() --> estimateOrMargin=",estimateOrMargin);
-	if (estimateOrMargin == "e") return; 	// if same, exit
+function selectEST() {
+	console.log("selectEST() --> estimateOrMargin=", estimateOrMargin);
+	if (estimateOrMargin == "e") return; // if same, exit
 	toggleEstimateOrMargin("e");
 }
-function selectMAR(){
-	console.log("selectMAR() --> estimateOrMargin=",estimateOrMargin);
-	if (estimateOrMargin == "m") return; 	// if same, exit
+
+function selectMAR() {
+	console.log("selectMAR() --> estimateOrMargin=", estimateOrMargin);
+	if (estimateOrMargin == "m") return; // if same, exit
 	toggleEstimateOrMargin("m");
 }
 
 
 
 
-function saveOriginalRowColor(_tid){
-	var _row = d3.select("."+_tid); // reference
+function saveOriginalRowColor(_tid) {
+	var _row = d3.select("." + _tid); // reference
 	_row.attr("original-bg-color", _row.style("background")); // save current bg color
 }
-function getOriginalRowColor(_tid){
-	var _row = d3.select("."+_tid); // reference
+
+function getOriginalRowColor(_tid) {
+	var _row = d3.select("." + _tid); // reference
 	return _row.attr("original-bg-color"); // return original bg color
 }
 
 
-function highlightTractOnChart(properties){
-	var _row = d3.select("."+properties.TID); // reference
+function highlightTractOnChart(properties) {
+	var _row = d3.select("." + properties.TID); // reference
 	saveOriginalRowColor(properties.TID);
 	if (prop(properties.TID))
 		_row.style("background", "rgba(0,0,0,.1)");
 }
-function removeHighlightTractOnChart(properties){
-	var _row = d3.select("."+properties.TID); // reference
+
+function removeHighlightTractOnChart(properties) {
+	var _row = d3.select("." + properties.TID); // reference
 	if (prop(properties.TID))
 		_row.style("background", getOriginalRowColor(properties.TID)); // set it to saved bg color
 }
 /**
  * Change selection on chart/map to show TRACTS
  */
-function selectTID(d){
+function selectTID(d) {
 	//console.log("selectTID() --> d,i",d,i);
 
 	// switch to display tract data in boxplot
-	if (tractOrRegion == "r"){
-		tractOrRegion = "t";	// change to tracts
+	if (tractOrRegion == "r") {
+		tractOrRegion = "t"; // change to tracts
 		// update classes
 		d3.selectAll(".tid").classed("highlight", true);
 		d3.selectAll(".rid").classed("highlight", false);
@@ -477,19 +516,20 @@ function selectTID(d){
 	}
 
 }
-function resetTID(d){
+
+function resetTID(d) {
 	if (prop(d))
-		mns.resetTractStyleFromChart("g"+d.value.TID)
+		mns.resetTractStyleFromChart("g" + d.value.TID)
 }
 /**
  * Change selection on chart/map to show REGIONS
  */
-function selectRID(d){
+function selectRID(d) {
 	//console.log("selectRID() --> tractOrRegion = ",tractOrRegion);
 
 	// switch to display region data in boxplot
-	if (tractOrRegion == "t"){
-		tractOrRegion = "r";	// change to tracts
+	if (tractOrRegion == "t") {
+		tractOrRegion = "r"; // change to tracts
 
 		d3.selectAll("td.tid").classed("highlight", false);
 		d3.selectAll("td.rid").classed("highlight", true);
@@ -499,25 +539,27 @@ function selectRID(d){
 		selectTIDorRID(d);
 	}
 }
-function resetRID(d){
+
+function resetRID(d) {
 	if (prop(d))
-		mns.resetTractStyleFromChart("g"+d.value.TID)
+		mns.resetTractStyleFromChart("g" + d.value.TID)
 }
 
 /**
  * Change selection on chart/map to show TRACTS / REGIONS
  */
-function selectTIDorRID(d){
-	mns.updateMap(); 		// update map
-	updateChart();			// update chart
+function selectTIDorRID(d) {
+	mns.updateMap(); // update map
+	updateChart(); // update chart
 	// (always) highlight tract on map after map update
 	if (prop(d))
-		mns.highlightTractFromChart("g"+d.value.TID);
+		mns.highlightTractFromChart("g" + d.value.TID);
 	highlightHeaders();
 }
-function resetTIDorRID(d){
+
+function resetTIDorRID(d) {
 	if (prop(d))
-		mns.resetTractStyleFromChart("g"+d.value.TID)
+		mns.resetTractStyleFromChart("g" + d.value.TID)
 }
 
 
@@ -536,81 +578,19 @@ function updateChartScales() {
 
 	// Y-SCALE: based on number of data
 	yScale = d3.scaleLinear()
-		.domain([0,currentScenarioArray.length])
-		.range([margin.top,height-margin.bottom]);
+		.domain([0, currentScenarioArray.length])
+		.range([margin.top, height - margin.bottom]);
 
 	// X-SCALE: using tract MOE min/max to show difference
-	xMin = d3.min(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMin"]); });
-	xMax = d3.max(currentScenarioArray, function(d) { return parseFloat(d.value[tractOrRegion+"MarMax"]); });
-	xExtent = [xMin,xMax];
+	xMin = d3.min(currentScenarioArray, function(d) {
+		return parseFloat(d.value[tractOrRegion + "MarMin"]);
+	});
+	xMax = d3.max(currentScenarioArray, function(d) {
+		return parseFloat(d.value[tractOrRegion + "MarMax"]);
+	});
+	xExtent = [xMin, xMax];
 	//if (CHART_DEBUG) console.log(xExtent);
 	xScale = d3.scaleLinear()
 		.domain(xExtent).nice()
-		.range([margin.left,width-margin.right]);
-}
-
-
-
-
-
-
-
-
-/*
- *	Create axes and labels
- *	@param {Array} data - the array of objects
- *	@param {Function} yScale - returns a scale
- *	@param {Function} xScale - returns a scale
- *	@param {Float} err - "tMar" or "regionError" from above
- *	@param {Float} est - "tractEst" or "regionEst" from above
- */
-function create_axes(data,yScale,xScale,err,est){
-	console.log("create_axes()",data,yScale,xScale,err,est)
-
-	// keep tick labels from overlapping
-	var ticks = 5;
-	if (parseFloat(data[0]['value'][est]) > 1000) ticks = 4;
-
-
-	//************ TOP AXIS (NUMBERS) ************
-
-	// set X/Y axes functions
-	var xAxis = d3.axisTop()
-		.scale(xScale)
-		.ticks(ticks)
-		.tickSizeInner(-height)
-		.tickSizeOuter(0)
-		.tickPadding(10)
-	;
-	// add X axis properties
-	d3.select(".thSVG svg").append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(" + 0 + ","+ (25) +")")
-	;
-	// update axis
-	d3.select(".x.axis").transition().duration(500).call(xAxis);
-
-
-
-	//************ BACKGROUND TICKS ************
-
-	var xAxisTicks = d3.axisTop()
-		.scale(xScale)
-		.ticks(ticks)
-		.tickSizeInner(-height)
-		.tickSizeOuter(1000) // hide outer ticks way off screen
-		.tickPadding(10)
-	;
-//xAxisTicks.selectAll("text").remove();
-
-	d3.selectAll(".svgCell svg")
-		.attr("class", "x3 axis3 ")
-		//.attr("transform", "translate(" + 0 + ","+ 0 +")")
-	;
-	d3.selectAll(".x3.axis3")
-		.transition().duration(500)
-		.call(xAxisTicks);
-
-
-
+		.range([margin.left, width - margin.right]);
 }
