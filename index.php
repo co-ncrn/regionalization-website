@@ -17,17 +17,25 @@
 //
 
 $site = array(
+    // location of all data for site
     'dataDir' => "/data/",
+    // to debug or not
     'debug' => true,
+    // description: for meta tags, etc.
     'description' => "Reducing the Margin of Error in the American Community Survey",
+    // domain for reference
     'domain' => "reducinguncertainty.org",
+    // root directory for assets
     'rootDir' => "/",
+    // are we running on local or remote server
+    'server' => "reducinguncertainty.org",
+    // for meta tags and page
     'title' => "Reducing Uncertainty"
 );
 
 // handle rewrites
 if ($_SERVER['HTTP_HOST'] == "localhost") {
-    $site['rootDir'] = "http://localhost/RegionalismMap/code/regionalization-website/";
+    $site['rootDir'] = $site['server'] = "http://localhost/RegionalismMap/code/regionalization-website/";
 }
 
 ?>
@@ -67,26 +75,27 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 
 
 <!--
-<link href="<?php print $site['rootDir']; ?>vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>vendor/chosen/chosen.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>vendor/leaflet/dist/leaflet.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>vendor/Leaflet.EasyButton/src/easy-button.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>assets/css/styles.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/chosen/chosen.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/leaflet/dist/leaflet.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/Leaflet.EasyButton/src/easy-button.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css">
  -->
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100">
 
-<link href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>node_modules/leaflet-easybutton/src/easy-button.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet-easybutton/src/easy-button.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/font-awesome/css/font-awesome.min.css">
 
 
-<link href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css" rel="stylesheet">
-<link href="<?php print $site['rootDir']; ?>assets/css/styles.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles.css">
 
 
 <script>
@@ -98,6 +107,7 @@ var Site = (function() {
         description: "<?php print $site['description']; ?>",
         domain: "<?php print $site['domain']; ?>",
 		rootDir: "<?php print $site['rootDir']; ?>",
+		server: "<?php print $site['server']; ?>",
 		title: "<?php print $site['title']; ?>",
 	}
 
@@ -283,6 +293,9 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>data/data_definitions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/config.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/scenario.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/page.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/menu.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/table.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/chart-axes.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
