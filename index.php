@@ -1,15 +1,15 @@
 <?php
 
 $site = array(
-	'domain' => "reducinguncertainty.org",
-	'description' => "Reducing the Margin of Error in the American Community Survey",
-	'rootDir' => "/",
-	'title' => "Reducing Uncertainty"
+    'domain' => "reducinguncertainty.org",
+    'description' => "Reducing the Margin of Error in the American Community Survey",
+    'rootDir' => "/",
+    'title' => "Reducing Uncertainty"
 );
 
 // handle rewrites
-if ($_SERVER['HTTP_HOST'] == "localhost"){
-	$site['rootDir'] = "http://localhost/RegionalismMap/code/regionalization-website/";
+if ($_SERVER['HTTP_HOST'] == "localhost") {
+    $site['rootDir'] = "http://localhost/RegionalismMap/code/regionalization-website/";
 }
 
 ?>
@@ -25,8 +25,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <meta name='description' content="<?php print $site['title']; ?> – <?php print $site['description']; ?>">
 <meta name="keywords" content="ACS,census,data,maps,margin of error">
 <meta name="author" content="Seth Spielman, David Folch, Becky Davies, Owen Mundy">
-<link rel="icon" href="/favicon.ico">
-<link rel="apple-touch-icon-precomposed" href="/favicon-152x152.png">
+<link rel="icon" href="<?php print $site['rootDir']; ?>favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="<?php print $site['rootDir']; ?>favicon-152x152.png">
 
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary">
@@ -34,13 +34,13 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <meta name="twitter:title" content="<?php print $site['title']; ?>">
 <meta name="twitter:description" content="<?php print $site['description']; ?>">
 <meta name="twitter:creator" content="@owenmundy">
-<meta name="twitter:image" content="https://<?php print $site['domain']; ?>/assets/img/share.png">
+<meta name="twitter:image" content="https://<?php print $site['domain']; ?>/assets/img/share-600x600.png">
 
 <!-- Open Graph data -->
 <meta property="og:title" content="<?php print $site['title']; ?>" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://<?php print $site['domain']; ?>/" />
-<meta property="og:image" content="https://<?php print $site['domain']; ?>/assets/img/share.png" />
+<meta property="og:image" content="https://<?php print $site['domain']; ?>/assets/img/share-600x600.png" />
 <meta property="og:image:width" content="300" />
 <meta property="og:image:height" content="300" />
 <meta property="og:description" content="<?php print $site['description']; ?>" />
@@ -58,7 +58,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost"){
 <link href="<?php print $site['rootDir']; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
  -->
 
-<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:100" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100" rel="stylesheet">
 
 <link href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css" rel="stylesheet">
@@ -98,13 +98,17 @@ var Site = (function() {
 <body>
 
 
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded navbar-static-top mb-4">
-	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	<a class="navbar-brand" href="#">Reducing Uncertainty </a>
-	<div class="collapse navbar-collapse" id="navbarCollapse">
-		<ul class="navbar-nav ml-auto">
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light">
+    <a class="navbar-brand" href="#">Reducing Uncertainty</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
 			<li class="nav-item">
 				<a class="nav-link" href="#data-quality">Data Quality</a>
 			</li>
@@ -118,9 +122,12 @@ var Site = (function() {
 				<a class="nav-link" href="#credits">Credits</a>
 			</li>
 		</ul>
-	</div>
-
+    </div>
 </nav>
+
+
+
+
 
 
 <div class="container-fluid">
