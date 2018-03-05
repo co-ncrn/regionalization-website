@@ -80,6 +80,7 @@ var Mns = (function() {
 	 *	Create map
 	 */
 	function createMap() {
+		if (MAP_DEBUG) console.log("createMap()");
 
 		// create Leaflet map
 		map = L.map('map', {
@@ -342,7 +343,7 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 
 		// set default style
 		var defaultStyle = {
-	        //fillColor: "#000000",
+	        fillColor: "#000000",
 	        weight: 1,
 	        opacity: 0.5,
 	        color: 'white',
@@ -351,12 +352,14 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 
 
 		if ( prop(currentScenario) && currentScenario[_tid] ){
-			//if (MAP_DEBUG) console.log("initialTractStyle() -> setting style based on data");
+			if (MAP_DEBUG) console.log(" -> initialTractStyle() -> setting style based on data");
 
 			// determine whether to store tract / region AND estimate / margin
-			if (estimateOrMargin == "e")
-				defaultStyle.fillColor = blues( currentScenario[_tid][tractOrRegion+"Est"] );
-			else if (estimateOrMargin == "m"){
+			if (estimateOrMargin == "e"){
+				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> E, fillColor = "+ Color.blues( currentScenario[_tid][tractOrRegion+"Est"] ));
+				defaultStyle.fillColor = Color.blues( currentScenario[_tid][tractOrRegion+"Est"] );
+			}else if (estimateOrMargin == "m"){
+				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> M");
 				var num = currentScenario[_tid][tractOrRegion+"CV"]; // color by CV, but display MOE
 				defaultStyle.fillColor = CVColorScale(num);
 			}
@@ -373,7 +376,7 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 */
 	    } // if no TID, currentScenario, or data found
 	    else {
-//			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
+			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE");
 			// no changes to default style
 		}
 		// return a style object
@@ -432,7 +435,8 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		var popup = e.target.getPopup(); // instead, set popup
 		popup.setLatLng(e.latlng).openOn(map); // at position of mouse
 
-		highlightTractOnChart(layer.feature.properties);
+// temp commenting out
+//		highlightTractOnChart(layer.feature.properties);
 
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
@@ -445,11 +449,33 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		tractLayer.resetStyle(layer);
 		layer.closePopup();
 
-		removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
+// temp commenting out
+//		removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
 	}
 	// zoom to an tract
 	function zoomToTractFeature(e) {
 		map.fitBounds(e.target.getBounds());
+	}
+
+	// highlight tract
+	function highlightTractFromChart(tid) {
+		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
+		var layer = tractTIDindex[tid];
+	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
+	    //var style = testStyle(tid);
+		layer.setStyle(tractHighlightStyle);
+	  	layer.openPopup();
+
+	   	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+	        layer.bringToFront();
+	    }
+	}
+	// reset tract style to original
+	function resetTractStyleFromChart(tid) {
+		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
+		var layer = tractTIDindex[tid];
+	    tractLayer.resetStyle(layer);
+	  	layer.closePopup();
 	}
 
 

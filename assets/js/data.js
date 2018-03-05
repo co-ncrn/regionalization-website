@@ -10,11 +10,13 @@ var Data = (function() {
 	 */
 	function getScenario(location) {
 		console.log("Data.getScenario, location = ", location)
+
 		var url = Site.rootDir + "data/scenarios/" + location.msa + "_" + location.scenario + "_" + location.data + ".json";
 		if (Site.debug) console.log("getScenarioData()", url,location);
+
 		d3.json(url, function(error, json) {
 			if (error) return console.error(error); // handle error
-			console.log("!!!!!!!!!!!!!!getScenarioData() -> json = ", json);
+			console.log(" -> Data.getScenario() -> json = ", json);
 
 
 
@@ -26,7 +28,7 @@ var Data = (function() {
 			// data has arrived
 			// currentScenario = cleanData(json.response);			// DELETE
 
-			console.log("currentScenarioArray, json", currentScenarioArray)
+			console.log(" -> currentScenarioArray, json", currentScenarioArray)
 			currentScenario = json;
 			currentScenarioArray = d3.entries(currentScenario);
 			numberTracks = currentScenarioArray.length;
