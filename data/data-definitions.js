@@ -1,7 +1,7 @@
 
 
 // names of all the data types
-var dataDict = {
+var dataDefinitions = {
 	"gen":"General",
 	"hous":"Housing",
 	"pov":"Poverty",
@@ -20,7 +20,7 @@ var dataDict = {
 	"65over":"Percent of population over 65",
 	"pop":"Total population",
 	"hsincown":"Housing cost to income ratio - owners (annual)",
-	"hsincrent":"Housing cost to income ratio - renters (annual)", 
+	"hsincrent":"Housing cost to income ratio - renters (annual)",
 	"chabvpov":"Percent of children above poverty",
 	"abvpov":"Percent of population above poverty",
 	"employed":"Percent of population employed",
