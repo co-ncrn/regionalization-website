@@ -12,6 +12,15 @@ var Page = (function() {
 		},
 		url;
 
+	function setLocation(newLocation){
+		if (prop(newLocation.msa) && newLocation.msa != "")
+			location.msa = newLocation.msa;
+		if (prop(newLocation.scenario) && newLocation.scenario != "")
+			location.scenario = newLocation.scenario;
+		if (prop(newLocation.data) && newLocation.data != "")
+			location.data = newLocation.data;
+	}
+
 	/**
 	 *	Return the params from the current URL
 	 */
@@ -60,35 +69,24 @@ var Page = (function() {
 	}
 
 
-
-
 	/**
 	 *	update URL - Be careful, because as you do the root of the site changes
 	 */
 	function updateUrl(change, newLocation) {
-		console.log("updateUrl()", change, newLocation);
+		//console.log("updateUrl()", change, newLocation);
 
 		// bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() {
 			let State = History.getState();
 		});
 
-		let url = "";
-
-		if (prop(newLocation.msa)) {
-			url += "" + newLocation.msa;
-			if (prop(newLocation.scenario)) {
-				url += "/" + newLocation.scenario;
-				if (prop(newLocation.data))
-					url += "/" + newLocation.data;
-			}
-		}
+		let url = returnSafeUrl();
 		// change state
 		if (change == 'add') {
 			// data
 			History.pushState({
 				state: 1
-			}, Site.title + " &ndash; " + url, Site.rootDir + url);
+			}, Site.title + " :: " + url, Site.rootDir + url);
 		} else {
 			// default
 			History.pushState({
@@ -96,6 +94,28 @@ var Page = (function() {
 			}, Site.title + "", Site.rootDir);
 		}
 
+	}
+
+	function returnSafeUrl(){
+		let url = "";
+		if (prop(location.msa)) {
+			url += "" + location.msa;
+			if (prop(location.scenario)) {
+				url += "/" + location.scenario;
+				if (prop(location.data))
+					url += "/" + location.data;
+			}
+		}
+		return url;
+	}
+
+	/**
+	 *	Update Title
+	 */
+	function updateTitle() {
+		let url = returnSafeUrl();
+		if (url != "") url = " :: " + url;
+		$("title").html(Site.title + url);
 	}
 
 	/**
@@ -116,7 +136,11 @@ var Page = (function() {
 		updateUrl: function(change, newLocation) {
 			updateUrl(change, newLocation)
 		},
-		addListeners: addListeners
+		updateTitle: updateTitle,
+		addListeners: addListeners,
+		setLocation: function(newLocation){
+			setLocation(newLocation);
+		}
 	}
 
 })();

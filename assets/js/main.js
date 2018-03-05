@@ -77,13 +77,15 @@ function init(){
 function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if (!prop(origin)) return; // origin required
 	if (Site.debug) console.log("\ndataChange()", origin);
-	if (Site.debug) console.log(" -> newLocation =", newLocation);
 	if (Site.debug) console.log(" -> Page.location ", Page.location);
+	if (Site.debug) console.log(" -> newLocation =", newLocation);
 
 	// what should we update?
-	var updateMSA, updateScenario, updateData;
+	let action = "",
+		updateMSA = false,
+		updateScenario = false,
+		updateData = false;
 
-	let action = "";
 	// if page is loading for first time
 	if (origin == "load"){
 		// if there is an msa
@@ -104,39 +106,51 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	}
 	// if the change came from the form, map, or table
 	else {
-		// if there is an msa and it is different than the current msa
-		if (prop(newLocation) && newLocation.msa && newLocation.msa != Page.location.msa){
-			// if scenario and it is different
-			if (prop(newLocation.scenarioa && newLocation.msa != Page.location.msa)){
-				action = "update everything";
-				updateMSA = true;
-				updateScenario = true;
-				updateData = true;
-			} else {
-				// else update msa only
-				action = "update only msa";
-				updateMSA = true;
-				// use current scenario and data with new msa
-				newLocation.scenario = Page.location.scenario;
-				newLocation.data = Page.location.data;
-			}
+		// if new msa
+		if (prop(newLocation.msa ) && newLocation.msa != Page.location.msa){
+			updateMSA = true;
 		}
+		// if new scenario
+		if (prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario){
+			updateScenario = true;
+		}
+		// if new data
+		if (prop(newLocation.data) && newLocation.data != Page.location.data){
+			updateScenario = true;
+		}
+
+
+		//
+		// } else {
+		// 	// else update msa only
+		// 	action = "update only msa";
+		// 	updateMSA = true;
+		// 	// use current scenario and data with new msa
+		// 	newLocation.scenario = Page.location.scenario;
+		// 	newLocation.data = Page.location.data;
+		// }
 	}
-	console.log(action)
+	console.log(" -> action = "+action, updateMSA, updateScenario, updateData)
 
 
 
 	// save location
-	if (Site.debug) console.log(" -> Page.location ", Page.location);
-	Page.location.msa = newLocation.msa;
-	Page.location.scenario = newLocation.scenario;
-	Page.location.data = newLocation.data;
-	if (Site.debug) console.log(" -> Page.location ", Page.location);
+	//if (Site.debug) console.log(" -> Page.location ", Page.location);
+	// Page.location.msa = newLocation.msa;
+	// Page.location.scenario = newLocation.scenario;
+	// Page.location.data = newLocation.data;
+	Page.setLocation(newLocation);
+	//if (Site.debug) console.log(" -> Page.location ", Page.location, " -> AFTER SAVING");
+
+
 
 
 	// if origin is anything but "load" then updateUrl()
-	if (origin != "load" && (updateMSA || updateScenario || updateData)) {
-		Page.updateUrl('add',newLocation);
+	if ((updateMSA || updateScenario || updateData)) {
+		Page.updateTitle();
+		console.log(" -> Page.updateUrl('add')",newLocation)
+		if (origin != "load")
+			Page.updateUrl('add',newLocation);
 	}
 	// if new msa
 	if (updateMSA){
@@ -146,12 +160,12 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// else only the scenario has changed
 	else if (!updateMSA && updateScenario) {
 		// update scenario menu
-		Menu.newScenarioMenu(Page.location);
+		//Menu.newScenarioMenu(Page.location);
 	}
 	// if origin is anything but "menu"
 	if (origin != "menu" && updateMSA) {
-			// then update selected MSA in dropdown
-			Menu.setMsaMenu(Page.location.msa);
+		// then update selected MSA in dropdown
+		Menu.setMsaMenu(Page.location.msa);
 
 
 		//		if (prop(mns))
@@ -187,9 +201,7 @@ console.log(1111);
 
 	// 2. HANDLE CHANGES
 
-	if (updateMSA || updateScenario) {
-		//updateTitle();								// update title
-	}
+
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
 		Data.getScenario(newLocation); // do this before any map work
@@ -215,12 +227,7 @@ console.log(1111);
 
 
 
-/**
- *	Update Title
- */
-function updateTitle() {
-	$("h1").html(Page.location.msa + ":" + Page.location.scenario + ":" + Page.location.data)
-}
+
 
 /**
  *	Update Debugger

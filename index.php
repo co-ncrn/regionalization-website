@@ -47,7 +47,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Reducing Uncertainty &ndash; Reducing the Margin of Error in the American Community Survey</title>
+<title>Reducing Uncertainty :: Reducing the Margin of Error in the American Community Survey</title>
 <meta name='description' content="<?php print $site['title']; ?> – <?php print $site['description']; ?>">
 <meta name="keywords" content="ACS,census,data,maps,margin of error">
 <meta name="author" content="Seth Spielman, David Folch, Becky Davies, Owen Mundy">

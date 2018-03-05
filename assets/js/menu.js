@@ -11,16 +11,16 @@ var Menu = (function() {
 	function newMsaMenu(msas) {
 		if (Site.debug) console.log(" -> Menu.newMsaMenu()")
 		// default option
-		var msa_options = "<option val=''></option>";
+		var str = "<option val=''></option>";
 		// loop through msas
 		for (var key in msas) {
 			// skip loop if the property is from prototype
 			if (!msas.hasOwnProperty(key)) continue;
 			//if (Site.debug) console.log(key,data[key])
 			// add MSAs to select options
-			msa_options += optionHTML(key, key + " - " + msas[key][0].description);
+			str += optionHTML(key, key + " - " + msas[key][0].description);
 		}
-		$("#msa_select_box").append(msa_options).trigger('chosen:updated'); // update select
+		$("#msa_select_box").append(str).trigger('chosen:updated'); // update select
 	}
 
 	/**
@@ -36,8 +36,7 @@ var Menu = (function() {
 	function newScenarioMenu(msa) {
 		if (Site.debug) console.log(" -> Menu.newScenarioMenu()", msa);
 		if (Site.debug) $("#rawDataOutput").val(msa + ": \n" + JSON.stringify(msas[msa])); // testing
-
-		//if (Site.debug) console.log(msas[msa][0])
+		//if (Site.debug) console.log("msas[msa][0]",msas[msa][0])
 		currentDataForMapColor = msas[msa][0];
 
 		// use msa to update the scenario box
@@ -45,7 +44,7 @@ var Menu = (function() {
 
 		// for each scenario
 		for (var i = 0, l = msas[msa].length; i < l; i++) {
-			if (Site.debug) console.log( msas[msa][i]);
+			//if (Site.debug) console.log( msas[msa][i]);
 
 			// get scenario
 			var scenarioDetails = msas[msa][i].scenario;
@@ -69,9 +68,9 @@ var Menu = (function() {
 		$("#scenario_select_box").append(str).trigger('chosen:updated');
 
 		// if scenario/data then set it
-		if (prop(scenarioDetails)) {
+		if (prop(Page.location.scenario) && prop(Page.location.data)) {
 			//if (Site.debug) console.log("scenario",current.scenario +"-"+ current.data);
-			$("#scenario_select_box").val(current.scenario + "-" + current.data).trigger('chosen:updated');
+			$("#scenario_select_box").val(Page.location.scenario + "-" + Page.location.data).trigger('chosen:updated');
 		}
 		// otherwise open it for input
 		else {
@@ -97,17 +96,25 @@ var Menu = (function() {
 			no_results_text: "Oops, nothing found!",
 			width: "95%"
 		});
+
+
 		// on chosen() change events
 		$('#msa_select_box').on('change', function(evt, params) {
-			dataChange("menu", {"msa":params.selected, "scenario": current.scenario, "data":current.data});
+			if (Site.debug) console.log("params.selected", params.selected);
+			dataChange("menu", {"msa":params.selected, "scenario": Page.location.scenario, "data":Page.location.data});
 		});
 		$('#scenario_select_box').on('change', function(evt, params) {
 			if (Site.debug) console.log("params.selected", params.selected);
 			// split the params from the dropdown
 			var p = params.selected.split("-");
 			if (p.length == 2) {
-				//if (Site.debug) console.log( p.toString())
-				dataChange("menu", {"msa":current.msa, "scenario": p[0], "data":p[1]});
+				var newLocation = {
+					"msa":Page.location.msa,
+					"scenario": p[0],
+					"data":p[1]
+				}
+				if (Site.debug) console.log( p.toString(),newLocation)
+				dataChange("menu", newLocation);
 			}
 		});
 
