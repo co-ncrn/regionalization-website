@@ -33,24 +33,25 @@ var Menu = (function() {
 	/**
 	 *	Build new scenario menu based on MSA selection
 	 */
-	function newScenarioMenu(msa, scenario, data) {
-		if (Site.debug) console.log(" -> Menu.newScenarioMenu()", msa, scenario, data);
+	function newScenarioMenu(msa) {
+		if (Site.debug) console.log(" -> Menu.newScenarioMenu()", msa);
 		if (Site.debug) $("#rawDataOutput").val(msa + ": \n" + JSON.stringify(msas[msa])); // testing
 
 		//if (Site.debug) console.log(msas[msa][0])
 		currentDataForMapColor = msas[msa][0];
 
 		// use msa to update the scenario box
-		var scenario_options = "<option val=''></option>";
+		var str = "<option val=''></option>";
 
 		// for each scenario
 		for (var i = 0, l = msas[msa].length; i < l; i++) {
-			//if (Site.debug) console.log( msas[msa][i]);
+			if (Site.debug) console.log( msas[msa][i]);
 
-			var scenario = msas[msa][i].scenario;
+			// get scenario
+			var scenarioDetails = msas[msa][i].scenario;
 
 			// add optiongroup with scenario
-			scenario_options += "<optgroup label='" + dataDict[scenario] + "'>";
+			str += "<optgroup label='" + dataDefinitions[scenarioDetails] + "'>";
 
 			// for each data type
 			for (var j = 0; j < msas[msa][i].data.length; j++) {
@@ -59,16 +60,16 @@ var Menu = (function() {
 				var data = msas[msa][i].data[j];
 
 				// add scenario
-				scenario_options += optionHTML(scenario + "-" + data, dataDict[data]);
+				str += optionHTML(scenarioDetails + "-" + data, dataDefinitions[data]);
 			}
-			scenario_options += "</optgroup>";
+			str += "</optgroup>";
 		}
 
 		// update options
-		$("#scenario_select_box").append(scenario_options).trigger('chosen:updated');
+		$("#scenario_select_box").append(str).trigger('chosen:updated');
 
 		// if scenario/data then set it
-		if (prop(scenario)) {
+		if (prop(scenarioDetails)) {
 			//if (Site.debug) console.log("scenario",current.scenario +"-"+ current.data);
 			$("#scenario_select_box").val(current.scenario + "-" + current.data).trigger('chosen:updated');
 		}

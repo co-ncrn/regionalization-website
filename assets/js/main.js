@@ -80,15 +80,8 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if (Site.debug) console.log(" -> newLocation =", newLocation);
 	if (Site.debug) console.log(" -> Page.location ", Page.location);
 
-
-
-
 	// what should we update?
 	var updateMSA, updateScenario, updateData;
-
-	// check if new location different from current location
-
-
 
 	let action = "";
 	// if page is loading for first time
@@ -141,20 +134,22 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if (Site.debug) console.log(" -> Page.location ", Page.location);
 
 
-	// if origin is anything but "load" then update URL bar
+	// if origin is anything but "load" then updateUrl()
 	if (origin != "load" && (updateMSA || updateScenario || updateData)) {
 		Page.updateUrl('add',newLocation);
 	}
+	// if new msa
 	if (updateMSA){
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
 	}
+	// else only the scenario has changed
 	else if (!updateMSA && updateScenario) {
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location);
 	}
 	// if origin is anything but "menu"
-	if (updateMSA && origin != "menu") {
+	if (origin != "menu" && updateMSA) {
 			// then update selected MSA in dropdown
 			Menu.setMsaMenu(Page.location.msa);
 
@@ -169,24 +164,24 @@ return;
 console.log(1111);
 
 
-	// 1. HANDLE INCOMING
-	// user clicks msa on map || user selects scenario dropdown while msa selected
-
-	// a. compare against msa
-	if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
-		Page.location.msa = newLocation.msa;
-		updateMSA = true;
-	}
-	// b. compare against scenario
-	if ((prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario) || (newLocation.msa != Page.location.msa)) {
-		Page.location.scenario = newLocation.scenario;
-		updateScenario = true;
-	}
-	// c. compare against Page.location data
-	if (prop(newLocation.data) && newLocation.data != Page.location.data) {
-		Page.location.data = newLocation.data;
-		updateData = true;
-	}
+	// // 1. HANDLE INCOMING
+	// // user clicks msa on map || user selects scenario dropdown while msa selected
+	//
+	// // a. compare against msa
+	// if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
+	// 	Page.location.msa = newLocation.msa;
+	// 	updateMSA = true;
+	// }
+	// // b. compare against scenario
+	// if ((prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario) || (newLocation.msa != Page.location.msa)) {
+	// 	Page.location.scenario = newLocation.scenario;
+	// 	updateScenario = true;
+	// }
+	// // c. compare against Page.location data
+	// if (prop(newLocation.data) && newLocation.data != Page.location.data) {
+	// 	Page.location.data = newLocation.data;
+	// 	updateData = true;
+	// }
 
 
 
@@ -197,8 +192,7 @@ console.log(1111);
 	}
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
-		console.log("about to call getScenarioData()")
-		getScenarioData(newLocation); // do this before any map work
+		Data.getScenario(newLocation); // do this before any map work
 	}
 
 
@@ -256,39 +250,6 @@ function optionHTML(val, text) {
 
 
 
-
-
-/**
- *	Get data from server
- */
-function getScenarioData(location) {
-	var url = Site.rootDir + "data/scenarios/" + location.msa + "_" + location.scenario + "_" + location.data + ".json";
-	if (Site.debug) console.log("getScenarioData()", url,location);
-	d3.json(url, function(error, json) {
-		if (error) return console.error(error); // handle error
-		console.log("!!!!!!!!!!!!!!getScenarioData() -> json = ", json);
-
-
-
-
-
-		// DO I STILL NEED THIS?
-		//		data = remove_rows(data,"inf"); 		// remove rows with "inf" (infinity)
-
-		// data has arrived
-		// currentScenario = cleanData(json.response);			// DELETE
-
-		console.log("currentScenarioArray, json", currentScenarioArray)
-		currentScenario = json;
-		currentScenarioArray = d3.entries(currentScenario);
-		numberTracks = currentScenarioArray.length;
-
-//		updateChart(); // update chart (and eventually map, from chart.js)
-
-		// testing
-		if (Site.debug) $("#rawDataOutput").val(JSON.stringify(json).replace("},", "},\n"));
-	});
-}
 
 
 

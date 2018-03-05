@@ -309,13 +309,14 @@ var Site = (function() {
 
 
 
-<script src="<?php print $site['rootDir']; ?>data/data_definitions.js"></script>
+<script src="<?php print $site['rootDir']; ?>data/data-definitions.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/config.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/scenario.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/page.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/menu.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/table.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/data.js"></script>
 <!-- <script src="<?php print $site['rootDir']; ?>assets/js/chart-axes.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script> -->
