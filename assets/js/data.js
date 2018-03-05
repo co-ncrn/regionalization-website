@@ -1,7 +1,5 @@
 /*jshint esversion: 6 */
 
-
-
 var Data = (function() {
 	// private
 

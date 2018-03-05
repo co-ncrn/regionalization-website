@@ -22,7 +22,7 @@ var mns = new function() {
 
 		lastMSAFeature = null,
 		hideLastMSAFeatureTimeOut = null,
-		MAP_DEBUG = false
+		MAP_DEBUG = true
 		;
 
 
@@ -72,7 +72,7 @@ var mns = new function() {
 			    onEachFeature: onEachMSAFeature
 			});
 			msaLayer.addTo(map);					// add layer to map
-			if (prop(current.msa)) zoomToMSAonMap(current.msa); // if an msa is set then zoom to it
+			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa); // if an msa is set then zoom to it
 		});
 	}
 	// https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
@@ -91,9 +91,9 @@ var mns = new function() {
 		}
 
 		// store reference to feature
-		if (feature.properties.GEOID == current.msa){
+		if (feature.properties.GEOID == Page.location.msa){
 			lastMSAFeature = layer;
-			console.log("store reference to feature",feature.properties.GEOID,current.msa,lastMSAFeature)
+			console.log("store reference to feature",feature.properties.GEOID,Page.location.msa,lastMSAFeature)
 		}
 
 		// add popup
@@ -118,13 +118,13 @@ var mns = new function() {
 	    //console.log("highlightMSAFromMap() layer = ",layer, " // msa = ",_msa)
 
 	    // don't do anything if this is the current msa
-	    if (_msa == current.msa) return;
+	    if (_msa == Page.location.msa) return;
 
 	    // show info
 		//info.update(layer.feature.properties);
 
 		// if msa is not set then don't do this
-		if (prop(current.msa) && current.msa != parseInt(_msa)){
+		if (prop(Page.location.msa) && Page.location.msa != parseInt(_msa)){
 		    layer.setStyle({
 		        fillOpacity: 0.4
 		    });
@@ -144,7 +144,7 @@ var mns = new function() {
 	// reset msa style
 	function resetMSAStyle(e) {
 	    // don't do anything if this is the current msa
-	    if (prop(e) && prop(e.feature) && e.feature.properties.GEOID == current.msa) return;
+	    if (prop(e) && prop(e.feature) && e.feature.properties.GEOID == Page.location.msa) return;
 
 		console.log("resetMSAStyle() -> ",lastMSAFeature,"e",e);
 
@@ -199,7 +199,7 @@ var mns = new function() {
 			resetMSAStyle();
 
 			// update the MSA across the interface
-			dataChange("map",Page.createNewLocation(layer.feature.properties.GEOID));
+			dataChange("map",{"msa":layer.feature.properties.GEOID, "scenario": Page.location.scenario, "data":Page.location.data});
 
 		}
 	}
@@ -207,9 +207,10 @@ var mns = new function() {
 	 *	Zoom and fit the map to the MSA bounds
 	 */
 	var zoomToMSAonMap = function(msa) {
-		//if (MAP_DEBUG) console.log(" -> zoomToMSAonMap()",arguments.callee.caller.toString(), current, msa, msas[msa][0]);
-		//if (MAP_DEBUG) console.log(" -> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa]);
+		if (MAP_DEBUG) console.log(" -> zoomToMSAonMap()",/*arguments.callee.caller.toString(), */Page.location, msa, msas[msa][0]);
+		if (MAP_DEBUG) console.log(" -> zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa], msaIndex[msa].bounds);
 		try {
+
 			if (map && prop(msaIndex[msa].bounds))
 				map.fitBounds(msaIndex[msa].bounds);
 		} catch(err) {
@@ -239,7 +240,7 @@ var mns = new function() {
 	 *	@param String src The url to remote file
 	 */
 	this.loadTractLayerData = function(msa,src) {
-		if (MAP_DEBUG) console.log("loadTractLayerData()",msa,src);
+		if (MAP_DEBUG) console.log("\nloadTractLayerData()",msa,src);
 
 		d3.json(src, function(error, data) {		// use D3 to load JSON
 			if (error) return console.warn(error);	// return if error
@@ -262,7 +263,7 @@ var mns = new function() {
 			//restyleTractLayer()
 
 			hideLastMSAFeature()
-			console.log("lastMSAFeature",lastMSAFeature);
+			console.log(" -> lastMSAFeature",lastMSAFeature);
 
 			// bring to front
 		    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -446,7 +447,7 @@ var mns = new function() {
 		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-		if (MAP_DEBUG) console.log("initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+//		if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
 /*
 		if (tractOrRegion == "t")
@@ -490,7 +491,7 @@ var mns = new function() {
 */
 	    } // if no TID, currentScenario, or data found
 	    else {
-			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
+//			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE, layer = ",layer);
 			// no changes to default style
 		}
 		// return a style object

@@ -318,8 +318,8 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>assets/js/table.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/data.js"></script>
 <!-- <script src="<?php print $site['rootDir']; ?>assets/js/chart-axes.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script> -->
+<script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>-->
+<script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/main.js"></script>
 
 

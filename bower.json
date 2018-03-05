@@ -1,31 +1,31 @@
 {
-  "name": "select-msa",
-  "homepage": "https://github.com/co-ncrn/multivariate-testing",
-  "authors": [
-    "Owen Mundy <omundy@gmail.com>"
-  ],
-  "description": "",
-  "main": "index.html",
-  "license": "MIT",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "jquery": "^3.1.1",
-    "chosen": "^1.6.2",
-    "leaflet": "^1.0.3",
-    "leaflet-ajax": "^2.1.0",
-    "d3": "^4.8.0",
-    "bootstrap": "v4.0.0-alpha.6",
-    "d3-scale": "^1.0.6",
-    "Leaflet.EasyButton": "^2.2.2"
-  },
-  "devDependencies": {
-    "tether": "^1.4.0"
-  }
+    "name": "select-msa",
+    "homepage": "https://github.com/co-ncrn/multivariate-testing",
+    "authors": [
+        "Owen Mundy <omundy@gmail.com>"
+    ],
+    "description": "",
+    "main": "index.html",
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "jquery": "^3.1.1",
+        "chosen": "^1.6.2",
+        "leaflet": "^1.0.3",
+        "leaflet-ajax": "^2.1.0",
+        "d3": "^4.8.0",
+        "bootstrap": "v4.0.0-alpha.6",
+        "d3-scale": "^1.0.6",
+        "Leaflet.EasyButton": "^2.2.2"
+    },
+    "devDependencies": {
+        "tether": "^1.4.0"
+    }
 }

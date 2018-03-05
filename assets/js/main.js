@@ -168,9 +168,9 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		Menu.setMsaMenu(Page.location.msa);
 
 
-		//		if (prop(mns))
+
 		// load msa tracts topojson
-		//			mns.loadTractLayerData(Page.location.msa, Site.rootDir + "data/tracts/topojson_quantized_1e6/" + Page.location.msa + "_tract.topojson");
+		mns.loadTractLayerData(Page.location.msa, Site.rootDir + "data/tracts/topojson_quantized_1e6/" + Page.location.msa + "_tract.topojson");
 	}
 
 
