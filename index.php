@@ -303,11 +303,9 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>node_modules/d3-color/build/d3-color.min.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/topojson/dist/topojson.min.js"></script>
+<!-- <script src="<?php print $site['rootDir']; ?>node_modules/topojson-client/dist/topojson-client.min.js"></script> -->
 <script src="<?php print $site['rootDir']; ?>node_modules/d3-axis/build/d3-axis.min.js"></script>
-
-
-
-
+<script src="<?php print $site['rootDir']; ?>assets/libs/L.TopoJSON.js"></script>
 
 <script src="<?php print $site['rootDir']; ?>data/data-definitions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>

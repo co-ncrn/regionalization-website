@@ -608,7 +608,7 @@ taskgroup@~2.0.0:
     os-tmpdir "^1.0.0"
     rimraf "~2.2.6"
 
-topojson-client@3, topojson-client@3.0.0:
+topojson-client@3, topojson-client@3.0.0, topojson-client@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/topojson-client/-/topojson-client-3.0.0.tgz#1f99293a77ef42a448d032a81aa982b73f360d2f"
   dependencies:

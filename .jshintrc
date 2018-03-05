@@ -1,1 +1,10 @@
-{ "esversion":6 }
+{
+    "indent": 1,
+    "esversion": 6,
+    "validthis": true,
+    "globals": {
+        "$": false,
+        "L": false,
+        "d3": false
+    }
+}
