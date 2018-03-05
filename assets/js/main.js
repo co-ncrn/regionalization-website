@@ -133,7 +133,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// 	newLocation.data = Page.location.data;
 		// }
 	}
-	console.log(" -> action = "+action, updateMSA, updateScenario, updateData)
+	console.log(" -> action = "+action, updateMSA, updateScenario, updateData);
 
 
 
@@ -154,14 +154,24 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		Page.updateTitle();
 		// if "load" then update URL
 		if (origin != "load"){
-			console.log(" -> Page.updateUrl('add')",newLocation)
+			console.log(" -> Page.updateUrl('add')",newLocation);
 			Page.updateUrl('add',newLocation);
 		}
+	}
+	// if new msa or scenario and msa and scenario are set
+	if (updateMSA && updateScenario){
+
+		// load msa tracts topojson
+		Mns.loadTractLayerData(Page.location.msa);
 	}
 	// if new msa
 	if (updateMSA){
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
+		// if map is loaded
+		if (origin != "load")
+			// zoom to MSA on map
+			Mns.zoomToMSAonMap(Page.location.msa);
 	}
 	// else only the scenario has changed
 	else if (!updateMSA && updateScenario) {
@@ -172,16 +182,11 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if (origin != "menu" && updateMSA) {
 		// then update selected MSA in dropdown
 		Menu.setMsaMenu(Page.location.msa);
-
-
-
-		// load msa tracts topojson
-	//	mns.loadTractLayerData(Page.location.msa);
 	}
 
 
 return;
-console.log(1111);
+
 
 
 	// // 1. HANDLE INCOMING
