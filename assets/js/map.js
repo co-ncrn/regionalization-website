@@ -20,6 +20,17 @@ var Mns = (function() {
 		"weight": 1,
 		"opacity": 0.55
 	};
+	var tractStyle = {
+		"color": "#3690c0",
+		"weight": 1,
+		"opacity": 0.75
+	};
+	var tractHighlightStyle = {
+		//fillOpacity: 0.4,
+		opacity: 1,
+		weight: 2,
+		color: "#990000" // stroke color
+	};
 
 	function testStyle(tid) {
 	    return {
@@ -69,6 +80,7 @@ var Mns = (function() {
 	 *	Create map
 	 */
 	function createMap() {
+
 		// create Leaflet map
 		map = L.map('map', {
 			minZoom: 5,
@@ -76,25 +88,42 @@ var Mns = (function() {
 			zoomControl: true
 		}).setView([35.243, -80.395], 7);
 
-		var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-			'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+		// Load the MSA topojson and add it to the map
+		// from https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
+		let src = Site.rootDir + "data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson";
+		d3.json(src, function(error, data) {
+			if (error) return console.warn(error);
 
-		// add base map
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-			id: 'mapbox.light', // testing: 'mapbox.streets'
-			opacity: 0.7,
-			attribution: attribution,
-			accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
-		}).addTo(map);
+			let attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 
-		// add buttons to map
-		L.easyButton('fa-arrows-alt fa-lg', function(btn, map) {
-			toggle_fullscreen();
-		}).addTo(map);
+			// add base map
+			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+				id: 'mapbox.light', // testing: 'mapbox.streets'
+				opacity: 0.7,
+				attribution: attribution,
+				accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
+			}).addTo(map);
 
-		// finally, load the MSA layer: from https://www.census.gov/geo/maps-data/data/cbf/cbf_msa.html
-		loadMSALayer(Site.rootDir + "data/cb_2013_us_cbsa_500k_m1s_mapshaper-quantized.topojson");
+			// add buttons to map
+			L.easyButton('fa-arrows-alt fa-lg', function(btn, map) {
+				toggle_fullscreen();
+			}).addTo(map);
+
+			// add msa layer to map
+			msaLayer = new L.TopoJSON(data, {
+				style: msaStyle,
+				onEachFeature: onEachMSAFeature
+			});
+
+			// add layer to map
+			msaLayer.addTo(map);
+			// if an msa is set then zoom to it
+			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa,"createMap");
+
+			dataChange("load", Page.location);
+		});
 	}
 
 
@@ -105,29 +134,11 @@ var Mns = (function() {
 	 **************************************************************************/
 
 	/**
-	 *	Load the MSA topojson and add it to the map
-	 */
-	function loadMSALayer(src) {
-		//console.log("loadMSALayer()",src);
-		d3.json(src, function(error, data) {
-			if (error) return console.warn(error);
-
-			msaLayer = new L.TopoJSON(data, {
-				style: msaStyle,
-				onEachFeature: onEachMSAFeature
-			});
-			// add layer to map
-			msaLayer.addTo(map);
-			// if an msa is set then zoom to it
-			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa);
-		});
-	}
-
-	/**
 	 *	Zoom to the msa
 	 */
-	function zoomToMSAonMap(msa) {
-		if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap()", /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
+	function zoomToMSAonMap(msa,from) {
+		if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap()", from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
+			if (!prop(msaIndex[msa])) return;
 		try {
 			//if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa], msaIndex[msa].bounds);
 			if (map && prop(msaIndex[msa].bounds))
@@ -152,8 +163,8 @@ var Mns = (function() {
 
 		// store reference to feature
 		if (feature.properties.GEOID == Page.location.msa) {
+			console.log(" -> !!!!!! store reference in lastMSAFeature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
 			lastMSAFeature = layer;
-			console.log(" -> store reference to feature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
 		}
 
 		// add popup
@@ -287,7 +298,7 @@ var Mns = (function() {
 			tractTIDindex = {};						// reset TID references
 			tractRIDindex = {};						// reset RID references
 
-//console.log("currentScenarioTIDs = ",currentScenarioTIDs)
+console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 
 			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
 				msa: msa, 							// for reference later
@@ -295,12 +306,12 @@ var Mns = (function() {
 			    onEachFeature: onEachTractFeature
 			});
 			tractLayer.addTo(map);					// add layer to map
-			zoomToMSAonMap(msa);					// zoom to MSA displayed on map
+			zoomToMSAonMap(msa,"loadTractLayerData");					// zoom to this MSA
 			resetMSAStyle();						// make sure the MSA is not visible
 			//restyleTractLayer()
 
 			hideLastMSAFeature();
-			console.log(" -> lastMSAFeature",lastMSAFeature);
+			//console.log(" -> lastMSAFeature",lastMSAFeature);
 
 			// bring to front
 		    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -318,7 +329,7 @@ var Mns = (function() {
 		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-//		if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+		if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
 /*
 		if (tractOrRegion == "t")
@@ -333,7 +344,7 @@ var Mns = (function() {
 		var defaultStyle = {
 	        //fillColor: "#000000",
 	        weight: 1,
-	        opacity: .5,
+	        opacity: 0.5,
 	        color: 'white',
 	        fillOpacity: 0.7
 	    };
@@ -449,20 +460,38 @@ var Mns = (function() {
 		popup.setLatLng(e.latlng).openOn(map);
 	}
 
+	function updateMap(){
+		//console.log("updateMap()");
+		if (!prop(tractLayer.eachLayer)) return;
 
+		tractLayer.eachLayer(function (layer) {
+			if (MAP_DEBUG) console.log("updateMap() -> eachLayer()",layer.feature, layer);
 
+			// reset properties, popup, events for each tract feature
+			onEachTractFeature(layer.feature, layer);
+
+			// reset layer style based on new data
+			if (prop(layer.feature))
+				layer.setStyle( initialTractStyle(layer.feature) );
+		});
+	}
+
+	function getLastMSAFeature(){
+		return lastMSAFeature;
+	}
 
 	return {
 		createMap: createMap,
-		loadMSALayer: function(src) {
-			loadMSALayer(src);
+		lastMSAFeature: function(){
+			return getLastMSAFeature();
 		},
-		zoomToMSAonMap: function(msa) {
-			zoomToMSAonMap(msa);
+		zoomToMSAonMap: function(msa,from) {
+			zoomToMSAonMap(msa,from);
 		},
 		loadTractLayerData: function(msa) {
 			loadTractLayerData(msa);
-		}
+		},
+		updateMap: updateMap
 	};
 
 }());

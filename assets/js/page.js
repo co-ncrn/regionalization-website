@@ -65,7 +65,8 @@ var Page = (function() {
 		//this.location = loc;
 		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
 
-		dataChange("load", location);
+		// move to Mns.createMap() after map loads
+		//dataChange("load", location);
 	}
 
 
@@ -124,7 +125,7 @@ var Page = (function() {
 	function addListeners() {
 		window.onpopstate = function(event) {
 			if (event && event.state) {
-				console.log("url changed")
+				console.log("url changed");
 				init();
 			}
 		};
@@ -134,13 +135,13 @@ var Page = (function() {
 	return {
 		initCheckUrlForScenario: initCheckUrlForScenario,
 		updateUrl: function(change, newLocation) {
-			updateUrl(change, newLocation)
+			updateUrl(change, newLocation);
 		},
 		updateTitle: updateTitle,
 		addListeners: addListeners,
 		setLocation: function(newLocation){
 			setLocation(newLocation);
 		}
-	}
+	};
 
 })();

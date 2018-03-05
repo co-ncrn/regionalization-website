@@ -152,17 +152,11 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if ((updateMSA || updateScenario || updateData)) {
 		// update title
 		Page.updateTitle();
-		// if "load" then update URL
+		// update URL
 		if (origin != "load"){
 			console.log(" -> Page.updateUrl('add')",newLocation);
 			Page.updateUrl('add',newLocation);
 		}
-	}
-	// if new msa or scenario and msa and scenario are set
-	if (updateMSA && updateScenario){
-
-		// load msa tracts topojson
-		Mns.loadTractLayerData(Page.location.msa);
 	}
 	// if new msa
 	if (updateMSA){
@@ -171,7 +165,15 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// if map is loaded
 		if (origin != "load")
 			// zoom to MSA on map
-			Mns.zoomToMSAonMap(Page.location.msa);
+			Mns.zoomToMSAonMap(Page.location.msa,"dataChange");
+	}
+
+
+
+	// if new msa or scenario
+	if (updateMSA && updateScenario){
+		// load msa tracts topojson
+		Mns.loadTractLayerData(Page.location.msa);
 	}
 	// else only the scenario has changed
 	else if (!updateMSA && updateScenario) {
