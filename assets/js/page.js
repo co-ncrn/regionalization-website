@@ -1,35 +1,72 @@
 /*jshint esversion: 6 */
 
 
-const Page = (function() {
+var Page = (function() {
 	// private
-	var location = {},
+
+	// the default location object
+	var location = {
+			"msa": "",
+			"scenario": "",
+			"data": ""
+		},
 		url;
+
+	/**
+	 *	Return the params from the current URL
+	 */
+	function parseUrl() {
+		var url = window.location.href.replace("#", ""),
+			page = [],
+			loc = {};
+
+		// split on domain (the working directory OR domain name)
+		if (url.indexOf(Site.server) != -1) {
+			// get everything after domain
+			page = url.split(Site.server)[1];
+			// remove any trailing slashes
+			page = page.replace(/\/$/, "").trim();
+			// if data
+			if (page != "") {
+				// then there must be msa (and/or scenario and data)
+				if (page.indexOf("/") != -1) {
+					// split on /
+					var pages = page.split("/");
+					// set vars
+					if (pages[0]) loc.msa = pages[0].trim();
+					if (pages[1]) loc.scenario = pages[1].trim();
+					if (pages[2]) loc.data = pages[2].trim();
+				} else {
+					loc.msa = page.trim();
+				}
+			}
+		}
+		//if (Site.debug) console.log(" -> Page.parseUrl()", Site.server, loc);
+		return loc;
+	}
+
 
 	/**
 	 *	Checks to see if there is a current page to load
 	 */
-	//console.log("getScenarioFromUrl()",JSON.stringify(getScenarioFromUrl()) )
-	function checkForCurrentPage() {
-		var path = getScenarioFromUrl();
-		if (Site.debug) console.log(" -> Page.check() path = ", JSON.stringify(path))
+	function initCheckUrlForScenario() {
+		this.location = parseUrl();
+		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
+		location = this.location;
+		//this.location = loc;
+		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
 
-		if (path.msa && path.scenario && path.data) {
-			dataChange("load", path.msa, path.scenario, path.data);
-		}
-		// only the msa is set
-		else if (path.msa) {
-			dataChange("load", path.msa);
-		}
+		dataChange("load", location);
 	}
+
 
 
 
 	/**
 	 *	update URL - Be careful, because as you do the root of the site changes
 	 */
-	function updateUrl(change) {
-		console.log("updateUrl()", change);
+	function updateUrl(change, newLocation) {
+		console.log("updateUrl()", change, newLocation);
 
 		// bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() {
@@ -38,13 +75,14 @@ const Page = (function() {
 
 		let url = "";
 
-		if (prop(current.msa))
-			url += "" + current.msa;
-		if (prop(current.scenario))
-			url += "/" + current.scenario;
-		if (prop(current.data))
-			url += "/" + current.data;
-
+		if (prop(newLocation.msa)) {
+			url += "" + newLocation.msa;
+			if (prop(newLocation.scenario)) {
+				url += "/" + newLocation.scenario;
+				if (prop(newLocation.data))
+					url += "/" + newLocation.data;
+			}
+		}
 		// change state
 		if (change == 'add') {
 			// data
@@ -66,59 +104,18 @@ const Page = (function() {
 	function addListeners() {
 		window.onpopstate = function(event) {
 			if (event && event.state) {
-				//location.reload();
-				Page.check();
+				console.log("url changed")
+				init();
 			}
 		};
 	}
 
 
-
-
-	/**
-	 *	Return the params from the current URL
-	 */
-	function getScenarioFromUrl() {
-		var url = window.location.href.replace("#", ""),
-			page = [];
-
-
-			console.log("url",url)
-
-		// split on domain (the working directory OR domain name)
-		if (url.indexOf(Site.server) != -1) {
-			// get everything after domain
-			page = url.split(Site.server)[1];
-				console.log("page",page)
-			// remove any trailing slashes
-			page = page.replace(/\/$/, "").trim();
-			// if data there
-			if (page != "") {
-				// then there must be msa (and/or scenario and data)
-				if (page.indexOf("/") != -1) {
-					// split on /
-					var pages = page.split("/");
-					// set vars
-					if (pages[0]) location.msa = pages[0].trim();
-					if (pages[1]) location.scenario = pages[1].trim();
-					if (pages[2]) location.data = pages[2].trim();
-				} else {
-					location.msa = page.trim();
-				}
-			}
-		}
-		if (Site.debug) console.log(" -> Page.getScenarioFromUrl()", Site.server, url, page, location);
-		return location;
-	}
-
-
-
 	return {
-		check: checkForCurrentPage,
-		updateUrl: function(change) {
-			updateUrl(change)
+		initCheckUrlForScenario: initCheckUrlForScenario,
+		updateUrl: function(change, newLocation) {
+			updateUrl(change, newLocation)
 		},
-		getScenarioFromUrl: getScenarioFromUrl,
 		addListeners: addListeners
 	}
 

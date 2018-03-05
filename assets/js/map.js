@@ -199,7 +199,7 @@ var mns = new function() {
 			resetMSAStyle();
 
 			// update the MSA across the interface
-			dataChange("map",layer.feature.properties.GEOID);
+			dataChange("map",Page.createNewLocation(layer.feature.properties.GEOID));
 
 		}
 	}
@@ -537,7 +537,7 @@ var mns = new function() {
 	function style(feature) {
 		//if (MAP_DEBUG) console.log("feature = ",feature)
 		return {
-		    fillColor: getColor(currentData),
+		    fillColor: getColor(currentDataForMapColor),
 		    weight: 1,
 		    opacity: 1,
 		    color: 'red',

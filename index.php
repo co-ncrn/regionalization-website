@@ -17,7 +17,7 @@
 //
 
 $site = array(
-    // location of all data for site
+    // data path
     'dataDir' => "/data/",
     // to debug or not
     'debug' => true,
@@ -215,7 +215,7 @@ var Site = (function() {
                             </div>
                         </div>
                     </div>
-                    
+
                 </form>
 
 
@@ -316,9 +316,9 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>assets/js/menu.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/table.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/chart-axes.js"></script>
+<!-- <script src="<?php print $site['rootDir']; ?>assets/js/chart-axes.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script>
+<script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script> -->
 <script src="<?php print $site['rootDir']; ?>assets/js/main.js"></script>
 
 
