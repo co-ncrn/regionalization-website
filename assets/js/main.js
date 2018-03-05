@@ -64,6 +64,9 @@ function init(){
 		// create map
 		Mns.createMap();
 
+		// create chart
+		Chart.createChart();
+
 		// check url to see if we should display a page
 		Page.initCheckUrlForScenario();
 	});
@@ -147,7 +150,10 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 
-
+	// menu updated, ...
+	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
+		Data.getScenario(newLocation); // do this before any map work
+	}
 	// if any change
 	if ((updateMSA || updateScenario || updateData)) {
 		// update title
@@ -215,10 +221,7 @@ return;
 	// 2. HANDLE CHANGES
 
 
-	// menu updated, ...
-	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
-		Data.getScenario(newLocation); // do this before any map work
-	}
+
 
 
 
