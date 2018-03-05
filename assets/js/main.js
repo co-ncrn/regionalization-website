@@ -61,6 +61,9 @@ function init(){
 		// create MSA menu
 		Menu.newMsaMenu(msas);
 
+		// create map
+		Mns.createMap();
+
 		// check url to see if we should display a page
 		Page.initCheckUrlForScenario();
 	});
@@ -145,12 +148,15 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 
-	// if origin is anything but "load" then updateUrl()
+	// if any change
 	if ((updateMSA || updateScenario || updateData)) {
+		// update title
 		Page.updateTitle();
-		console.log(" -> Page.updateUrl('add')",newLocation)
-		if (origin != "load")
+		// if "load" then update URL
+		if (origin != "load"){
+			console.log(" -> Page.updateUrl('add')",newLocation)
 			Page.updateUrl('add',newLocation);
+		}
 	}
 	// if new msa
 	if (updateMSA){
@@ -170,7 +176,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 		// load msa tracts topojson
-		mns.loadTractLayerData(Page.location.msa, Site.rootDir + "data/tracts/topojson_quantized_1e6/" + Page.location.msa + "_tract.topojson");
+	//	mns.loadTractLayerData(Page.location.msa);
 	}
 
 

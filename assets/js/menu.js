@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-
+"use strict";
 
 
 var Menu = (function() {
@@ -96,7 +96,6 @@ var Menu = (function() {
 			no_results_text: "Oops, nothing found!",
 			width: "95%"
 		});
-
 
 		// on chosen() change events
 		$('#msa_select_box').on('change', function(evt, params) {
