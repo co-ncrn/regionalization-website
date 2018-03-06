@@ -59,3 +59,28 @@ function padFloat(num) {
 	}
 	return str;
 }
+
+
+/**
+ *	Round decimal according to size
+ */
+function roundDecimal(num) {
+
+	var decimal = 1000;
+
+	if (num > 1000) {
+		decimal = 1;
+	} else if (num > 100) {
+		decimal = 10;
+	} else if (num > 10) {
+		decimal = 10;
+	} else if (num > 1) {
+		decimal = 1000;
+	} else if (num > 0.1) {
+		decimal = 1000;
+	} else if (num > 0.01) {
+		decimal = 1000;
+	}
+	num = Math.round(num * decimal) / decimal;
+	return num;
+}
