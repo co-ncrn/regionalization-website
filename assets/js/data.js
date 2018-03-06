@@ -33,7 +33,7 @@ var Data = (function() {
 				$("#rawDataOutput").val(JSON.stringify(json).replace("},", "},\n"));
 
 			// set color scale
-			Color.setScale();
+			Color.updateScale();
 			// update chart (and eventually map, from chart.js)
 			Chart.updateChart();
 			//callback();

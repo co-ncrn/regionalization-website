@@ -318,9 +318,11 @@ var Mns = (function() {
 			color: 'white',
 			fillOpacity: 0.7
 		};
-
-		// set color scale
-		Color.setScale();
+		// if we are showing estimate updateScale
+		if (estimateOrMargin == "e") {
+			// set color scale
+			Color.updateScale();
+		}
 
 		// make sure _tid exists
 		if (prop(currentScenario) && currentScenario[_tid]) {
@@ -335,7 +337,7 @@ var Mns = (function() {
 				defaultStyle.fillColor = Color.getScale(val);
 			} else if (estimateOrMargin == "m") {
 				val = currentScenario[_tid][tractOrRegion + "CV"];
-				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> M");
+				//if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> M");
 				// color by CV, but display MOE
 				defaultStyle.fillColor = Color.cvColorScale(val);
 			}

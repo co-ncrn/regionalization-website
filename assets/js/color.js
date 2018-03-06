@@ -29,7 +29,7 @@ var Color = (function() {
 	}
 
 	// set blue scale
-	function setScale() {
+	function updateScale() {
 		// experiments
 		//accent = d3.scaleOrdinal(d3.schemeAccent);
 		//blues = d3.scaleOrdinal(d3.schemeBlues[9]);
@@ -91,9 +91,7 @@ var Color = (function() {
 
 
 	return {
-		setScale: function() {
-			setScale();
-		},
+		updateScale: updateScale,
 		getScale: function(n) {
 			return getScale(n);
 		},

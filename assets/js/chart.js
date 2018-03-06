@@ -8,17 +8,17 @@ var Chart = (function() {
 
 	var margin,
 		sizes,
-		width,height,
+		width, height,
 		svgRatio = 0.67,
 		svgStroke = 1.5,
 		barHV = 8;
 
 	// table
-	var table,theadtr,tbody,
+	var table, theadtr, tbody,
 		rows, yScale, xScale, xMin, xMax, xExtent;
 
 	// resize chart elements based on browser size
-//	d3.select(window).on('resize', resizeTable);
+	//	d3.select(window).on('resize', resizeTable);
 
 
 
@@ -57,10 +57,10 @@ var Chart = (function() {
 
 		// set svg properties
 		margin = {
-				top: 0,
-				right: 10,
-				bottom: 0,
-				left: 10
+			top: 0,
+			right: 10,
+			bottom: 0,
+			left: 10
 		};
 		width = (sizes.thSVG - margin.left - margin.right);
 		height = (svgHeight - margin.top - margin.bottom);
@@ -70,7 +70,7 @@ var Chart = (function() {
 
 
 
-	function createChart(){
+	function createChart() {
 		if (CHART_DEBUG) console.log("createChart()");
 		// references to table
 		table = d3.select('#chart table');
@@ -144,7 +144,7 @@ var Chart = (function() {
 		//if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario)
 		//if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray)
 
-		Color.setScale();
+		Color.updateScale();
 		updateChartScales();
 
 		// update class on each row
@@ -279,27 +279,20 @@ var Chart = (function() {
 			//d3.selectAll("td.tid").classed("highlight", true);
 		}
 
+		// highlight tracts on map from table rows
+		d3.selectAll("tbody tr")
+			.on("mouseover", function(d) {
+				Mns.highlightTractFromChart("g" + d.value.TID);
+			})
+			.on("mouseout", function(d) {
+				Mns.resetTractStyleFromChart("g" + d.value.TID);
+			});
 
-
-// temp: commenting because maybe annoying
-
-		d3.selectAll("tr")
-			.on("mouseover", selectTIDorRID)
-			.on("mouseout", resetTIDorRID);
-		// d3.selectAll(".tid")
-		// 	.on("mouseover", selectTID)
-		// 	.on("mouseout", resetTID);
-		// d3.selectAll(".rid")
-		// 	.on("mouseover", selectRID)
-		// 	.on("mouseout", resetRID);
+		// estimate / error toggle buttons
 		d3.selectAll(".est")
-			.on("click", selectEST)
-		//.on("mouseout", resetEST)
-		;
+			.on("click", selectEST);
 		d3.selectAll(".err")
-			.on("click", selectMAR)
-		//.on("mouseout", resetEST)
-		;
+			.on("click", selectMAR);
 
 
 
@@ -571,8 +564,9 @@ var Chart = (function() {
 
 
 	return {
-		createChart:createChart,
-		updateChart:updateChart
+		createChart: createChart,
+		updateChart: updateChart,
+		updateChartScales: updateChartScales
 	};
 
 }());

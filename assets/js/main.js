@@ -139,28 +139,22 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// save location
 	Page.setLocation(newLocation);
 
+
+
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
 		Data.getScenario(newLocation); // do this before any map work
 	}
-	// if any change
-	if ((updateMSA || updateScenario || updateData)) {
-		// update title
-		Page.updateTitle();
-		// update URL
-		if (origin != "load") {
-			console.log(" -> Page.updateUrl('add')", newLocation);
-			Page.updateUrl('add', newLocation);
-		}
-	}
+
 	// if new msa
 	if (updateMSA) {
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
 		// if map is loaded
-		if (origin != "load")
+		if (origin != "load"){
 			// zoom to MSA on map
 			Mns.zoomToMSAonMap(Page.location.msa, "dataChange");
+		}
 	}
 
 
@@ -182,8 +176,25 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	}
 
 
-	return;
 
+	if (updateData || tractOrRegion != "" || estimateOrMargin != "") {
+		// if data or tractOrRegion changes then update scales
+		Chart.updateChartScales();
+	}
+
+
+	// non-essential
+
+	// if any change
+	if ((updateMSA || updateScenario || updateData)) {
+		// update title
+		Page.updateTitle();
+		// update URL
+		if (origin != "load") {
+			console.log(" -> Page.updateUrl('add')", newLocation);
+			Page.updateUrl('add', newLocation);
+		}
+	}
 
 
 	// // 1. HANDLE INCOMING
@@ -207,27 +218,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 
-	// 2. HANDLE CHANGES
-
-
-
-
-
-
-
-	if (updateData || tractOrRegion != "" || estimateOrMargin != "") {
-		// if data or tractOrRegion changes then update scales
-		//		updateChartScales();
-	}
-
-
 }
-
-
-
-
-
-
 
 
 
@@ -243,8 +234,3 @@ function updateDebug() {
 	//$(".debug").html(str);
 	console.log("updateDebug() ->", str);
 }
-
-
-
-
-loaded = true;
