@@ -22,23 +22,12 @@ body { font-family: 'Open Sans', sans-serif; font-weight: 400;}
 
 
 
-/*
-font-family: 'Open Sans', sans-serif;
- */
-
-
-
-/* MAP */
-
-.leaflet-touch .leaflet-bar button { line-height: 26px } /* fix position of fa button */
-.leaflet-control-container { position: absolute; right: 56px } /* move map controls to right side */
-
-
-
 
 /* SITE HEADER */
 
 .header .callout { font: 1.6em/1.5em 'Roboto Slab', serif; text-align: center; margin: 30px; color: #666; }
+
+
 
 
 

@@ -93,7 +93,8 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap4c-chosen/dist/css/component-chosen.min.css">
 
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles-chart.css">
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles-map.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles.css">
 
 
