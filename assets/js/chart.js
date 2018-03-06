@@ -387,8 +387,8 @@ var Chart = (function() {
 	 */
 	function highlightHeaders() {
 
-		var activeClass = "btn-primary",
-			inactiveClass = "btn-secondary";
+		var activeClass = "btn-outline-secondary",
+			inactiveClass = "btn-light";
 
 		if (tractOrRegion == "t") {
 			$('.thTID button').removeClass(inactiveClass).addClass(activeClass);

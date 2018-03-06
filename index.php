@@ -232,16 +232,16 @@ var Site = (function() {
         							<thead>
         								<tr>
         									<th class="thTID" title="Tract ID (state.county.tract)">
-        										<button class="btn btn-sm btn-primary">&nbsp;Tract&nbsp;</button>
+        										<button class="btn btn-sm btn-outline-secondary">&nbsp;Tract&nbsp;</button>
         									</th>
         									<th class="thRID" title="Region ID">
-        										<button class="btn btn-sm btn-secondary">Region</button>
+        										<button class="btn btn-sm btn-light">Region</button>
         									</th>
         									<th class="thEST ">
-        										<button class="btn btn-sm btn-primary">Estimate</button>
+        										<button class="btn btn-sm btn-outline-secondary">Estimate</button>
         									</th>
         									<th class="thMAR ">
-        										<button class="btn btn-sm btn-secondary">Error</button>
+        										<button class="btn btn-sm btn-light">Error</button>
         									</th>
         									<th class="thSVG"></th>
         								</tr>

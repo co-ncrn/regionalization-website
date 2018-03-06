@@ -20,6 +20,26 @@ body { font-family: 'Open Sans', sans-serif; font-weight: 400;}
 .navbar-light .nav-item.active .nav-link,
 .navbar-light .nav-item:hover .nav-link { color: #4c6992; }
 
+/* remove button outline */
+.btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
+
+.thTID button:hover, .thRID button:hover, .thEST button:hover, .thMAR button:hover,
+.tid:hover, .rid:hover, .est:hover, .err:hover { cursor: pointer; }
+#chart thead th button { position:relative; width: 100%; font-size: 90%; }
+
+/* update bootstrap btn color */
+.btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary:visited, .btn-outline-secondary:focus,
+.btn-outline-secondary:hover {
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(108, 117, 125);
+    color: rgb(108, 117, 125);
+}
+
+
+
+
+
+/* fix columns */
 
 .form_icon_col { padding-right: 0; }
 .form_select_col { padding-left: 0; }
