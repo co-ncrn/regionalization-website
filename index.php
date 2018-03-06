@@ -132,7 +132,7 @@ var Site = (function() {
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top">
     <a class="navbar-brand" href="#">Reducing Uncertainty</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -161,11 +161,13 @@ var Site = (function() {
 
 
 <div class="container-fluid">
-
 	<div class="header">
 		<h2 class="callout">Reducing the Margin of Error in<br>the American Community Survey.</h2>
 	</div>
+</div>
 
+
+<div class="container-fluid">
 	<div id="presentation">
 		<div class="row">
 			<div class="col-md-7">
