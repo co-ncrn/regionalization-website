@@ -160,7 +160,7 @@ var Page = (function() {
 		}
 		// else go fullscreen
 		else {
-			element = $('#presentation').get(0);
+			let element = $('#presentation').get(0);
 			if (element.requestFullscreen) {
 				element.requestFullscreen();
 			} else if (element.mozRequestFullScreen) {

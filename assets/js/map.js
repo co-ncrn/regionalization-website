@@ -81,7 +81,7 @@ var Mns = (function() {
 
 			// add buttons to map
 			L.easyButton('fa-arrows-alt fa-lg', function(btn, map) {
-				toggleFullscreen();
+				Page.toggleFullscreen();
 			}).addTo(map);
 
 			// add msa layer to map
