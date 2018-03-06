@@ -22,9 +22,14 @@ var Page = (function() {
 	 *	Return the params from the current URL
 	 */
 	function parseUrl() {
-		var url = window.location.href.replace("#", ""),
+		var url = window.location.href,
 			page = [],
 			loc = {};
+
+		// remove hash
+		if (url.indexOf("#") != -1){
+			url = url.split("#")[0];
+		}
 
 		// split on domain (the working directory OR domain name)
 		if (url.indexOf(Site.server) != -1) {
@@ -126,6 +131,9 @@ var Page = (function() {
 				init();
 			}
 		};
+
+
+
 	}
 
 
