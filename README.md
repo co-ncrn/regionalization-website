@@ -15,6 +15,12 @@ http://leafletjs.com/examples/choropleth/
 Colorbrewer 2.0
 http://colorbrewer2.org/
 
+d3/d3-scale
+https://github.com/d3/d3-scale
+
+d3: scales, and color
+http://www.jeromecukier.net/blog/2011/08/11/d3-scales-and-color/
+
 Maps with Leaflet, Topojson & Chroma.js
 https://blog.webkid.io/maps-with-leaflet-and-topojson/
 

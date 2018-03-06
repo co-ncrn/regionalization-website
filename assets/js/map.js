@@ -33,46 +33,47 @@ var Mns = (function() {
 	};
 
 	function testStyle(tid) {
-	    return {
-	        fillColor: "#000000",
-	        weight: 2,
-	        opacity: 1,
-	        color: 'white',
-	        dashArray: '3',
-	        fillOpacity: 0.7
-	    };
+		return {
+			fillColor: "#000000",
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7
+		};
 	}
 
 
 	function getColorOrange(d) {
 		return d > 8 ? '#800026' :
-		       d > 7 ? '#BD0026' :
-		       d > 6 ? '#E31A1C' :
-		       d > 5 ? '#FC4E2A' :
-		       d > 4 ? '#FD8D3C' :
-		       d > 3 ? '#FEB24C' :
-		       d > 2 ? '#FED976' :
-		               '#FFEDA0';
+			d > 7 ? '#BD0026' :
+			d > 6 ? '#E31A1C' :
+			d > 5 ? '#FC4E2A' :
+			d > 4 ? '#FD8D3C' :
+			d > 3 ? '#FEB24C' :
+			d > 2 ? '#FED976' :
+			'#FFEDA0';
 	}
+
 	function getColor(d) {
 		return d > 8 ? '#034e7b' :
-		       d > 7 ? '#034e7b' :
-		       d > 6 ? '#0570b0' :
-		       d > 5 ? '#3690c0' :
-		       d > 4 ? '#74a9cf' :
-		       d > 3 ? '#a6bddb' :
-		       d > 2 ? '#d0d1e6' :
-		               '#f1eef6';
+			d > 7 ? '#034e7b' :
+			d > 6 ? '#0570b0' :
+			d > 5 ? '#3690c0' :
+			d > 4 ? '#74a9cf' :
+			d > 3 ? '#a6bddb' :
+			d > 2 ? '#d0d1e6' :
+			'#f1eef6';
 	}
 
 	function style(feature) {
 		//if (MAP_DEBUG) console.log("feature = ",feature)
 		return {
-		    fillColor: getColor(currentDataForMapColor),
-		    weight: 1,
-		    opacity: 1,
-		    color: 'red',
-		    fillOpacity: 0.7
+			fillColor: getColor(currentDataForMapColor),
+			weight: 1,
+			opacity: 1,
+			color: 'red',
+			fillOpacity: 0.7
 		};
 	}
 
@@ -121,7 +122,7 @@ var Mns = (function() {
 			// add layer to map
 			msaLayer.addTo(map);
 			// if an msa is set then zoom to it
-			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa,"createMap");
+			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa, "createMap");
 
 			dataChange("load", Page.location);
 		});
@@ -137,9 +138,9 @@ var Mns = (function() {
 	/**
 	 *	Zoom to the msa
 	 */
-	function zoomToMSAonMap(msa,from) {
+	function zoomToMSAonMap(msa, from) {
 		if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap()", from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
-			if (!prop(msaIndex[msa])) return;
+		if (!prop(msaIndex[msa])) return;
 		try {
 			//if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa], msaIndex[msa].bounds);
 			if (map && prop(msaIndex[msa].bounds))
@@ -287,37 +288,37 @@ var Mns = (function() {
 	 */
 	function loadTractLayerData(msa) {
 		var src = Site.rootDir + "data/tracts/topojson_quantized_1e6/" + msa + "_tract.topojson";
-		if (MAP_DEBUG) console.log("\nloadTractLayerData()",msa,src);
+		if (MAP_DEBUG) console.log("\nloadTractLayerData()", msa, src);
 
-		d3.json(src, function(error, data) {		// use D3 to load JSON
-			if (error) return console.warn(error);	// return if error
-			if (MAP_DEBUG) console.log(" -> d3.json",data); // testing
-			if (tractLayer != null){
-				if (MAP_DEBUG) console.log(" -> tractLayer = ",tractLayer);
-				map.removeLayer(tractLayer);			// remove current layer from map
+		d3.json(src, function(error, data) { // use D3 to load JSON
+			if (error) return console.warn(error); // return if error
+			if (MAP_DEBUG) console.log(" -> d3.json", data); // testing
+			if (tractLayer != null) {
+				if (MAP_DEBUG) console.log(" -> tractLayer = ", tractLayer);
+				map.removeLayer(tractLayer); // remove current layer from map
 			}
-			tractTIDindex = {};						// reset TID references
-			tractRIDindex = {};						// reset RID references
+			tractTIDindex = {}; // reset TID references
+			tractRIDindex = {}; // reset RID references
 
-console.log("currentScenarioTIDs = ",currentScenarioTIDs)
+			console.log("currentScenarioTIDs = ", currentScenarioTIDs);
 
-			tractLayer = new L.TopoJSON(data, {		// create new tractLayer, add data
-				msa: msa, 							// for reference later
+			tractLayer = new L.TopoJSON(data, { // create new tractLayer, add data
+				msa: msa, // for reference later
 				style: initialTractStyle,
-			    onEachFeature: onEachTractFeature
+				onEachFeature: onEachTractFeature
 			});
-			tractLayer.addTo(map);					// add layer to map
-			zoomToMSAonMap(msa,"loadTractLayerData");					// zoom to this MSA
-			resetMSAStyle();						// make sure the MSA is not visible
+			tractLayer.addTo(map); // add layer to map
+			zoomToMSAonMap(msa, "loadTractLayerData"); // zoom to this MSA
+			resetMSAStyle(); // make sure the MSA is not visible
 			//restyleTractLayer()
 
 			hideLastMSAFeature();
 			//console.log(" -> lastMSAFeature",lastMSAFeature);
 
 			// bring to front
-		    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-		        tractLayer.bringToFront();
-		    }
+			if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+				tractLayer.bringToFront();
+			}
 
 
 		});
@@ -330,52 +331,59 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-		if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+	//	if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
-/*
-		if (tractOrRegion == "t")
-			id = _tid;
-		else if (tractOrRegion == "r")
-			id = _rid;
-*/
+		/*
+				if (tractOrRegion == "t")
+					id = _tid;
+				else if (tractOrRegion == "r")
+					id = _rid;
+		*/
 
 
 
 		// set default style
 		var defaultStyle = {
-	        fillColor: "#000000",
-	        weight: 1,
-	        opacity: 0.5,
-	        color: 'white',
-	        fillOpacity: 0.7
-	    };
+			fillColor: "#000000",
+			weight: 1,
+			opacity: 0.5,
+			color: 'white',
+			fillOpacity: 0.7
+		};
 
 
-		if ( prop(currentScenario) && currentScenario[_tid] ){
-			if (MAP_DEBUG) console.log(" -> initialTractStyle() -> setting style based on data");
+
+
+		if (prop(currentScenario) && currentScenario[_tid]) {
+			//if (MAP_DEBUG) console.log(" -> initialTractStyle() -> setting style based on data");
+
+			let val;
 
 			// determine whether to store tract / region AND estimate / margin
-			if (estimateOrMargin == "e"){
-				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> E, fillColor = "+ Color.blues( currentScenario[_tid][tractOrRegion+"Est"] ));
-				defaultStyle.fillColor = Color.blues( currentScenario[_tid][tractOrRegion+"Est"] );
-			}else if (estimateOrMargin == "m"){
+			if (estimateOrMargin == "e") {
+				val = currentScenario[_tid][tractOrRegion + "Est"];
+
+				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> E",", val = "+ val,", fillColor = " + Color.getScale(val));
+				defaultStyle.fillColor = Color.getScale(val);
+			} else if (estimateOrMargin == "m") {
+				val = currentScenario[_tid][tractOrRegion + "CV"];
 				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> M");
-				var num = currentScenario[_tid][tractOrRegion+"CV"]; // color by CV, but display MOE
-				defaultStyle.fillColor = CVColorScale(num);
+				var num = val; // color by CV, but display MOE
+				defaultStyle.fillColor = Color.cvColorScale(num);
 			}
 
-/*
-			// use TID (without "g") or RID as a reference with currentScenario to get estimate
-			if (tractOrRegion == "t")
-				d = currentScenario[_tid].tEst;
-			else if (tractOrRegion == "r")
-				d = currentScenario[_tid].rEst;
+			/*
+						// use TID (without "g") or RID as a reference with currentScenario to get estimate
+						if (tractOrRegion == "t")
+							d = currentScenario[_tid].tEst;
+						else if (tractOrRegion == "r")
+							d = currentScenario[_tid].rEst;
 
-			// update style color
-			defaultStyle.fillColor = blues(d);
-*/
-	    } // if no TID, currentScenario, or data found
-	    else {
+						// update style color
+						defaultStyle.fillColor = blues(d);
+			*/
+		} // if no TID, currentScenario, or data found
+		else {
 			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE");
 			// no changes to default style
 		}
@@ -398,25 +406,28 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		if (!prop(tractData)) return;
 
 		// add popup
-		var popupHTML = '<table class="">'+
-						'<thead>'+
-							'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>'+
-						'</thead>'+
-						'<tbody>'+
-							'<tr><td class="key">ID</td><td class="val">'+ tractData.TID +'</td><td class="val">'+ tractData.RID +'</td></tr>'+
-							'<tr><td class="key">Estimate</td><td class="val t">'+ tractData.tEst +'</td><td class="val r">'+ tractData.rEst +'</td></tr>'+
-							'<tr><td class="key">Margin of Error</td><td class="val">±'+ padFloat(tractData.tMar) +'</td><td class="val">±'+ padFloat(tractData.rMar) +'</td></tr>'+
-							'<tr><td class="key">CV</td><td class="val">'+ padFloat(tractData.tCV) +'</td><td class="val">'+ padFloat(tractData.rCV) +'</td></tr>'+
-						'</tbody>'+
-						'</table>';
-		layer.bindPopup(popupHTML,{closeButton: false, autoPan: false});
+		var popupHTML = '<table class="">' +
+			'<thead>' +
+			'<tr><th class="key"></th><th class="val">Tract</th><th class="val">Region</th></tr>' +
+			'</thead>' +
+			'<tbody>' +
+			'<tr><td class="key">ID</td><td class="val">' + tractData.TID + '</td><td class="val">' + tractData.RID + '</td></tr>' +
+			'<tr><td class="key">Estimate</td><td class="val t">' + tractData.tEst + '</td><td class="val r">' + tractData.rEst + '</td></tr>' +
+			'<tr><td class="key">Margin of Error</td><td class="val">±' + padFloat(tractData.tMar) + '</td><td class="val">±' + padFloat(tractData.rMar) + '</td></tr>' +
+			'<tr><td class="key">CV</td><td class="val">' + padFloat(tractData.tCV) + '</td><td class="val">' + padFloat(tractData.rCV) + '</td></tr>' +
+			'</tbody>' +
+			'</table>';
+		layer.bindPopup(popupHTML, {
+			closeButton: false,
+			autoPan: false
+		});
 
 
 		//console.log("onEachTractFeature()",feature,layer);
 		layer.on({
 			mouseover: highlightTractFromMap,
 			mouseout: resetTractStyleFromMap,
-		   // mousemove: moveTractPopup,
+			// mousemove: moveTractPopup,
 			click: zoomToTractFeature
 		});
 	}
@@ -435,8 +446,8 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		var popup = e.target.getPopup(); // instead, set popup
 		popup.setLatLng(e.latlng).openOn(map); // at position of mouse
 
-// temp commenting out
-//		highlightTractOnChart(layer.feature.properties);
+		// temp commenting out
+		//		highlightTractOnChart(layer.feature.properties);
 
 		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
@@ -449,8 +460,8 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 		tractLayer.resetStyle(layer);
 		layer.closePopup();
 
-// temp commenting out
-//		removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
+		// temp commenting out
+		//		removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
 	}
 	// zoom to an tract
 	function zoomToTractFeature(e) {
@@ -461,63 +472,87 @@ console.log("currentScenarioTIDs = ",currentScenarioTIDs)
 	function highlightTractFromChart(tid) {
 		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
 		var layer = tractTIDindex[tid];
-	    //console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
-	    //var style = testStyle(tid);
+		//console.log("highlightTractFromChart() tid = ",tid, "layer = ",layer);
+		//var style = testStyle(tid);
 		layer.setStyle(tractHighlightStyle);
-	  	layer.openPopup();
+		layer.openPopup();
 
-	   	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-	        layer.bringToFront();
-	    }
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
 	}
 	// reset tract style to original
 	function resetTractStyleFromChart(tid) {
 		if (!prop(tractTIDindex[tid])) return; // map hasn't loaded yet
 		var layer = tractTIDindex[tid];
-	    tractLayer.resetStyle(layer);
-	  	layer.closePopup();
+		tractLayer.resetStyle(layer);
+		layer.closePopup();
 	}
 
 
 	// follow mouse with popup
-	function moveTractPopup(e){
-		 //e.target.closePopup();
+	function moveTractPopup(e) {
+		//e.target.closePopup();
 		var popup = e.target.getPopup();
 		popup.setLatLng(e.latlng).openOn(map);
 	}
 
-	function updateMap(){
+	function updateMap() {
 		//console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;
 
-		tractLayer.eachLayer(function (layer) {
-			if (MAP_DEBUG) console.log("updateMap() -> eachLayer()",layer.feature, layer);
+		tractLayer.eachLayer(function(layer) {
+			if (MAP_DEBUG) console.log("updateMap() -> eachLayer()", layer.feature, layer);
 
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer);
 
 			// reset layer style based on new data
 			if (prop(layer.feature))
-				layer.setStyle( initialTractStyle(layer.feature) );
+				layer.setStyle(initialTractStyle(layer.feature));
 		});
 	}
 
-	function getLastMSAFeature(){
+	function getLastMSAFeature() {
 		return lastMSAFeature;
+	}
+
+
+	// initial set tractStyles to build choropleth map
+	function setAllTractColors(data) {
+		//	console.log("setAllTractColors()",data);
+
+
+		// update the color scale for the map
+
+	}
+	// sets scales for tractStyles
+	function setTractStyleScale(data) {
+		console.log("setTractStyleScale()", data);
+
 	}
 
 	return {
 		createMap: createMap,
-		lastMSAFeature: function(){
+		lastMSAFeature: function() {
 			return getLastMSAFeature();
 		},
-		zoomToMSAonMap: function(msa,from) {
-			zoomToMSAonMap(msa,from);
+		zoomToMSAonMap: function(msa, from) {
+			zoomToMSAonMap(msa, from);
 		},
 		loadTractLayerData: function(msa) {
 			loadTractLayerData(msa);
 		},
-		updateMap: updateMap
+		updateMap: updateMap,
+		setAllTractColors: function(data) {
+			setAllTractColors(data);
+		},
+		resetTractStyleFromChart: function(tid) {
+			resetTractStyleFromChart(tid);
+		},
+		highlightTractFromChart: function(tid) {
+			highlightTractFromChart(tid);
+		}
 	};
 
 }());

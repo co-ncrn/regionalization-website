@@ -402,20 +402,20 @@ var mns = new function() {
 
 
 
-
-	// initial set tractStyles to build choropleth map
-	this.setAllTractColors = function(data){
-	//	console.log("setAllTractColors()",data);
-
-
-		// update the color scale for the map
-
-	}
-	// sets scales for tractStyles
-	this.setTractStyleScale = function(data){
-		console.log("setTractStyleScale()",data);
-
-	}
+	// 
+	// // initial set tractStyles to build choropleth map
+	// this.setAllTractColors = function(data){
+	// //	console.log("setAllTractColors()",data);
+	//
+	//
+	// 	// update the color scale for the map
+	//
+	// }
+	// // sets scales for tractStyles
+	// this.setTractStyleScale = function(data){
+	// 	console.log("setTractStyleScale()",data);
+	//
+	// }
 
 
 /**************************************************************************
