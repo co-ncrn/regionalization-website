@@ -67,6 +67,27 @@ var Color = (function() {
 				*/
 	}
 
+	// tests
+	function getColorOrange(d) {
+		return d > 8 ? '#800026' :
+			d > 7 ? '#BD0026' :
+			d > 6 ? '#E31A1C' :
+			d > 5 ? '#FC4E2A' :
+			d > 4 ? '#FD8D3C' :
+			d > 3 ? '#FEB24C' :
+			d > 2 ? '#FED976' :
+			'#FFEDA0';
+	}
+	function getColor(d) {
+		return d > 8 ? '#034e7b' :
+			d > 7 ? '#034e7b' :
+			d > 6 ? '#0570b0' :
+			d > 5 ? '#3690c0' :
+			d > 4 ? '#74a9cf' :
+			d > 3 ? '#a6bddb' :
+			d > 2 ? '#d0d1e6' :
+			'#f1eef6';
+	}
 
 
 	return {
@@ -77,7 +98,7 @@ var Color = (function() {
 			return getScale(n);
 		},
 		cvColorScale: function(val) {
-			cvColorScale(val);
+			return cvColorScale(val);
 		}
 	};
 

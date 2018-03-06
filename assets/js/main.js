@@ -251,66 +251,6 @@ function updateDebug() {
 
 
 /**
- *	Clean data from API (need to eventually make these changes permanent in DB)
- */
-function cleanData(data) {
-	if (Site.debug) console.log("cleanData() -> current = ", current);
-	/*
-		// data fixing
-		data.forEach(function(row,i) {
-			if (Site.debug) console.log("i=",i," // row = ",row);
-
-			// now on server
-			// remove g from TID
-			//data[i].TID = data[i].TID.replace("g","");
-
-
-
-			// store names in row so easier to reference
-			data[i].tractError = parseFloat(row[ "t_"+ current.data + "M" ]);
-			data[i].tractEstimate = parseFloat(row[ "t_"+ current.data + "E" ]);
-			data[i].regionError = parseFloat(row[ "r_"+ current.data + "M" ]);
-			data[i].regionEstimate = parseFloat(row[ "r_"+ current.data + "E" ]);
-
-
-			// round errors, estimates
-			data[i].tractError = roundDecimal(data[i].tractError);
-			data[i].regionError = roundDecimal(data[i].regionError);
-			data[i].tractEstimate = roundDecimal(data[i].tractEstimate);
-			data[i].regionEstimate = roundDecimal(data[i].regionEstimate);
-
-			// create TRACT scale (a min / max for each TRACT)
-			// this will be the scale for the axis as well so the change will be obvious
-			data[i].tractErrorMin = data[i].tractEstimate - data[i].tractError;
-			data[i].tractErrorMax = data[i].tractEstimate + data[i].tractError;
-
-			// create REGION scale (a min / max for each REGION)
-			data[i].regionErrorMin = data[i].regionEstimate - data[i].regionError;
-			data[i].regionErrorMax = data[i].regionEstimate + data[i].regionError;
-
-			// round min, max
-			data[i].tractErrorMin = roundDecimal(data[i].tractErrorMin);
-			data[i].tractErrorMax = roundDecimal(data[i].tractErrorMax);
-			data[i].regionErrorMin = roundDecimal(data[i].regionErrorMin);
-			data[i].regionErrorMax = roundDecimal(data[i].regionErrorMax);
-
-		});
-
-
-	*/
-	// save them by TID
-	//	currentScenarioTIDs = {};
-	data.forEach(function(row, i) {
-		//currentScenarioTIDs[ row.TID ] = row;
-		console.log("cleanData() -> row = ", row);
-	});
-	//if (Site.debug)
-	console.log("cleanData() -> currentScenarioTIDs = ", currentScenarioTIDs);
-
-
-	return data;
-}
-/**
  *	Round decimal according to size
  */
 function roundDecimal(num) {

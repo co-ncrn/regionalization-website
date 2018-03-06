@@ -51,7 +51,7 @@ var Chart = (function() {
 
 		// update SVG sizes in chart
 		if (prop(loaded) && loaded == true) {
-			console.log("currentScenarioArray0", currentScenarioArray);
+			//console.log("currentScenarioArray0", currentScenarioArray);
 			updateChart();
 		}
 
@@ -85,7 +85,7 @@ var Chart = (function() {
 	 * 	Build HTML table inside the SVG chart. Update comes later.
 	 */
 	function enterChart() {
-		if (CHART_DEBUG) console.log("enterChart() -> currentScenarioArray = ",currentScenarioArray);
+		//if (CHART_DEBUG) console.log("enterChart() -> currentScenarioArray = ",currentScenarioArray);
 
 
 		//************ INIT TABLE ************
@@ -138,7 +138,7 @@ var Chart = (function() {
 	 * 	Build / Update HTML table inside the SVG chart
 	 */
 	function updateChart() {
-		console.log("currentScenarioArray1", currentScenarioArray);
+		//console.log("currentScenarioArray1", currentScenarioArray);
 		enterChart();
 
 		//if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario)
@@ -266,7 +266,7 @@ var Chart = (function() {
 
 
 		// set all map colors
-		console.log("currentScenarioArray2", currentScenarioArray);
+		//console.log("currentScenarioArray2", currentScenarioArray);
 		Mns.setAllTractColors(currentScenarioArray);
 
 
@@ -279,21 +279,25 @@ var Chart = (function() {
 			//d3.selectAll("td.tid").classed("highlight", true);
 		}
 
+
+
+// temp: commenting because maybe annoying
+
 		d3.selectAll("tr")
 			.on("mouseover", selectTIDorRID)
 			.on("mouseout", resetTIDorRID);
-		d3.selectAll(".tid")
-			.on("mouseover", selectTID)
-			.on("mouseout", resetTID);
-		d3.selectAll(".rid")
-			.on("mouseover", selectRID)
-			.on("mouseout", resetRID);
+		// d3.selectAll(".tid")
+		// 	.on("mouseover", selectTID)
+		// 	.on("mouseout", resetTID);
+		// d3.selectAll(".rid")
+		// 	.on("mouseover", selectRID)
+		// 	.on("mouseout", resetRID);
 		d3.selectAll(".est")
-			.on("mouseover", selectEST)
+			.on("click", selectEST)
 		//.on("mouseout", resetEST)
 		;
 		d3.selectAll(".err")
-			.on("mouseover", selectMAR)
+			.on("click", selectMAR)
 		//.on("mouseout", resetEST)
 		;
 
@@ -311,7 +315,7 @@ var Chart = (function() {
 		Mns.updateMap(); // update map after chart to give topojson time to load
 		highlightHeaders(); // update headers
 
-		console.log("currentScenarioArray3", currentScenarioArray);
+		//console.log("currentScenarioArray3", currentScenarioArray);
 		createAxes(currentScenarioArray, yScale, xScale, tractOrRegion + "Mar", tractOrRegion + "Est");
 	}
 
@@ -324,7 +328,7 @@ var Chart = (function() {
 	 *	@param {Float} est - "tractEst" or "regionEst" from above
 	 */
 	function createAxes(data, yScale, xScale, err, est) {
-		console.log("create_axes()", data, yScale, xScale, err, est);
+		//console.log("create_axes()", data, yScale, xScale, err, est);
 
 		// keep tick labels from overlapping
 		var ticks = 5;
@@ -542,10 +546,7 @@ var Chart = (function() {
 	 * 	Build / Update HTML table inside the SVG chart
 	 */
 	function updateChartScales() {
-
-		//if (CHART_DEBUG) console.log("updateChartScales()")
-
-		//************ SCALES ************
+		//if (CHART_DEBUG) console.log("updateChartScales()");
 
 		// Y-SCALE: based on number of data
 		yScale = d3.scaleLinear()

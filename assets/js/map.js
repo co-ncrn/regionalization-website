@@ -44,27 +44,7 @@ var Mns = (function() {
 	}
 
 
-	function getColorOrange(d) {
-		return d > 8 ? '#800026' :
-			d > 7 ? '#BD0026' :
-			d > 6 ? '#E31A1C' :
-			d > 5 ? '#FC4E2A' :
-			d > 4 ? '#FD8D3C' :
-			d > 3 ? '#FEB24C' :
-			d > 2 ? '#FED976' :
-			'#FFEDA0';
-	}
 
-	function getColor(d) {
-		return d > 8 ? '#034e7b' :
-			d > 7 ? '#034e7b' :
-			d > 6 ? '#0570b0' :
-			d > 5 ? '#3690c0' :
-			d > 4 ? '#74a9cf' :
-			d > 3 ? '#a6bddb' :
-			d > 2 ? '#d0d1e6' :
-			'#f1eef6';
-	}
 
 
 
@@ -351,7 +331,7 @@ var Mns = (function() {
 			// determine whether to store tract / region AND estimate / margin
 			if (estimateOrMargin == "e") {
 				val = currentScenario[_tid][tractOrRegion + "Est"];
-				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> E", ", val = " + val, ", fillColor = " + Color.getScale(val));
+				//if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> E", ", val = " + val, ", fillColor = " + Color.getScale(val));
 				defaultStyle.fillColor = Color.getScale(val);
 			} else if (estimateOrMargin == "m") {
 				val = currentScenario[_tid][tractOrRegion + "CV"];
@@ -490,7 +470,7 @@ var Mns = (function() {
 		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function(layer) {
-			if (MAP_DEBUG) console.log("updateMap() -> eachLayer()", layer.feature, layer);
+			//if (MAP_DEBUG) console.log("updateMap() -> eachLayer()", layer.feature, layer);
 
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer);
