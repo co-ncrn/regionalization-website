@@ -174,50 +174,53 @@ var Site = (function() {
 			<div class="col-md-5">
 
 
-                <form>
 
+                <div class="row">
+                    <div class="col-12">
+                        <form>
 
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-1 form_icon_col">
-                                <label for="msa_select_box">
-                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png">
-                                </label>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-1 form_icon_col">
+                                        <label for="msa_select_box">
+                                            <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png">
+                                        </label>
+                                    </div>
+                                    <div class="col-11 form_select_col">
+                                        <select class="form-control form-control-chosen" id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-11 form_select_col">
-                                <select class="form-control form-control-chosen" id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-1 form_icon_col">
+                                        <label for="scenario_select_box">
+                                            <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png">
+                                        </label>
+                                    </div>
+                                    <div class="col-11 form_select_col">
+                                        <select class="form-control form-control-chosen" id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-1 form_icon_col">
+                                        <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">
+                                			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
+                                        </a>
+                                    </div>
+                                    <div class="col-11 form_select_col">
+                                        <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">Download data for this Metropolitan Area</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
                     </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-1 form_icon_col">
-                                <label for="scenario_select_box">
-                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png">
-                                </label>
-                            </div>
-                            <div class="col-11 form_select_col">
-                                <select class="form-control form-control-chosen" id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-1 form_icon_col">
-                                <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">
-                        			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
-                                </a>
-                            </div>
-                            <div class="col-11 form_select_col">
-                                <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">Download data for this Metropolitan Area</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
+                </div>
 
 
 
@@ -352,29 +355,50 @@ var Site = (function() {
             </div>
         </div>
 
-        <div class="row section">
+        <div class="row ">
             <div class="col-md-4 pt-3 pb-3">
-                <h4 class="footer-title">Authors</h4>
+                <div class="footer-title pb-3">Authors</div>
+
+                <p>Seth E. Spielman, University of Colorado<br>
+                David C. Folch, Florida State University<br>
+                Becky Davies, data wrangler<br>
+                Owen Mundy, website and data visualization</p>
+
             </div>
             <div class="col-md-4 pt-3 pb-3">
-                <h4 class="footer-title">Publications</h4>
+                <div class="footer-title pb-3">Publications</div>
+
+                <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
+
             </div>
             <div class="col-md-4 pt-3 pb-3">
-                <h4 class="footer-title">Source code</h4>
+                <div class="footer-title pb-3">Source code</div>
+
+                <p>Data and source code is MIT Licensed and can be accessed at <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">Github</a>.</p>
+
             </div>
         </div>
 
-        <div class="row section">
-            <div class="col-12 pt-3 pb-3">
-                    <div class="row section">
-                        <div class="col-3"></div>
-                        <div class="col-3"></div>
-                        <div class="col-3"></div>
-                        <div class="col-3"></div>
+        <div class="row ">
+            <div class="col-12 pt-3">
+
+                <div class="row pt-3">
+                    <div class="col-2"></div>
+                    <div class="col-3 align-self-center text-right">
+                        Produced with support from
                     </div>
+                    <div class="col-1 align-self-center">
+                        <img class="img-fluid footer-logo" src="<?php print $site['rootDir']; ?>assets/img/footer-logo-nsf.png" alt="CU Boulder">
+                    </div>
+                    <div class="col-3 align-self-center">
+                        <img class="img-fluid footer-logo" src="<?php print $site['rootDir']; ?>assets/img/footer-logo-cu.png" alt="CU Boulder">
+                    </div>
+                    <div class="col-3"></div>
                 </div>
+
             </div>
         </div>
+
 
     </div>
 </div>

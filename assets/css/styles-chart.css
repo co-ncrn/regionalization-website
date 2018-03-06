@@ -2,6 +2,25 @@
 
 
 
+
+
+
+
+
+/* CHART HEADER */
+
+.dropdown_left { float: left; width: 6%; margin: 5px 0; }
+.dropdown_right { float: left; width: 93%; margin: 5px 0; }
+.download_link, .download_link:hover { font-size: 88%; color: #333; text-decoration: none }
+
+
+/* ICONS */
+.fa {opacity: .85}
+
+
+
+
+
 #chart table, #chart tr, #chart th, #chart td, /* only #chart */
 table, th /* all tables */ { border-collapse: collapse; border:none !important; margin: 0; padding: 0; }
 
