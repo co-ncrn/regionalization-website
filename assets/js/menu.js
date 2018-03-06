@@ -1,15 +1,12 @@
-/*jshint esversion: 6 */
-"use strict";
-
-
 var Menu = (function() {
+	"use strict";
 	// private
 
 	/**
 	 *	Build new MSA menu
 	 */
 	function newMsaMenu(msas) {
-		if (Site.debug) console.log(" -> Menu.newMsaMenu()")
+		if (Site.debug) console.log(" -> Menu.newMsaMenu()");
 		// default option
 		var str = "<option val=''></option>";
 		// loop through msas
@@ -37,7 +34,7 @@ var Menu = (function() {
 		if (Site.debug) console.log(" -> Menu.newScenarioMenu()", msa);
 		if (Site.debug) $("#rawDataOutput").val(msa + ": \n" + JSON.stringify(msas[msa])); // testing
 		//if (Site.debug) console.log("msas[msa][0]",msas[msa][0])
-		currentDataForMapColor = msas[msa][0];
+
 
 		// use msa to update the scenario box
 		var str = "<option val=''></option>";
@@ -111,8 +108,8 @@ var Menu = (function() {
 					"msa":Page.location.msa,
 					"scenario": p[0],
 					"data":p[1]
-				}
-				if (Site.debug) console.log( p.toString(),newLocation)
+				};
+				if (Site.debug) console.log( p.toString(),newLocation);
 				dataChange("menu", newLocation);
 			}
 		});
@@ -133,9 +130,9 @@ var Menu = (function() {
 
 		},
 		newScenarioMenu: function(msa, scenario, data){
-			newScenarioMenu(msa, scenario, data)
+			newScenarioMenu(msa, scenario, data);
 		},
 		addListeners: addListeners
-	}
+	};
 
 })();

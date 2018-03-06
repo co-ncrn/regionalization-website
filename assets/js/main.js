@@ -17,8 +17,7 @@ var msas = {}, // all the MSAs
 	currentScenarioArray = [],
 	tractOrRegion = "t",
 	estimateOrMargin = "e",
-	numberTracts = 0,
-	currentDataForMapColor = null
+	numberTracts = 0
 	;
 
 

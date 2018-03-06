@@ -29,7 +29,7 @@ var Mns = (function() {
 		//fillOpacity: 0.4,
 		opacity: 1,
 		weight: 2,
-		color: "#990000" // stroke color
+		color: "#ffffff" // stroke color
 	};
 
 	function testStyle(tid) {
@@ -66,16 +66,7 @@ var Mns = (function() {
 			'#f1eef6';
 	}
 
-	function style(feature) {
-		//if (MAP_DEBUG) console.log("feature = ",feature)
-		return {
-			fillColor: getColor(currentDataForMapColor),
-			weight: 1,
-			opacity: 1,
-			color: 'red',
-			fillOpacity: 0.7
-		};
-	}
+
 
 	/**
 	 *	Create map
