@@ -278,10 +278,10 @@ var Site = (function() {
 
 
     <div class="row section">
-        <div class="col-md-6 pt-3 pb-3">
+        <div class="col-md-6 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-browser-est-mar.png" alt="Estimate and Margin in the browser">
         </div>
-        <div class="col-md-6 pt-3 pb-3">
+        <div class="col-md-6 pt-3">
             <h3 class="section-title">Data quality and the American Community Survey</h3>
 
             <p>The <a href="https://www.census.gov/programs-surveys/acs/" target="_blank" title="American Community Survey (ACS)">American Community Survey (ACS)</a> is the largest survey of US households (3.5 million homes contacted each year) and is the principal source for neighborhood scale information about the US population. The ACS is used to allocate billions in federal spending and is a critical input to social scientific research in the US. However, estimates from the ACS can be highly unreliable. For example, in over 72% of census tracts, the estimated number of children under 5 in poverty has a margin of error greater than the estimate (e.g 100 kids in poverty +/- 150). Uncertainty of this magnitude complicates the use of social data in policy making, research, and governance. </p>
@@ -293,21 +293,24 @@ var Site = (function() {
 
 
 
-    <div class="row section">
+    <div class="row">
+        <div class="col-sm-5 order-sm-12 pt-3 pb-3 max-width-sm">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-moa.png" alt="Margin of Error">
+        </div>
         <div class="col-sm-7 section-text">
-            <h3 class="section-title">What is Margin of Error?</h3>
+            <h3 class="section-title">
+                <span class="rwd-line">What is </span>
+                <span class="rwd-line">Margin of Error?</span>
+            </h3>
 
             <p>Each ACS estimate has a corresponding margin of error (MOE). The MOE measures how much the estimate might vary relative to the population value, given a certain confidence level. The ACS uses a confidence level of 90%. For example, if the estimate of median household income for a particular census tract is $50,000 with an MOE of $10,000, then we are 90% confident that the actual median household income for that tract is between $40,000 and $60,000. If the MOE was $40,000, than that range would balloon to $10,000 to $90,000, giving us low confidence that the estimate is accurately capturing the actual income level.</p>
-        </div>
-        <div class="col-sm-5 pt-3">
-            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-moa.png" alt="Margin of Error">
         </div>
     </div>
 
 
 
     <div class="row">
-        <div class="col-sm-5 pt-3">
+        <div class="col-sm-5 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-regionalization.png" alt="Regionalization">
         </div>
         <div class="col-sm-7 section-text">
@@ -319,6 +322,9 @@ var Site = (function() {
 
 
     <div class="row">
+        <div class="col-sm-5 order-sm-12 pt-3 pb-3 max-width-sm">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-code.png" alt="Margin of Error">
+        </div>
         <div class="col-sm-7 section-text">
             <h3 class="section-title">
                 <span class="rwd-line">Publications</span>
@@ -328,9 +334,6 @@ var Site = (function() {
             <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
 
             <p>Data and source code is MIT Licensed and can be accessed at <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">Github</a>.</p>
-        </div>
-        <div class="col-sm-5 pt-3">
-            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-code.png" alt="Margin of Error">
         </div>
     </div>
 

@@ -75,6 +75,7 @@ body { font-family: 'Open Sans', sans-serif; font-weight: 400;}
 @media (max-width: 575px) {
     .rwd-line { display: inline; }
     .section-text { margin-top: 1px; }
+    .max-width-sm { max-width: 60%; margin: 0 auto;}
 }
 
 
