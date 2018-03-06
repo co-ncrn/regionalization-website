@@ -17,7 +17,7 @@ var msas = {}, // all the MSAs
 	currentScenarioArray = [],
 	tractOrRegion = "t",
 	estimateOrMargin = "e",
-	numberTracks = 0,
+	numberTracts = 0,
 	currentDataForMapColor = null
 	;
 
@@ -250,7 +250,7 @@ return;
  */
 function updateDebug() {
 	var str = "Debugging: " + Page.location.msa + ":" + Page.location.scenario + ":" + Page.location.data +
-		"; numberTracks=" + numberTracks +
+		"; numberTracts=" + numberTracts +
 		//"; numberChartTIDs="+ d3.selectAll(".tid").size() +
 		"; tractOrRegion=" + tractOrRegion +
 		"; estimateOrMargin=" + estimateOrMargin;

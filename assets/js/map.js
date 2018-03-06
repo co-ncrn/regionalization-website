@@ -319,19 +319,18 @@ var Mns = (function() {
 			if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 				tractLayer.bringToFront();
 			}
-
-
 		});
 	}
+
+
 	/**
 	 *	Set initial tract style on load, hover
 	 */
 	function initialTractStyle(data) {
-
 		var id, _tid, _rid, d, estOrMar;
 		_tid = cleanTID(data.properties.TID);
 		_rid = data.properties.RID;
-	//	if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
+		//if (MAP_DEBUG) console.log(" -> initialTractStyle() -> _tid = ", _tid, " // _rid = ", _rid, " // data = ", data);
 
 		/*
 				if (tractOrRegion == "t")
@@ -339,8 +338,6 @@ var Mns = (function() {
 				else if (tractOrRegion == "r")
 					id = _rid;
 		*/
-
-
 
 		// set default style
 		var defaultStyle = {
@@ -351,25 +348,25 @@ var Mns = (function() {
 			fillOpacity: 0.7
 		};
 
+		// set color scale
+		Color.setScale();
 
-
-
+		// make sure _tid exists
 		if (prop(currentScenario) && currentScenario[_tid]) {
 			//if (MAP_DEBUG) console.log(" -> initialTractStyle() -> setting style based on data");
 
-			let val;
+			let val = 0;
 
 			// determine whether to store tract / region AND estimate / margin
 			if (estimateOrMargin == "e") {
 				val = currentScenario[_tid][tractOrRegion + "Est"];
-
-				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> E",", val = "+ val,", fillColor = " + Color.getScale(val));
+				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> E",", val = "+ val,", fillColor = " + Color.getScale(val));
 				defaultStyle.fillColor = Color.getScale(val);
 			} else if (estimateOrMargin == "m") {
 				val = currentScenario[_tid][tractOrRegion + "CV"];
-				if (MAP_DEBUG) console.log(" -> initialTractStyle() -> M");
-				var num = val; // color by CV, but display MOE
-				defaultStyle.fillColor = Color.cvColorScale(num);
+				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> M");
+				// color by CV, but display MOE
+				defaultStyle.fillColor = Color.cvColorScale(val);
 			}
 
 			/*
@@ -384,10 +381,10 @@ var Mns = (function() {
 			*/
 		} // if no TID, currentScenario, or data found
 		else {
-			if (MAP_DEBUG) console.log("initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE");
+			if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE");
 			// no changes to default style
 		}
-		// return a style object
+		// return style object
 		return defaultStyle;
 	}
 	/**
@@ -496,7 +493,7 @@ var Mns = (function() {
 		var popup = e.target.getPopup();
 		popup.setLatLng(e.latlng).openOn(map);
 	}
-
+	// update map after chart to give topojson time to load
 	function updateMap() {
 		//console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;

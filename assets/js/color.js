@@ -22,13 +22,12 @@ var Color = (function() {
 		return color;
 	}
 
-
+	// return blue scale
 	function getScale(n) {
-		//this.blues = d3.scaleOrdinal(d3.schemeBlues[9]);
 		return blues(n);
 	}
 
-
+	// set blue scale
 	function setScale() {
 		// experiments
 		//accent = d3.scaleOrdinal(d3.schemeAccent);
@@ -37,11 +36,13 @@ var Color = (function() {
 
 
 		// GLOBALS: currentScenarioArray, tractOrRegion,
+
+		// create extent for estimate
 		let estExtent = d3.extent(currentScenarioArray.map(function(item) {
 			//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
 			return (item.value[tractOrRegion + "Est"]);
 		}));
-
+		// create extent for margin
 		let marExtent = d3.extent(currentScenarioArray.map(function(item) {
 			//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
 			return (item.value[tractOrRegion + "Mar"]);
@@ -76,8 +77,7 @@ var Color = (function() {
 		},
 		cvColorScale: function(val){
 			cvColorScale(val);
-		},
-		blues:blues
+		}
 	};
 
 }());

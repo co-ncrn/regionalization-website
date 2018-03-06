@@ -13,17 +13,9 @@ var Chart = (function() {
 		svgStroke = 1.5,
 		barHV = 8;
 
-
-
 	// table
 	var table,theadtr,tbody,
 		rows, yScale, xScale, xMin, xMax, xExtent;
-	// color
-	var accent, blues, reds;
-
-
-	var blues2 = d3.scaleOrdinal(d3.schemeBlues[9]);
-
 
 	// resize chart elements based on browser size
 	//d3.select(window).on('resize', resizeTable);
@@ -66,10 +58,9 @@ var Chart = (function() {
 				right: 10,
 				bottom: 0,
 				left: 10
-			},
-			width = (sizes.thSVG - margin.left - margin.right),
-			height = (svgHeight - margin.top - margin.bottom)
-			;
+		};
+		width = (sizes.thSVG - margin.left - margin.right);
+		height = (svgHeight - margin.top - margin.bottom);
 	}
 	resizeTable(); // get initial table sizes
 	//setTimeout (resizeTable,1000); // and do it again once data is set
@@ -150,7 +141,7 @@ var Chart = (function() {
 		//if (CHART_DEBUG) console.log("updateChart() -> currentScenario = ",currentScenario)
 		//if (CHART_DEBUG) console.log("updateChart() -> currentScenarioArray = ",currentScenarioArray)
 
-		updateColorScales();
+		Color.setScale();
 		updateChartScales();
 
 		// update class on each row
@@ -176,12 +167,12 @@ var Chart = (function() {
 				return /* i; */ reformatTID(d.value.TID).substring(7); /* remove "state.county." */
 			})
 			.attr("style", function(d) {
-				//console.log(".tid -> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+				//console.log(".tid -> ",d.value[tractOrRegion+"Est"],Color.getScale(d.value[tractOrRegion+"Est"])); /**/
 
 				saveOriginalRowColor("g" + d.value.TID);
 				var c = getOriginalRowColor("g" + d.value.TID); // default (white)
 				if (tractOrRegion == "t") {
-					c = d3.color(blues(d.value.tEst)); // create color
+					c = d3.color(Color.getScale(d.value.tEst)); // create color
 					c.opacity = 0.5; // set opacity
 				}
 				return "background: " + c; // set bg color
@@ -197,11 +188,11 @@ var Chart = (function() {
 				return d.value.RID;
 			})
 			.attr("style", function(d) {
-				//console.log(".rid -> ",d.value[tractOrRegion+"Est"],blues(d.value[tractOrRegion+"Est"])); /**/
+				//console.log(".rid -> ",d.value[tractOrRegion+"Est"],Color.getScale(d.value[tractOrRegion+"Est"])); /**/
 
 				var c = getOriginalRowColor("g" + d.value.TID); // default (white)
 				if (tractOrRegion == "r") {
-					c = d3.color(blues(d.value.rEst)); // create color
+					c = d3.color(Color.getScale(d.value.rEst)); // create color
 					c.opacity = 0.5; // set opacity
 				}
 				return "background: " + c; // set bg color
@@ -390,42 +381,6 @@ var Chart = (function() {
 
 
 
-	function updateColorScales() {
-		//accent = d3.scaleOrdinal(d3.schemeAccent);
-		//blues = d3.scaleOrdinal(d3.schemeBlues[9]);
-
-		//estExtent = d3.extent(currentScenarioArray, function(d) { return d.properties.pop_max; })
-
-		let estExtent = d3.extent(currentScenarioArray.map(function(item) {
-			//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
-			return (item.value[tractOrRegion + "Est"]);
-		}));
-
-		let marExtent = d3.extent(currentScenarioArray.map(function(item) {
-			//console.log("tractOrRegion = ",tractOrRegion,item.value[tractOrRegion+"Est"]);
-			return (item.value[tractOrRegion + "Mar"]);
-		}));
-		//console.log("updateColorScales() -> estExtent = ",estExtent,"marExtent = ",marExtent)
-
-		// find midpoint between estExtents, use parseFloats so strings don't concat
-		let estExtentMiddle = parseFloat(estExtent[0]) + ((parseFloat(estExtent[1]) - parseFloat(estExtent[0])) / 2);
-		let marExtentMiddle = parseFloat(marExtent[0]) + ((parseFloat(marExtent[1]) - parseFloat(marExtent[0])) / 2);
-
-		// a scale for the estimates
-		blues =
-			d3.scaleQuantile()
-				.domain([estExtent[0], estExtent[1]])
-				.range(d3.schemeBlues[9]);
-		/*
-		reds = d3.scaleQuantile()
-			.domain([marExtent[0], marExtent[1]])
-			.range(d3.schemeReds[9])
-		;
-		*/
-	}
-
-
-
 	/**
 	 * Set the header styles based on current state(s)
 	 * @return {[type]} [description]
@@ -467,7 +422,7 @@ var Chart = (function() {
 		if (state == estimateOrMargin) return; // if same, exit
 		estimateOrMargin = state; // update
 		console.log("estimateOrMargin", estimateOrMargin);
-		mns.updateMap();
+		Mns.updateMap();
 		updateChart();
 		highlightHeaders();
 	}
@@ -532,7 +487,7 @@ var Chart = (function() {
 
 	function resetTID(d) {
 		if (prop(d))
-			mns.resetTractStyleFromChart("g" + d.value.TID);
+			Mns.resetTractStyleFromChart("g" + d.value.TID);
 	}
 	/**
 	 * Change selection on chart/map to show REGIONS
@@ -555,7 +510,7 @@ var Chart = (function() {
 
 	function resetRID(d) {
 		if (prop(d))
-			mns.resetTractStyleFromChart("g" + d.value.TID);
+			Mns.resetTractStyleFromChart("g" + d.value.TID);
 	}
 
 	/**
@@ -613,10 +568,7 @@ var Chart = (function() {
 
 	return {
 		createChart:createChart,
-		updateChart:updateChart,
-		blues2: function(obj){
-			blues2(obj);
-		}
+		updateChart:updateChart
 	};
 
 }());
