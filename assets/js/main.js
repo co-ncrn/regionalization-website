@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 /**
  *	Main.js - last file to load, starts everything
  *	@author Owen Mundy

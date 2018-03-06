@@ -18,7 +18,10 @@ var Chart = (function() {
 		rows, yScale, xScale, xMin, xMax, xExtent;
 
 	// resize chart elements based on browser size
-	//d3.select(window).on('resize', resizeTable);
+//	d3.select(window).on('resize', resizeTable);
+
+
+
 	function resizeTable() {
 		// get sizes
 		sizes = {

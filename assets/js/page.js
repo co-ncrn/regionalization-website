@@ -1,8 +1,5 @@
-/*jshint esversion: 6 */
-
-
 var Page = (function() {
-	// private
+	"use strict";
 
 	// the default location object
 	var location = {
