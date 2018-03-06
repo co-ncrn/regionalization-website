@@ -260,8 +260,8 @@ var Site = (function() {
 		</div>
 	</div>
 
-    <?php if (site['debug']) { ?>
-	<div class="row">
+    <?php if (0 && site['debug']) { ?>
+	<div class="row pt-3 pb-3">
 		<div class="col-md-12" id="rawData">
             <h4>Raw data</h4>
             <textarea class="form-control" rows="20" id="rawDataOutput"></textarea>
@@ -269,6 +269,111 @@ var Site = (function() {
 	</div>
     <?php } ?>
 
+</div>
+
+
+
+
+<div class="container">
+
+
+    <div class="row section">
+        <div class="col-md-6 pt-3 pb-3">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-browser-est-mar.png" alt="Estimate and Margin in the browser">
+        </div>
+        <div class="col-md-6 pt-3 pb-3">
+            <h3 class="section-title">Data quality and the American Community Survey</h3>
+
+            <p>The <a href="https://www.census.gov/programs-surveys/acs/" target="_blank" title="American Community Survey (ACS)">American Community Survey (ACS)</a> is the largest survey of US households (3.5 million homes contacted each year) and is the principal source for neighborhood scale information about the US population. The ACS is used to allocate billions in federal spending and is a critical input to social scientific research in the US. However, estimates from the ACS can be highly unreliable. For example, in over 72% of census tracts, the estimated number of children under 5 in poverty has a margin of error greater than the estimate (e.g 100 kids in poverty +/- 150). Uncertainty of this magnitude complicates the use of social data in policy making, research, and governance. </p>
+
+            <p>Our project presents a way to reduce the margins of error in survey data via the creation of new geographies, a process called regionalization. Technical details of this paper and example implementations are described in this <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">PLOSOne Paper</a>. This website presents the data from 388 metropolitan statistical areas, before and after the regionalization process, in order to explain, demonstrate, and circulate our <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">results and the data</a>. </p>
+        </div>
+    </div>
+
+
+
+
+    <div class="row section">
+        <div class="col-sm-7 section-text">
+            <h3 class="section-title">What is Margin of Error?</h3>
+
+            <p>Each ACS estimate has a corresponding margin of error (MOE). The MOE measures how much the estimate might vary relative to the population value, given a certain confidence level. The ACS uses a confidence level of 90%. For example, if the estimate of median household income for a particular census tract is $50,000 with an MOE of $10,000, then we are 90% confident that the actual median household income for that tract is between $40,000 and $60,000. If the MOE was $40,000, than that range would balloon to $10,000 to $90,000, giving us low confidence that the estimate is accurately capturing the actual income level.</p>
+        </div>
+        <div class="col-sm-5 pt-3">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-moa.png" alt="Margin of Error">
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-sm-5 pt-3">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-regionalization.png" alt="Regionalization">
+        </div>
+        <div class="col-sm-7 section-text">
+            <h3 class="section-title">Regionalization</h3>
+
+            <p>Regionalization is a process of combining neighboring polygons into “regions” based on a set of goals. In this case the goals are to combine census tracts 1) with similar socioeconomic attributes and 2) so that overall estimate uncertainty is reduced. Joining tracts together increases the sample size and thus generally reduces the overall uncertainty on the estimates for the combined tracts. We continue to combine similar tracts until all the estimates in all the regions have met a data quality threshold.  </p>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-7 section-text">
+            <h3 class="section-title">
+                <span class="rwd-line">Publications</span>
+                <span class="rwd-line">& Source code</span>
+            </h3>
+
+            <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
+
+            <p>Data and source code is MIT Licensed and can be accessed at <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">Github</a>.</p>
+        </div>
+        <div class="col-sm-5 pt-3">
+            <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-code.png" alt="Margin of Error">
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+<div class="container-fluid footer-container">
+    <div class="container">
+
+        <div class="row section">
+            <div class="col-12 pt-3 pb-3">
+                <h3 class="section-title">Credits & Support</h3>
+            </div>
+        </div>
+
+        <div class="row section">
+            <div class="col-md-4 pt-3 pb-3">
+                <h4 class="footer-title">Authors</h4>
+            </div>
+            <div class="col-md-4 pt-3 pb-3">
+                <h4 class="footer-title">Publications</h4>
+            </div>
+            <div class="col-md-4 pt-3 pb-3">
+                <h4 class="footer-title">Source code</h4>
+            </div>
+        </div>
+
+        <div class="row section">
+            <div class="col-12 pt-3 pb-3">
+                    <div class="row section">
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
+                        <div class="col-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 
