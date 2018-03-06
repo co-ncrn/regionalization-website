@@ -180,12 +180,12 @@ var Site = (function() {
 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-1">
+                            <div class="col-1 form_icon_col">
                                 <label for="msa_select_box">
                                     <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png">
                                 </label>
                             </div>
-                            <div class="col-11">
+                            <div class="col-11 form_select_col">
                                 <select class="form-control form-control-chosen" id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
                             </div>
                         </div>
@@ -193,12 +193,12 @@ var Site = (function() {
 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-1">
+                            <div class="col-1 form_icon_col">
                                 <label for="scenario_select_box">
                                     <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png">
                                 </label>
                             </div>
-                            <div class="col-11">
+                            <div class="col-11 form_select_col">
                                 <select class="form-control form-control-chosen" id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
                             </div>
                         </div>
@@ -206,12 +206,12 @@ var Site = (function() {
 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-1">
+                            <div class="col-1 form_icon_col">
                                 <a title="Download data for this Metropolitan Area">
                         			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
                                 </a>
                             </div>
-                            <div class="col-11">
+                            <div class="col-11 form_select_col">
                                 <a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
                             </div>
                         </div>
