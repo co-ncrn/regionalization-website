@@ -282,7 +282,7 @@ var Site = (function() {
 <div class="container">
 
 
-    <div class="row section">
+    <div class="row section" id="data-quality">
         <div class="col-md-6 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-browser-est-mar.png" alt="Estimate and Margin in the browser">
         </div>
@@ -298,7 +298,7 @@ var Site = (function() {
 
 
 
-    <div class="row">
+    <div class="row" id="margin-of-error">
         <div class="col-sm-5 order-sm-12 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-moa.png" alt="Margin of Error">
         </div>
@@ -314,7 +314,7 @@ var Site = (function() {
 
 
 
-    <div class="row">
+    <div class="row" id="regionalization">
         <div class="col-sm-5 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-regionalization.png" alt="Regionalization">
         </div>
@@ -326,7 +326,7 @@ var Site = (function() {
     </div>
 
 
-    <div class="row">
+    <div class="row" id="credits">
         <div class="col-sm-5 order-sm-12 pt-3 pb-3 max-width-sm">
             <img class="img-fluid" src="<?php print $site['rootDir']; ?>assets/img/section-code.png" alt="Margin of Error">
         </div>

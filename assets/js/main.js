@@ -237,7 +237,6 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 }
 
 
-
 /**
  *	Update Debugger
  */
