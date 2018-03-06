@@ -16,8 +16,7 @@ var msas = {}, // all the MSAs
 	currentScenarioArray = [],
 	tractOrRegion = "t",
 	estimateOrMargin = "e",
-	numberTracts = 0
-	;
+	numberTracts = 0;
 
 
 
@@ -37,7 +36,8 @@ var msas = {}, // all the MSAs
 $(function() {
 	init();
 });
-function init(){
+
+function init() {
 	console.log("init()");
 
 	// get _metadata for menus
@@ -91,11 +91,11 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		updateData = false;
 
 	// if page is loading for first time
-	if (origin == "load"){
+	if (origin == "load") {
 		// if there is an msa
-		if (prop(newLocation) && newLocation.msa){
+		if (prop(newLocation) && newLocation.msa) {
 			// .. and data
-			if (prop(newLocation.scenario) && prop(newLocation.data)){
+			if (prop(newLocation.scenario) && prop(newLocation.data)) {
 				// update everything
 				action = "update everything";
 				updateMSA = true;
@@ -111,15 +111,15 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// if the change came from the form, map, or table
 	else {
 		// if new msa
-		if (prop(newLocation.msa ) && newLocation.msa != Page.location.msa){
+		if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
 			updateMSA = true;
 		}
 		// if new scenario
-		if (prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario){
+		if (prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario) {
 			updateScenario = true;
 		}
 		// if new data
-		if (prop(newLocation.data) && newLocation.data != Page.location.data){
+		if (prop(newLocation.data) && newLocation.data != Page.location.data) {
 			updateScenario = true;
 		}
 
@@ -134,19 +134,10 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// 	newLocation.data = Page.location.data;
 		// }
 	}
-	console.log(" -> action = "+action, updateMSA, updateScenario, updateData);
-
-
+	console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
 
 	// save location
-	//if (Site.debug) console.log(" -> Page.location ", Page.location);
-	// Page.location.msa = newLocation.msa;
-	// Page.location.scenario = newLocation.scenario;
-	// Page.location.data = newLocation.data;
 	Page.setLocation(newLocation);
-	//if (Site.debug) console.log(" -> Page.location ", Page.location, " -> AFTER SAVING");
-
-
 
 	// menu updated, ...
 	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
@@ -157,25 +148,25 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// update title
 		Page.updateTitle();
 		// update URL
-		if (origin != "load"){
-			console.log(" -> Page.updateUrl('add')",newLocation);
-			Page.updateUrl('add',newLocation);
+		if (origin != "load") {
+			console.log(" -> Page.updateUrl('add')", newLocation);
+			Page.updateUrl('add', newLocation);
 		}
 	}
 	// if new msa
-	if (updateMSA){
+	if (updateMSA) {
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
 		// if map is loaded
 		if (origin != "load")
 			// zoom to MSA on map
-			Mns.zoomToMSAonMap(Page.location.msa,"dataChange");
+			Mns.zoomToMSAonMap(Page.location.msa, "dataChange");
 	}
 
 
 
 	// if new msa or scenario
-	if (updateMSA && updateScenario){
+	if (updateMSA && updateScenario) {
 		// load msa tracts topojson
 		Mns.loadTractLayerData(Page.location.msa);
 	}
@@ -191,7 +182,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	}
 
 
-return;
+	return;
 
 
 
@@ -230,10 +221,7 @@ return;
 	}
 
 
-	if (Site.debug) console.log(" -> Page.location2 ", JSON.stringify(Page.location));
 }
-
-
 
 
 
@@ -260,37 +248,6 @@ function updateDebug() {
 
 
 
-
-function optionHTML(val, text) {
-	var option = "";
-	option += "<option value='" + val + "'>" + text + "</option>";
-	return option;
-}
-
-
-
-
-
-
-
-
-/**
- *	Pad floating point values to be four numbers long
- */
-function padFloat(num) {
-	var str = "" + num;
-	// confirm num is float
-	if (str.indexOf(".") !== 1) return str;
-	// pad float depending on length
-	if (str.length <= 3) {
-		str = str + "000";
-	} else if (str.length <= 4) {
-		str = str + "00";
-	} else if (str.length <= 5) {
-		str = str + "0";
-	}
-	return str;
-}
 
 
 /**

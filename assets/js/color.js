@@ -1,7 +1,8 @@
 var Color = (function() {
 	"use strict";
 
-	var blues = d3.scaleOrdinal(d3.schemeBlues[9]), bluesDomain = [];
+	var blues = d3.scaleOrdinal(d3.schemeBlues[9]),
+		bluesDomain = [];
 
 	function cvColorScale(cv) {
 		var color, percent = cv * 100;
@@ -56,14 +57,14 @@ var Color = (function() {
 		// a scale for the estimates
 		blues =
 			d3.scaleQuantile()
-				.domain([estExtent[0], estExtent[1]])
-				.range(d3.schemeBlues[9]);
-/*
-		reds = d3.scaleQuantile()
-			.domain([marExtent[0], marExtent[1]])
-			.range(d3.schemeReds[9])
-		;
-		*/
+			.domain([estExtent[0], estExtent[1]])
+			.range(d3.schemeBlues[9]);
+		/*
+				reds = d3.scaleQuantile()
+					.domain([marExtent[0], marExtent[1]])
+					.range(d3.schemeReds[9])
+				;
+				*/
 	}
 
 
@@ -75,7 +76,7 @@ var Color = (function() {
 		getScale: function(n) {
 			return getScale(n);
 		},
-		cvColorScale: function(val){
+		cvColorScale: function(val) {
 			cvColorScale(val);
 		}
 	};

@@ -351,7 +351,7 @@ var Mns = (function() {
 			// determine whether to store tract / region AND estimate / margin
 			if (estimateOrMargin == "e") {
 				val = currentScenario[_tid][tractOrRegion + "Est"];
-				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> E",", val = "+ val,", fillColor = " + Color.getScale(val));
+				if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> E", ", val = " + val, ", fillColor = " + Color.getScale(val));
 				defaultStyle.fillColor = Color.getScale(val);
 			} else if (estimateOrMargin == "m") {
 				val = currentScenario[_tid][tractOrRegion + "CV"];

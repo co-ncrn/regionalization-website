@@ -311,7 +311,6 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>assets/js/functions.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/config.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/color.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/js/scenario.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/page.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/menu.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/table.js"></script>

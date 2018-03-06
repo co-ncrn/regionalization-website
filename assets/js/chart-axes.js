@@ -1,8 +1,5 @@
-/*jshint esversion: 6 */
-
-
-
 var Axes = (function() {
+	"use strict";
 	// private
 
 

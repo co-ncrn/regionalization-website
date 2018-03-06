@@ -1,6 +1,5 @@
 var Menu = (function() {
 	"use strict";
-	// private
 
 	/**
 	 *	Build new MSA menu
@@ -20,10 +19,14 @@ var Menu = (function() {
 		$("#msa_select_box").append(str).trigger('chosen:updated'); // update select
 	}
 
+	function optionHTML(val, text) {
+		return "<option value='" + val + "'>" + text + "</option>";
+	}
+
 	/**
 	 *	Set state of the MSA menu
 	 */
-	function setMsaMenu(msa){
+	function setMsaMenu(msa) {
 		$("#msa_select_box").val(msa).trigger('chosen:updated');
 	}
 
@@ -97,7 +100,11 @@ var Menu = (function() {
 		// on chosen() change events
 		$('#msa_select_box').on('change', function(evt, params) {
 			if (Site.debug) console.log("params.selected", params.selected);
-			dataChange("menu", {"msa":params.selected, "scenario": Page.location.scenario, "data":Page.location.data});
+			dataChange("menu", {
+				"msa": params.selected,
+				"scenario": Page.location.scenario,
+				"data": Page.location.data
+			});
 		});
 		$('#scenario_select_box').on('change', function(evt, params) {
 			if (Site.debug) console.log("params.selected", params.selected);
@@ -105,11 +112,11 @@ var Menu = (function() {
 			var p = params.selected.split("-");
 			if (p.length == 2) {
 				var newLocation = {
-					"msa":Page.location.msa,
+					"msa": Page.location.msa,
 					"scenario": p[0],
-					"data":p[1]
+					"data": p[1]
 				};
-				if (Site.debug) console.log( p.toString(),newLocation);
+				if (Site.debug) console.log(p.toString(), newLocation);
 				dataChange("menu", newLocation);
 			}
 		});
@@ -129,7 +136,7 @@ var Menu = (function() {
 		update: function() {
 
 		},
-		newScenarioMenu: function(msa, scenario, data){
+		newScenarioMenu: function(msa, scenario, data) {
 			newScenarioMenu(msa, scenario, data);
 		},
 		addListeners: addListeners
