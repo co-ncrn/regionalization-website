@@ -23,7 +23,7 @@ table, th /* all tables */ { border-collapse: collapse; border:none !important; 
 
 
 /* TABLE */
-#chart-container { clear: all; margin-top: 15px;  overflow-y:auto; background: #fff; font: 12px sans-serif;
+#chart-container { clear: all; margin-top: 0;  overflow-y:auto; background: #fff; font: 12px sans-serif;
 
 max-width: 100%;
 height: 540px;

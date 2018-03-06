@@ -90,6 +90,20 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		updateScenario = false,
 		updateData = false;
 
+/*
+
+1. load
+		> get data, update chart, map
+2. form
+		msa
+			> get data, update chart, map
+
+*/
+
+
+
+
+
 	// if page is loading for first time
 	if (origin == "load") {
 		// if there is an msa
@@ -187,8 +201,10 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 	// if any change
 	if ((updateMSA || updateScenario || updateData)) {
-		// update title
+		// update page title
 		Page.updateTitle();
+		// update download link
+		Menu.updateDownloadLink(newLocation.msa);
 		// update URL
 		if (origin != "load") {
 			console.log(" -> Page.updateUrl('add')", newLocation);

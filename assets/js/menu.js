@@ -123,6 +123,11 @@ var Menu = (function() {
 
 	}
 
+	function updateDownloadLink(msa){
+		if (isNaN(msa)) return;
+		let url = "https://github.com/co-ncrn/co-ncrn.github.io/tree/master/msa_data/"+msa;
+		$(".download_link").attr("href",url);
+	}
 
 
 
@@ -139,7 +144,10 @@ var Menu = (function() {
 		newScenarioMenu: function(msa, scenario, data) {
 			newScenarioMenu(msa, scenario, data);
 		},
-		addListeners: addListeners
+		addListeners: addListeners,
+		updateDownloadLink: function(msa) {
+			updateDownloadLink(msa);
+		}
 	};
 
 })();

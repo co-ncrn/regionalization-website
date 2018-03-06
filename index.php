@@ -207,12 +207,12 @@ var Site = (function() {
                     <div class="form-group">
                         <div class="row">
                             <div class="col-1 form_icon_col">
-                                <a title="Download data for this Metropolitan Area">
+                                <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">
                         			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
                                 </a>
                             </div>
                             <div class="col-11 form_select_col">
-                                <a href="#" title="placeholder" class="download_link">Download data for this Metropolitan Area</a>
+                                <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">Download data for this Metropolitan Area</a>
                             </div>
                         </div>
                     </div>
@@ -246,15 +246,16 @@ var Site = (function() {
         									<th class="thSVG"></th>
         								</tr>
         							</thead>
+                                    <!-- data goes here -->
         							<tbody></tbody>
         						</table>
 
         					</div>
         				</div>
-        				<div class="info"></div>
-
         			</div>
             	</div>
+
+
         	</div>
 		</div>
 	</div>
