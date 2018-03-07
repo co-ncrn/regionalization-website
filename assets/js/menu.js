@@ -65,7 +65,7 @@ var Menu = (function() {
 		}
 
 		// update options
-		$("#scenario_select_box").append(str).trigger('chosen:updated');
+		$("#scenario_select_box").html(str).trigger('chosen:updated');
 
 		// if scenario/data then set it
 		if (prop(Page.location.scenario) && prop(Page.location.data)) {
