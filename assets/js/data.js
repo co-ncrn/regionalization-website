@@ -10,7 +10,7 @@ var Data = (function() {
 		if (Site.debug) console.log("Data.getScenario()", url, location);
 
 		d3.json(url, function(error, json) {
-			if (error) return console.error(error); // handle error
+			if (error) return console.error(error, json); // handle error
 			console.log(" -> Data.getScenario() json = ", json);
 
 
@@ -41,11 +41,23 @@ var Data = (function() {
 		});
 	}
 
+	// make sure this is a scenario in this msa (e.g. no 16020/gen/white)
+	function msaScenarioExists(location){
+		//console.log("!!!!!!!!!!!!!!!!!!!!",msas[location.msa]);
+		let found = false;
+		for (let i=0,l=msas[location.msa]; i<l; i++)
+			if (msas[location.msa][i].scenario == location.scenario)
+				found = true;
+		return found;
+	}
 
 
 	return {
 		getScenario: function(location,callback){
 			getScenario(location,callback);
+		},
+		msaScenarioExists: function(location){
+			return msaScenarioExists(location);
 		}
 	};
 

@@ -97,8 +97,8 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		newLocation.msa = rMsa[0].msa;
 		updateMSA = true;
 	}
-	// if no scenario
-	if (!prop(newLocation.scenario) || newLocation.scenario == "" ||
+	// if no scenario, or it doesn't exist in msa
+	if (!Data.msaScenarioExists(newLocation) || !prop(newLocation.scenario) || newLocation.scenario == "" ||
 		!prop(newLocation.data) || newLocation.data == "") {
 		console.log("no scenario|data, picking first");
 		newLocation.scenario = msas[newLocation.msa][0].scenario;
@@ -119,6 +119,8 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 */
+
+
 
 
 	// change has come from initial load
