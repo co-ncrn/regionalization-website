@@ -25,6 +25,13 @@ function prop(val) {
 		return false;
 	}
 }
+/**
+ *	Get random property from object
+ */
+function randomProperty(obj) {
+    var keys = Object.keys(obj);
+    return obj[keys[ keys.length * Math.random() << 0]];
+}
 
 
 /**
@@ -38,6 +45,7 @@ function log(text) {
 }
 if (!window.console) window.console = {};
 if (!window.console.log) window.console.log = function() {};
+
 
 
 
