@@ -236,10 +236,10 @@ var Mns = (function() {
 		if (prop(lastMSAFeature)) {
 			//clearTimeout(hideLastMSAFeatureTimeOut);
 			lastMSAFeature.setStyle({
-				fillOpacity: 0
+				fillOpacity: 0.2
 			});
-		} else
-			hideLastMSAFeatureTimeOut = setTimeout(hideLastMSAFeature, 1000); // check again in a second
+		} //else
+			//hideLastMSAFeatureTimeOut = setTimeout(hideLastMSAFeature, 1000); // check again in a second
 	}
 
 
@@ -284,6 +284,7 @@ var Mns = (function() {
 			resetMSAStyle(); // make sure the MSA is not visible
 			//restyleTractLayer()
 
+			// hide the last msa
 			hideLastMSAFeature();
 			//console.log(" -> lastMSAFeature",lastMSAFeature);
 
@@ -398,7 +399,7 @@ var Mns = (function() {
 		layer.on({
 			mouseover: highlightTractFromMap,
 			mouseout: resetTractStyleFromMap,
-			// mousemove: moveTractPopup,
+			mousemove: moveTractPopup,
 			click: zoomToTractFeature
 		});
 	}
@@ -432,7 +433,7 @@ var Mns = (function() {
 		layer.closePopup();
 
 		// temp commenting out
-		//		removeHighlightTractOnChart(layer.feature.properties); // reset any tract styles
+		//		removeHighlightTractOnChart(layer.feature.properties); // resetStyle any tract styles
 	}
 	// zoom to an tract
 	function zoomToTractFeature(e) {
@@ -469,11 +470,12 @@ var Mns = (function() {
 	}
 	// update map after chart to give topojson time to load
 	function updateMap() {
-		//console.log("updateMap()");
+		return;
+		console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function(layer) {
-			//if (MAP_DEBUG) console.log("updateMap() -> eachLayer()", layer.feature, layer);
+			if (MAP_DEBUG) console.log(" -> eachLayer()", layer.feature, layer);
 
 			// reset properties, popup, events for each tract feature
 			onEachTractFeature(layer.feature, layer);

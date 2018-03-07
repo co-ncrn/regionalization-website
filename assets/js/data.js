@@ -56,8 +56,6 @@ var Data = (function() {
 		return found;
 	}
 
-
-
 	return {
 		getScenario: function(location,callback){
 			getScenario(location,callback);
