@@ -16,6 +16,10 @@ var Page = (function() {
 			location.scenario = newLocation.scenario;
 		if (prop(newLocation.data) && newLocation.data != "")
 			location.data = newLocation.data;
+		// update page title
+		updateTitle();
+		// update download link
+		Menu.updateDownloadLink(newLocation.msa);
 	}
 
 	/**

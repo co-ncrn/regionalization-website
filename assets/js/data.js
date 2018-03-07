@@ -36,6 +36,7 @@ var Data = (function() {
 			Color.updateScale();
 			// update chart (and eventually map, from chart.js)
 			Chart.updateChart();
+
 			//callback();
 		});
 	}

@@ -257,9 +257,9 @@ var Mns = (function() {
 	 *	@param Int msa The msa to load
 	 *	@param String src The url to remote file
 	 */
-	function loadTractLayerData(msa) {
+	function loadTractGeoData(msa) {
 		var src = Site.rootDir + "data/tracts/topojson_quantized_1e6/" + msa + "_tract.topojson";
-		if (MAP_DEBUG) console.log("\nloadTractLayerData()", msa, src);
+		if (MAP_DEBUG) console.log("\nloadTractGeoData()", msa, src);
 
 		d3.json(src, function(error, data) { // use D3 to load JSON
 			if (error) return console.warn(error); // return if error
@@ -279,7 +279,7 @@ var Mns = (function() {
 				onEachFeature: onEachTractFeature
 			});
 			tractLayer.addTo(map); // add layer to map
-			zoomToMSAonMap(msa, "loadTractLayerData"); // zoom to this MSA
+			zoomToMSAonMap(msa, "loadTractGeoData"); // zoom to this MSA
 			resetMSAStyle(); // make sure the MSA is not visible
 			//restyleTractLayer()
 
@@ -510,8 +510,8 @@ var Mns = (function() {
 		zoomToMSAonMap: function(msa, from) {
 			zoomToMSAonMap(msa, from);
 		},
-		loadTractLayerData: function(msa) {
-			loadTractLayerData(msa);
+		loadTractGeoData: function(msa) {
+			loadTractGeoData(msa);
 		},
 		updateMap: updateMap,
 		setAllTractColors: function(data) {
