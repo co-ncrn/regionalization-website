@@ -41,15 +41,21 @@ var Data = (function() {
 		});
 	}
 
-	// make sure this is a scenario in this msa (e.g. no 16020/gen/white)
+	// make sure scenario exists in this msa (e.g. no 16020/gen/white)
 	function msaScenarioExists(location){
-		//console.log("!!!!!!!!!!!!!!!!!!!!",msas[location.msa]);
+		console.log("!!!!!!!!!!!!!!!!!!!!",msas[location.msa]);
 		let found = false;
-		for (let i=0,l=msas[location.msa]; i<l; i++)
+		for (let i=0,l=msas[location.msa]; i<l; i++){
 			if (msas[location.msa][i].scenario == location.scenario)
 				found = true;
+			// check data too
+			if (msas[location.msa][i].data.indexOf(location.data) >= 0)
+				found = true;
+			if (found == true) continue;
+		}
 		return found;
 	}
+
 
 
 	return {
