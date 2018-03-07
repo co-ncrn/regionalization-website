@@ -74,18 +74,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <meta property="fb:app_id" content="833996433457830" />
 
 
-<!--
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/chosen/chosen.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/leaflet/dist/leaflet.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>vendor/Leaflet.EasyButton/src/easy-button.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/chart_styles.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/font-awesome-4.7.0/css/font-awesome.min.css">
- -->
-
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100">
-
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css"> -->
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css">
@@ -133,7 +122,7 @@ var Site = (function() {
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top">
-    <a class="navbar-brand" href="#">Reducing Uncertainty</a>
+    <a class="navbar-brand" href="<?php print $site['rootDir']; ?>">Reducing Uncertainty</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -400,28 +389,6 @@ var Site = (function() {
 
     </div>
 </div>
-
-
-<!-- <script src="<?php print $site['rootDir']; ?>vendor/jquery/dist/jquery.min.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/chosen/chosen.jquery.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/tether/dist/js/tether.min.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/leaflet/dist/leaflet.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/Leaflet.EasyButton/src/easy-button.js"></script>
-<script src="<?php print $site['rootDir']; ?>vendor/d3/d3.min.js"></script>
-
-<script src="https://d3js.org/d3-color.v1.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-
-<script src="<?php print $site['rootDir']; ?>assets/libs/topojson.v1.min.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/libs/d3-axis.v1.min.js"></script>
-<script src="<?php print $site['rootDir']; ?>assets/libs/jquery.history.js"></script>
-
-
-<script src="<?php print $site['rootDir']; ?>node_modules/jquery-history/dist/jquery.history.min.js"></script>
-
-
- -->
 
 
 <script src="<?php print $site['rootDir']; ?>node_modules/jquery/dist/jquery.min.js"></script>
