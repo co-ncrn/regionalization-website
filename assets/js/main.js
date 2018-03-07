@@ -95,6 +95,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		console.log("no msa, picking random");
 		let rMsa = randomProperty(msas);
 		newLocation.msa = rMsa[0].msa;
+		updateMSA = true;
 	}
 	// if no scenario
 	if (!prop(newLocation.scenario) || newLocation.scenario == "" ||
@@ -102,6 +103,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		console.log("no scenario|data, picking first");
 		newLocation.scenario = msas[newLocation.msa][0].scenario;
 		newLocation.data = msas[newLocation.msa][0].data[0];
+		updateScenario = updateData = true;
 	}
 
 
@@ -119,60 +121,12 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 */
 
 
-
-
 	// change has come from initial load
 	if (origin == "load") {
-
 		action = "load, get msa and first scenario";
-		// do this before any map work
-		Data.getScenario(newLocation);
-		// after scenario data exists...
-		Mns.loadTractGeoData(newLocation.msa);
-
+		updateMSA = updateScenario = updateData = true;
 	}
-	// change has come from form or map
-	else {
-		// update URL
-		console.log(" -> Page.updateUrl('add')", newLocation);
-		Page.updateUrl('add', newLocation);
-	}
-
-	// save location
-	Page.setLocation(newLocation);
-	// then update selected MSA in dropdown
-	Menu.setMsaMenu(Page.location.msa);
-	// update scenario menu
-	Menu.newScenarioMenu(Page.location.msa);
-
-
-
-
-/*
-
-	// if page is loading for first time
-	if (origin == "load") {
-		// if there is an msa
-		if (prop(newLocation) && newLocation.msa) {
-			// .. and data
-			if (prop(newLocation.scenario) && prop(newLocation.data)) {
-				// update everything
-				action = "update everything";
-				updateMSA = true;
-				updateScenario = true;
-				updateData = true;
-			} else {
-				// else updata msa only
-				action = "update only msa";
-				updateMSA = true;
-			}
-
-			// but no data
-
-
-		}
-	}
-	// if the change came from the form, map, or table
+	// change has come from form or map, so look to see what is new
 	else {
 		// if new msa
 		if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
@@ -186,6 +140,40 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		if (prop(newLocation.data) && newLocation.data != Page.location.data) {
 			updateScenario = true;
 		}
+	}
+	console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
+
+
+
+
+	// save location
+	Page.setLocation(newLocation);
+	// then update selected MSA in dropdown
+	Menu.setMsaMenu(Page.location.msa);
+
+
+	// if new msa
+	if (updateMSA) {
+		// zoom to MSA on map
+		Mns.zoomToMSAonMap(Page.location.msa, "dataChange");
+		// new msa so create new scenario menu
+		Menu.newScenarioMenu(Page.location.msa);
+	}
+
+	// do this before any map work
+	Data.getScenario(newLocation);
+	// after scenario data exists...
+	Mns.loadTractGeoData(newLocation.msa);
+
+	// update url
+	Page.updateUrl('add', newLocation);
+
+
+/*
+
+	// if the change came from the form, map, or table
+	else {
+
 
 
 		//
@@ -198,26 +186,15 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// 	newLocation.data = Page.location.data;
 		// }
 	}
-	console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
 
 
 
 
 
-	// menu updated, ...
-	if ((updateScenario || updateData) || (updateMSA && prop(Page.location.scenario))) {
-		Data.getScenario(newLocation); // do this before any map work
-	}
 
-	// if new msa
-	if (updateMSA) {
 
-		// if map is loaded
-		if (origin != "load"){
-			// zoom to MSA on map
-			Mns.zoomToMSAonMap(Page.location.msa, "dataChange");
-		}
-	}
+
+
 
 
 
@@ -244,11 +221,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	}
 
 
-	// non-essential
-	if ((updateMSA || updateScenario || updateData)) {
-		// if any change
-		changeMsaScenario(origin);
-	}
+
 
 
 	// // 1. HANDLE INCOMING

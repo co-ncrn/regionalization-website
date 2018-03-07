@@ -71,7 +71,7 @@ var Chart = (function() {
 
 
 	function createChart() {
-		if (CHART_DEBUG) console.log("createChart()");
+		if (CHART_DEBUG) console.log(" -> createChart()");
 		// references to table
 		table = d3.select('#chart table');
 		theadtr = table.select('thead tr');

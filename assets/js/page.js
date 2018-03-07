@@ -66,10 +66,10 @@ var Page = (function() {
 	 */
 	function initCheckUrlForScenario() {
 		this.location = parseUrl();
-		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
+		//if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
 		location = this.location;
 		//this.location = loc;
-		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
+		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() new location = ", location);
 
 		// move to Mns.createMap() after map loads
 		//dataChange("load", location);
@@ -80,7 +80,7 @@ var Page = (function() {
 	 *	update URL - Be careful, because as you do the root of the site changes
 	 */
 	function updateUrl(change, newLocation) {
-		//console.log("updateUrl()", change, newLocation);
+		console.log("Page.updateUrl()", change, newLocation);
 
 		// bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() {

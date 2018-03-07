@@ -52,7 +52,7 @@ var Mns = (function() {
 	 *	Create map
 	 */
 	function createMap() {
-		if (MAP_DEBUG) console.log("createMap()");
+		if (MAP_DEBUG) console.log(" -> createMap()");
 
 		// create Leaflet map
 		map = L.map('map', {
@@ -93,7 +93,7 @@ var Mns = (function() {
 			// add layer to map
 			msaLayer.addTo(map);
 			// if an msa is set then zoom to it
-			if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa, "createMap");
+			//if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa, "createMap");
 
 			dataChange("load", Page.location);
 		});
@@ -136,7 +136,7 @@ var Mns = (function() {
 
 		// store reference to feature
 		if (feature.properties.GEOID == Page.location.msa) {
-			console.log(" -> !!!!!! store reference in lastMSAFeature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
+			//console.log(" -> !!!!!! store reference in lastMSAFeature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
 			lastMSAFeature = layer;
 		}
 
@@ -279,7 +279,8 @@ var Mns = (function() {
 				onEachFeature: onEachTractFeature
 			});
 			tractLayer.addTo(map); // add layer to map
-			zoomToMSAonMap(msa, "loadTractGeoData"); // zoom to this MSA
+			// may not need this because msa already selected/zoomed
+			//zoomToMSAonMap(msa, "loadTractGeoData");
 			resetMSAStyle(); // make sure the MSA is not visible
 			//restyleTractLayer()
 
