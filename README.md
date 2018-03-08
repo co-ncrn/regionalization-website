@@ -1,7 +1,10 @@
 # ACS Regionalization WEBSITE
 
+#### TO DO
 
-...
+Have another go at compression into Topojson
+Mobile testing
+Minify everything
 
 
 #### References
