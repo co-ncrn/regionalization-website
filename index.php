@@ -20,7 +20,7 @@ $site = array(
     // data path
     'dataDir' => "/data/",
     // to debug or not
-    'debug' => 0,
+    'debug' => 1,
     // description: for meta tags, etc.
     'description' => "Reducing the Margin of Error in the American Community Survey",
     // domain for reference
