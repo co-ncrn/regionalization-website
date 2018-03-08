@@ -59,7 +59,7 @@ var Mns = (function() {
 
 		// create Leaflet map
 		map = L.map('map', {
-			minZoom: 5,
+			minZoom: 4,
 			maxZoom: 15,
 			zoomControl: true
 		}).setView([35.243, -80.395], 7);
