@@ -54,6 +54,9 @@ var Mns = (function() {
 	function createMap() {
 		if (MAP_DEBUG) console.log(" -> createMap()");
 
+		if (map != null)
+			map.remove();
+
 		// create Leaflet map
 		map = L.map('map', {
 			minZoom: 5,
@@ -95,6 +98,7 @@ var Mns = (function() {
 			// if an msa is set then zoom to it
 			//if (prop(Page.location.msa)) zoomToMSAonMap(Page.location.msa, "createMap");
 
+			// after map loads the first time, call dataChange
 			dataChange("load", Page.location);
 		});
 	}
@@ -216,12 +220,14 @@ var Mns = (function() {
 			lastMSAFeature = layer;
 			// reset any previous msas selected
 			resetMSAStyle();
-			// update the MSA across the interface
-			dataChange("map", {
+			let newLocation = {
 				"msa": layer.feature.properties.GEOID,
 				"scenario": Page.location.scenario,
 				"data": Page.location.data
-			});
+			};
+			//if (Site.debug) console.log(p.toString(), newLocation);
+			// update the MSA across the interface
+			dataChange("map", newLocation);
 		}
 	}
 	// follow mouse with popup
@@ -470,7 +476,8 @@ var Mns = (function() {
 	}
 	// update map after chart to give topojson time to load
 	function updateMap() {
-		return;
+	//	return;
+// not sure if i need this
 		console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;
 

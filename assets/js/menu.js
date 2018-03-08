@@ -100,18 +100,20 @@ var Menu = (function() {
 		// on chosen() change events
 		$('#msa_select_box').on('change', function(evt, params) {
 			//if (Site.debug) console.log("params.selected", params.selected);
-			dataChange("menu", {
+			let newLocation = {
 				"msa": params.selected,
 				"scenario": Page.location.scenario,
 				"data": Page.location.data
-			});
+			};
+			//if (Site.debug) console.log(p.toString(), newLocation);
+			dataChange("menu", newLocation);
 		});
 		$('#scenario_select_box').on('change', function(evt, params) {
 			//if (Site.debug) console.log("params.selected", params.selected);
 			// split the params from the dropdown
 			var p = params.selected.split("-");
 			if (p.length == 2) {
-				var newLocation = {
+				let newLocation = {
 					"msa": Page.location.msa,
 					"scenario": p[0],
 					"data": p[1]

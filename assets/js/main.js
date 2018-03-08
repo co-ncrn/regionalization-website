@@ -48,23 +48,18 @@ function init() {
 		if (Site.debug) console.log(" -> msas loaded");
 		if (Site.debug) $("#rawDataOutput").val("all MSAs: \n" + JSON.stringify(msas));
 
-
 		// Table.resize(); // get initial table size
 		// setTimeout(Table.resize, 1000); // and do it again once data is set
 
 		// add listeners
 		Menu.addListeners();
 		Page.addListeners();
-
 		// create MSA menu
 		Menu.newMsaMenu(msas);
-
 		// create map
 		Mns.createMap();
-
 		// create chart
 		Chart.createChart();
-
 		// check url to see if we should display a page
 		Page.initCheckUrlForScenario();
 	});

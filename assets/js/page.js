@@ -70,9 +70,6 @@ var Page = (function() {
 		location = this.location;
 		//this.location = loc;
 		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() new location = ", location);
-
-		// move to Mns.createMap() after map loads
-		//dataChange("load", location);
 	}
 
 
