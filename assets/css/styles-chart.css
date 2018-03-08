@@ -12,7 +12,7 @@
 .dropdown_left { float: left; width: 6%; margin: 5px 0; }
 .dropdown_right { float: left; width: 93%; margin: 5px 0; }
 .download_link, .download_link:hover { font-size: 88%; color: #333; text-decoration: none }
-.download_link_meta { font-size: 88%; color: #888}
+.download_link_meta { font-size: 88%; color: #888; }
 
 
 /* ICONS */

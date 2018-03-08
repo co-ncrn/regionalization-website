@@ -134,6 +134,8 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 }
 
+
+
 /**
  *	Run after scenario data and tract geo data loads
  */

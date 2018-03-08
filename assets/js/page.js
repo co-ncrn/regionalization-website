@@ -126,13 +126,18 @@ var Page = (function() {
 	 *	if user clicks back/forward button then check the page again
 	 */
 	function addListeners() {
+		
 		window.onpopstate = function(event) {
 			if (event && event.state) {
 				console.log("url changed");
 				init();
 			}
 		};
-
+		// scroll to section and make room at top for image
+		// to move out from under the header
+		window.addEventListener("hashchange", function () {
+		    window.scrollTo(window.scrollX, window.scrollY - 50);
+		});
 
 
 	}

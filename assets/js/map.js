@@ -86,6 +86,9 @@ var Mns = (function() {
 			L.easyButton('fa-arrows-alt fa-lg', function(btn, map) {
 				Page.toggleFullscreen();
 			}).addTo(map);
+			L.easyButton('fa-location-arrow fa-lg', function(btn, map) {
+				zoomToMSAonMap(Page.location.msa);
+			}).addTo(map);
 
 			// add msa layer to map
 			msaLayer = new L.TopoJSON(data, {
