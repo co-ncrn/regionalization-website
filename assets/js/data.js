@@ -1,12 +1,15 @@
 var Data = (function() {
 	"use strict";
 
+	var numberTracts = 0,
+		numberRegions = 0;
+
 	/**
 	 *	Get data from server
 	 */
-	function getScenario(location,callback) {
+	function getScenario(location, callback) {
 
-		let url = Site.rootDir +"data/scenarios/"+ location.msa +"_"+ location.scenario +"_"+ location.data +".json";
+		let url = Site.rootDir + "data/scenarios/" + location.msa + "_" + location.scenario + "_" + location.data + ".json";
 		if (Site.debug) console.log("Data.getScenario()", url, location);
 
 		d3.json(url, function(error, json) {
@@ -18,9 +21,11 @@ var Data = (function() {
 			// remove rows with "inf" (infinity)
 			//data = remove_rows(data,"inf");
 
-			console.log(" -> currentScenarioArray = ", currentScenarioArray);
 			currentScenario = json;
 			currentScenarioArray = d3.entries(currentScenario);
+
+						console.log(" -> currentScenarioArray = ", currentScenarioArray);
+						console.log(" -> currentScenarioArray.length = ", currentScenarioArray.length);
 			numberTracts = currentScenarioArray.length;
 
 
@@ -29,20 +34,16 @@ var Data = (function() {
 			if (Site.debug)
 				$("#rawDataOutput").val(JSON.stringify(json).replace("},", "},\n"));
 
-			// set color scale
-			Color.updateScale();
-			// update chart (and eventually map, from chart.js)
-			Chart.updateChart();
-
-			//callback();
+			// things to update after dataChange()
+			dataChangeCallback();
 		});
 	}
 
 	// make sure scenario exists in this msa (e.g. no 16020/gen/white)
-	function msaScenarioAndDataExists(location){
+	function msaScenarioAndDataExists(location) {
 		//console.log("!!!!!!!!!!!!!!!!!!!!",location,msas[location.msa]);
 		let found = false;
-		for (let i=0,l=msas[location.msa].length; i<l; i++){
+		for (let i = 0, l = msas[location.msa].length; i < l; i++) {
 			//console.log(" --------> ","msas[location.msa][i].scenario",msas[location.msa][i].scenario);
 			if (msas[location.msa][i].scenario == location.scenario)
 				found = true;
@@ -55,13 +56,26 @@ var Data = (function() {
 		return found;
 	}
 
+	function getNumberTracts() {
+		numberTracts = currentScenarioArray.length;
+		return numberTracts;
+	}
+
+	function getNumberRegions() {
+		numberRegions = [...new Set(currentScenarioArray.map(item => item.value.RID))];
+		//console.log("numberRegions",numberRegions.length);
+		return numberRegions.length;
+	}
+
 	return {
-		getScenario: function(location,callback){
-			getScenario(location,callback);
+		getScenario: function(location, callback) {
+			getScenario(location, callback);
 		},
-		msaScenarioAndDataExists: function(location){
+		msaScenarioAndDataExists: function(location) {
 			return msaScenarioAndDataExists(location);
-		}
+		},
+		getNumberTracts: getNumberTracts,
+		getNumberRegions: getNumberRegions
 	};
 
 })();

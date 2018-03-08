@@ -77,7 +77,7 @@ var Page = (function() {
 	 *	update URL - Be careful, because as you do the root of the site changes
 	 */
 	function updateUrl(change, newLocation) {
-		console.log("Page.updateUrl()", change, newLocation);
+		console.log(" -> Page.updateUrl()", change, newLocation);
 
 		// bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() {

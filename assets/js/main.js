@@ -15,19 +15,7 @@ var msas = {}, // all the MSAs
 	currentScenarioTIDs = {},
 	currentScenarioArray = [],
 	tractOrRegion = "t",
-	estimateOrMargin = "e",
-	numberTracts = 0;
-
-
-
-
-
-// 1. load msas
-// 2. create MSA menu
-// 3. check for current page
-// 4. create Scenarios menu
-
-
+	estimateOrMargin = "e";
 
 
 /**
@@ -68,7 +56,10 @@ function init() {
 
 
 
-
+// 1. load msas
+// 2. create MSA menu
+// 3. check for current page
+// 4. create Scenarios menu
 
 /**
  *	Controls all changes to data displayed
@@ -96,28 +87,11 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// if no scenario, or it doesn't exist in msa
 	if (!Data.msaScenarioAndDataExists(newLocation) || !prop(newLocation.scenario) || newLocation.scenario == "" ||
 		!prop(newLocation.data) || newLocation.data == "") {
-		console.log(" --------> no scenario || data, picking first");
+		console.log(" --------> no scenario || data, selecting first scenario| data instance");
 		newLocation.scenario = msas[newLocation.msa][0].scenario;
 		newLocation.data = msas[newLocation.msa][0].data[0];
 		updateScenario = updateData = true;
 	}
-
-
-/*
-
-1. load
-		> get data
-			update chart, map
-2. form
-		msa (if scenario/data)
-			> get data, update chart, map
-3. map
-
-
-*/
-
-
-
 
 	// change has come from initial load
 	if (origin == "load") {
@@ -127,22 +101,16 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// change has come from form or map, so look to see what is new
 	else {
 		// if new msa
-		if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
+		if (prop(newLocation.msa) && newLocation.msa != Page.location.msa)
 			updateMSA = true;
-		}
 		// if new scenario
-		if (prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario) {
+		if (prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario)
 			updateScenario = true;
-		}
 		// if new data
-		if (prop(newLocation.data) && newLocation.data != Page.location.data) {
+		if (prop(newLocation.data) && newLocation.data != Page.location.data)
 			updateScenario = true;
-		}
 	}
 	console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
-
-
-
 
 	// save new location
 	Page.setLocation(newLocation);
@@ -157,103 +125,24 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		Menu.newScenarioMenu(Page.location.msa);
 	}
 
-	// do this before any map work
+	// load scenario data
 	Data.getScenario(newLocation);
-	// after scenario data exists...
+	// load scenario geo data
 	Mns.loadTractGeoData(newLocation.msa);
-
 	// update url
 	Page.updateUrl('add', newLocation);
 
 
-/*
-
-	// if the change came from the form, map, or table
-	else {
-
-
-
-		//
-		// } else {
-		// 	// else update msa only
-		// 	action = "update only msa";
-		// 	updateMSA = true;
-		// 	// use current scenario and data with new msa
-		// 	newLocation.scenario = Page.location.scenario;
-		// 	newLocation.data = Page.location.data;
-		// }
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-	// if new msa or scenario
-	if (updateMSA && updateScenario) {
-		// load msa tracts topojson
-		Mns.loadTractGeoData(Page.location.msa);
-	}
-	// else only the scenario has changed
-	else if (!updateMSA && updateScenario) {
-		// update scenario menu
-		//Menu.newScenarioMenu(Page.location);
-	}
-	// if origin is anything but "menu"
-	if (origin != "menu" && updateMSA) {
-
-	}
-
-
-
-	if (updateData || tractOrRegion != "" || estimateOrMargin != "") {
-		// if data or tractOrRegion changes then update scales
-		Chart.updateChartScales();
-	}
-
-
-
-
-
-	// // 1. HANDLE INCOMING
-	// // user clicks msa on map || user selects scenario dropdown while msa selected
-	//
-	// // a. compare against msa
-	// if (prop(newLocation.msa) && newLocation.msa != Page.location.msa) {
-	// 	Page.location.msa = newLocation.msa;
-	// 	updateMSA = true;
-	// }
-	// // b. compare against scenario
-	// if ((prop(newLocation.scenario) && newLocation.scenario != Page.location.scenario) || (newLocation.msa != Page.location.msa)) {
-	// 	Page.location.scenario = newLocation.scenario;
-	// 	updateScenario = true;
-	// }
-	// // c. compare against Page.location data
-	// if (prop(newLocation.data) && newLocation.data != Page.location.data) {
-	// 	Page.location.data = newLocation.data;
-	// 	updateData = true;
-	// }
-
-
-*/
 }
 
-
 /**
- *	Update Debugger
+ *	Run after scenario data and tract geo data loads
  */
-function updateDebug() {
-	var str = "Debugging: " + Page.location.msa + ":" + Page.location.scenario + ":" + Page.location.data +
-		"; numberTracts=" + numberTracts +
-		//"; numberChartTIDs="+ d3.selectAll(".tid").size() +
-		"; tractOrRegion=" + tractOrRegion +
-		"; estimateOrMargin=" + estimateOrMargin;
-	//$(".debug").html(str);
-	console.log("updateDebug() ->", str);
+function dataChangeCallback(){
+	// set color scale
+	Color.updateScale();
+	// update chart (and eventually map, from chart.js)
+	Chart.updateChart();
+	// update meta
+	Menu.updateDownloadLinkMeta();
 }

@@ -132,6 +132,21 @@ var Menu = (function() {
 	}
 
 
+	function updateDownloadLinkMeta(){
+		let str = " [ "+
+			//"" + Page.location.msa + ":" + Page.location.scenario + ":" + Page.location.data +
+			Data.getNumberTracts() + " tracts / " +
+			Data.getNumberRegions() + " regions" +
+			//", numberChartTIDs="+ d3.selectAll(".tid").size() +
+			//"; tractOrRegion=" + tractOrRegion +
+			//"; estimateOrMargin=" + estimateOrMargin
+			" ] ";
+		$(".download_link_meta").html(str);
+	}
+
+
+
+
 
 	return {
 		setMsaMenu: function(msa) {
@@ -149,7 +164,8 @@ var Menu = (function() {
 		addListeners: addListeners,
 		updateDownloadLink: function(msa) {
 			updateDownloadLink(msa);
-		}
+		},
+		updateDownloadLinkMeta:updateDownloadLinkMeta
 	};
 
 })();

@@ -304,7 +304,6 @@ var Chart = (function() {
 
 
 
-		updateDebug(); //testing
 		Mns.updateMap(); // update map after chart to give topojson time to load
 		highlightHeaders(); // update headers
 
