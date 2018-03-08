@@ -41,15 +41,12 @@ var Page = (function() {
 		if (url.indexOf(Site.server) != -1) {
 			// get everything after domain
 			page = url.split(Site.server)[1];
-			// remove any trailing slashes
+			// remove trailing slashe
 			page = page.replace(/\/$/, "").trim();
 			if (Site.debug) console.log(" -> Page.parseUrl() page = ", page);
-
-			// remove
-			if(page.substr(0) === '/') {
-				page = page.substr(1);
-			}
-
+			// remove previous slash
+			if(page.substr(0) === '/') page = page.substr(1);
+			
 			// if data
 			if (page != "") {
 				// then there must be msa (and/or scenario and data)
