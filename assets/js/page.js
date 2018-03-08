@@ -43,8 +43,12 @@ var Page = (function() {
 			page = url.split(Site.server)[1];
 			// remove any trailing slashes
 			page = page.replace(/\/$/, "").trim();
+			if (Site.debug) console.log(" -> Page.parseUrl() page = ", page);
 
-				if (Site.debug) console.log(" -> Page.parseUrl() page = ", page);
+			// remove
+			if(page.substr(0) === '/') {
+				page = page.substr(1);
+			}
 
 			// if data
 			if (page != "") {

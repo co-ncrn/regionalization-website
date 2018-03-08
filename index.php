@@ -28,7 +28,7 @@ $site = array(
     // root directory for assets
     'rootDir' => "/",
     // are we running on local or remote server
-    'server' => "https://reducinguncertainty.org",
+    'server' => "https://reducinguncertainty.org/",
     // for meta tags and page
     'title' => "Reducing Uncertainty"
 );
