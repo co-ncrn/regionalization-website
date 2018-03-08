@@ -4,7 +4,7 @@ var Chart = (function() {
 	var limit = 20, // data limit for testing
 		svgHeight = 20, // height for all svg elements
 		loaded = false,
-		CHART_DEBUG = true;
+		CHART_DEBUG = false;
 
 	var margin,
 		sizes,

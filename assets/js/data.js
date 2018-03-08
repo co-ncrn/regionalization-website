@@ -21,11 +21,11 @@ var Data = (function() {
 			// remove rows with "inf" (infinity)
 			//data = remove_rows(data,"inf");
 
+			// update data
 			currentScenario = json;
 			currentScenarioArray = d3.entries(currentScenario);
-
-						console.log(" -> currentScenarioArray = ", currentScenarioArray);
-						console.log(" -> currentScenarioArray.length = ", currentScenarioArray.length);
+			// console.log(" -> currentScenarioArray = ", currentScenarioArray);
+			// console.log(" -> currentScenarioArray.length = ", currentScenarioArray.length);
 			numberTracts = currentScenarioArray.length;
 
 
@@ -62,9 +62,9 @@ var Data = (function() {
 	}
 
 	function getNumberRegions() {
-		numberRegions = [...new Set(currentScenarioArray.map(item => item.value.RID))];
+		numberRegions = [...new Set(currentScenarioArray.map(item => item.value.RID))].length;
 		//console.log("numberRegions",numberRegions.length);
-		return numberRegions.length;
+		return numberRegions;
 	}
 
 	return {

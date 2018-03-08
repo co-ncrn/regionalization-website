@@ -12,8 +12,8 @@ var Mns = (function() {
 
 		lastMSAFeature = null, // reference last MSA on map to change style to default
 		hideLastMSAFeatureTimeOut = null,
-		MAP_DEBUG = true,
-		self = this;
+		MAP_DEBUG = false
+		;
 
 	var msaStyle = {
 		"color": "#3690c0",
@@ -130,7 +130,7 @@ var Mns = (function() {
 	 *	Set events, etc. for each MSA feature
 	 */
 	function onEachMSAFeature(feature, layer) {
-		//console.log("Mns.onEachMSAFeature() feature = ",feature, " layer = ",layer)
+		//if (MAP_DEBUG) console.log("Mns.onEachMSAFeature() feature = ",feature, " layer = ",layer)
 
 		// reference to bounds of each MSA
 		msaIndex[layer.feature.properties.GEOID] = {
@@ -140,7 +140,7 @@ var Mns = (function() {
 
 		// store reference to feature
 		if (feature.properties.GEOID == Page.location.msa) {
-			//console.log(" -> !!!!!! store reference in lastMSAFeature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
+			//if (MAP_DEBUG) console.log(" -> !!!!!! store reference in lastMSAFeature", feature.properties.GEOID, Page.location.msa, lastMSAFeature);
 			lastMSAFeature = layer;
 		}
 
@@ -166,7 +166,7 @@ var Mns = (function() {
 	function highlightMSAFromMap(e) {
 		var layer = e.target;
 		var _msa = msaIndex[layer.feature.properties.GEOID].msa;
-		//console.log("Mns.highlightMSAFromMap() layer = ",layer, " // msa = ",_msa)
+		//if (MAP_DEBUG) console.log("Mns.highlightMSAFromMap() layer = ",layer, " // msa = ",_msa)
 
 		// don't do anything if this is the current msa (tracts are highlighted)
 		if (_msa == Page.location.msa) return;
@@ -197,7 +197,7 @@ var Mns = (function() {
 		// don't do anything if this is the current msa (tracts are highlighted)
 		if (prop(e) && prop(e.feature) && e.feature.properties.GEOID == Page.location.msa) return;
 
-		console.log(" -> Mns.resetMSAStyle() -> ", lastMSAFeature, "e", e);
+		if (MAP_DEBUG) console.log(" -> Mns.resetMSAStyle() -> ", lastMSAFeature, "e", e);
 
 		if (prop(e)) {
 			msaLayer.resetStyle(e.target);
@@ -238,7 +238,7 @@ var Mns = (function() {
 	}
 	// hide last msa feature (when we load tracts in its place)
 	function hideLastMSAFeature() {
-		console.log("hideLastMSAFeature() -> ", lastMSAFeature);
+		if (MAP_DEBUG) console.log("hideLastMSAFeature() -> ", lastMSAFeature);
 		if (prop(lastMSAFeature)) {
 			//clearTimeout(hideLastMSAFeatureTimeOut);
 			lastMSAFeature.setStyle({
@@ -265,19 +265,25 @@ var Mns = (function() {
 	 */
 	function loadTractGeoData(msa) {
 		var src = Site.rootDir + "data/tracts/topojson_quantized_1e6/" + msa + "_tract.topojson";
-		if (MAP_DEBUG) console.log("\nloadTractGeoData()", msa, src);
+		if (MAP_DEBUG) console.log(" -> loadTractGeoData()", msa, src);
 
 		d3.json(src, function(error, data) { // use D3 to load JSON
 			if (error) return console.warn(error); // return if error
-			if (MAP_DEBUG) console.log(" -> d3.json", data); // testing
-			if (tractLayer != null) {
-				if (MAP_DEBUG) console.log(" -> tractLayer = ", tractLayer);
+			if (MAP_DEBUG) console.log("     -> d3.json", data); // testing
+			// is there already a tract layer?
+			if (tractLayer != {}) {
+				if (MAP_DEBUG) console.log("     -> tractLayer != null = ", tractLayer);
+				// map.eachLayer(function (layer) {
+				// 	if (prop(layer.feature) && prop(layer.feature.properties) && prop(layer.feature.properties.TID))
+				// 		if (MAP_DEBUG) console.log("layer.feature.properties",layer.feature.properties);
+				// });
 				map.removeLayer(tractLayer); // remove current layer from map
+				tractLayer = {};
 			}
 			tractTIDindex = {}; // reset TID references
 			tractRIDindex = {}; // reset RID references
 
-			console.log("currentScenarioTIDs = ", currentScenarioTIDs);
+			if (MAP_DEBUG) console.log("currentScenarioTIDs = ", currentScenarioTIDs);
 
 			tractLayer = new L.TopoJSON(data, { // create new tractLayer, add data
 				msa: msa, // for reference later
@@ -292,7 +298,7 @@ var Mns = (function() {
 
 			// hide the last msa
 			hideLastMSAFeature();
-			//console.log(" -> lastMSAFeature",lastMSAFeature);
+			//if (MAP_DEBUG) console.log(" -> lastMSAFeature",lastMSAFeature);
 
 			// bring to front
 			if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -363,7 +369,8 @@ var Mns = (function() {
 		} // if no TID, currentScenario, or data found
 		else {
 			if (MAP_DEBUG) console.log(" -> Mns.initialTractStyle() -> NO DATA, RETURNING DEFAULT STYLE");
-			// no changes to default style
+			// else just make default style transparent
+			defaultStyle.fillColor = "#00000000";
 		}
 		// return style object
 		return defaultStyle;

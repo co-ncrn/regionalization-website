@@ -116,6 +116,8 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	Page.setLocation(newLocation);
 	// update selected MSA in dropdown
 	Menu.setMsaMenu(Page.location.msa);
+	// update url
+	Page.updateUrl('add', newLocation);
 
 	// if new msa
 	if (updateMSA) {
@@ -124,13 +126,10 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
 	}
-
 	// load scenario data
 	Data.getScenario(newLocation);
 	// load scenario geo data
 	Mns.loadTractGeoData(newLocation.msa);
-	// update url
-	Page.updateUrl('add', newLocation);
 
 
 }
