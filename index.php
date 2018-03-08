@@ -204,6 +204,7 @@ var Site = (function() {
                                     </div>
                                     <div class="col-11 form_select_col">
                                         <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">Download data for this Metropolitan Area</a>
+                                        <span class="download_link_meta"></span>
                                     </div>
                                 </div>
                             </div>
