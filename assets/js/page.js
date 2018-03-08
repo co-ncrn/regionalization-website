@@ -26,9 +26,11 @@ var Page = (function() {
 	 *	Return the params from the current URL
 	 */
 	function parseUrl() {
+		if (Site.debug) console.log(" -> Page.parseUrl() location = ", window.location.href);
+
 		var url = window.location.href,
 			page = [],
-			loc = {};
+			location = {};
 
 		// remove hash
 		if (url.indexOf("#") != -1){
@@ -41,6 +43,9 @@ var Page = (function() {
 			page = url.split(Site.server)[1];
 			// remove any trailing slashes
 			page = page.replace(/\/$/, "").trim();
+
+				if (Site.debug) console.log(" -> Page.parseUrl() page = ", page);
+
 			// if data
 			if (page != "") {
 				// then there must be msa (and/or scenario and data)
@@ -48,16 +53,16 @@ var Page = (function() {
 					// split on /
 					var pages = page.split("/");
 					// set vars
-					if (pages[0]) loc.msa = pages[0].trim();
-					if (pages[1]) loc.scenario = pages[1].trim();
-					if (pages[2]) loc.data = pages[2].trim();
+					if (pages[0]) location.msa = pages[0].trim();
+					if (pages[1]) location.scenario = pages[1].trim();
+					if (pages[2]) location.data = pages[2].trim();
 				} else {
-					loc.msa = page.trim();
+					location.msa = page.trim();
 				}
 			}
 		}
-		//if (Site.debug) console.log(" -> Page.parseUrl()", Site.server, loc);
-		return loc;
+		if (Site.debug) console.log(" -> Page.parseUrl()", Site.server, location);
+		return location;
 	}
 
 
@@ -66,9 +71,8 @@ var Page = (function() {
 	 */
 	function initCheckUrlForScenario() {
 		this.location = parseUrl();
-		//if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
+		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() location = ", location);
 		location = this.location;
-		//this.location = loc;
 		if (Site.debug) console.log(" -> Page.initCheckUrlForScenario() new location = ", location);
 	}
 
@@ -126,7 +130,7 @@ var Page = (function() {
 	 *	if user clicks back/forward button then check the page again
 	 */
 	function addListeners() {
-		
+
 		window.onpopstate = function(event) {
 			if (event && event.state) {
 				console.log("url changed");

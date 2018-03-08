@@ -39,6 +39,8 @@ function init() {
 		// Table.resize(); // get initial table size
 		// setTimeout(Table.resize, 1000); // and do it again once data is set
 
+		// check url to see if we should display a page
+		Page.initCheckUrlForScenario();
 		// add listeners
 		Menu.addListeners();
 		Page.addListeners();
@@ -48,8 +50,6 @@ function init() {
 		Mns.createMap();
 		// create chart
 		Chart.createChart();
-		// check url to see if we should display a page
-		Page.initCheckUrlForScenario();
 	});
 }
 
