@@ -75,7 +75,8 @@ function init() {
  */
 function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	if (!prop(origin) || !prop(newLocation)) return; // origin required
-	if (Site.debug) console.log("\ndataChange()", origin);
+	if (Site.debug) console.log("##################################################");
+	if (Site.debug) console.log("dataChange() via", origin);
 	if (Site.debug) console.log(" -> Page.location ", Page.location);
 	if (Site.debug) console.log(" -> newLocation =", newLocation);
 
@@ -87,15 +88,15 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 	// if no msa then set default
 	if (!prop(newLocation.msa) || newLocation.msa == "") {
-		console.log("no msa, picking random");
+		console.log(" -> -> no msa, picking random");
 		let rMsa = randomProperty(msas);
 		newLocation.msa = rMsa[0].msa;
 		updateMSA = true;
 	}
 	// if no scenario, or it doesn't exist in msa
-	if (!Data.msaScenarioExists(newLocation) || !prop(newLocation.scenario) || newLocation.scenario == "" ||
+	if (!Data.msaScenarioAndDataExists(newLocation) || !prop(newLocation.scenario) || newLocation.scenario == "" ||
 		!prop(newLocation.data) || newLocation.data == "") {
-		console.log("no scenario|data, picking first");
+		console.log(" --------> no scenario || data, picking first");
 		newLocation.scenario = msas[newLocation.msa][0].scenario;
 		newLocation.data = msas[newLocation.msa][0].data[0];
 		updateScenario = updateData = true;
@@ -143,17 +144,16 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 
 
-	// save location
+	// save new location
 	Page.setLocation(newLocation);
-	// then update selected MSA in dropdown
+	// update selected MSA in dropdown
 	Menu.setMsaMenu(Page.location.msa);
-
 
 	// if new msa
 	if (updateMSA) {
 		// zoom to MSA on map
 		Mns.zoomToMSAonMap(Page.location.msa, "dataChange");
-		// new msa so create new scenario menu
+		// update scenario menu
 		Menu.newScenarioMenu(Page.location.msa);
 	}
 
