@@ -420,6 +420,23 @@ var Site = (function() {
 <script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/main.js"></script>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102267502-4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-102267502-4');
+</script>
+
+<script type="text/javascript">
+var sc_project=11652073;
+var sc_invisible=1;
+var sc_security="edfedd43";
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
 
 </body>
 </html>
