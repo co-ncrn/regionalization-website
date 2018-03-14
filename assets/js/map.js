@@ -117,7 +117,7 @@ var Mns = (function() {
 	 *	Zoom to the msa
 	 */
 	function zoomToMSAonMap(msa, from) {
-		if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap()", from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
+		console.log(" -> Mns.zoomToMSAonMap()", msa, from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
 		if (!prop(msaIndex[msa])) return;
 		try {
 			//if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa], msaIndex[msa].bounds);
@@ -451,9 +451,14 @@ var Mns = (function() {
 		// temp commenting out
 		//		removeHighlightTractOnChart(layer.feature.properties); // resetStyle any tract styles
 	}
-	// zoom to an tract
+	// zoom to a tract
 	function zoomToTractFeature(e) {
 		map.fitBounds(e.target.getBounds());
+	}
+	// zoom to a tract
+	function zoomToTractFeatureFromChart(tid) {
+		//console.log("tractTIDindex[tid]",tractTIDindex[tid]);
+		map.fitBounds(tractTIDindex[tid]._bounds);
 	}
 
 	// highlight tract
@@ -529,6 +534,9 @@ var Mns = (function() {
 		},
 		zoomToMSAonMap: function(msa, from) {
 			zoomToMSAonMap(msa, from);
+		},
+		zoomToTractFeatureFromChart: function(tract){
+			zoomToTractFeatureFromChart(tract);
 		},
 		loadTractGeoData: function(msa) {
 			loadTractGeoData(msa);

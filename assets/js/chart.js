@@ -286,13 +286,17 @@ var Chart = (function() {
 			})
 			.on("mouseout", function(d) {
 				Mns.resetTractStyleFromChart("g" + d.value.TID);
+			})
+			.on("click", function(d) {
+				//console.log("d.value.TID",d.value.TID);
+				Mns.zoomToTractFeatureFromChart("g" + d.value.TID);
 			});
 
 		// estimate / error toggle buttons
-		d3.selectAll(".est")
-			.on("click", selectEST);
-		d3.selectAll(".err")
-			.on("click", selectMAR);
+		// d3.selectAll(".est")
+		// 	.on("click", selectEST);
+		// d3.selectAll(".err")
+		// 	.on("click", selectMAR);
 
 
 
