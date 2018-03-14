@@ -153,7 +153,7 @@ var Site = (function() {
 
 
 
-<div class="container-fluid">
+<div class="container-fluid" id="map">
 	<div class="header">
 		<h2 class="callout">Reducing the Margin of Error in<br>the American Community Survey.</h2>
 	</div>
