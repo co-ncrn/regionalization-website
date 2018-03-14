@@ -353,7 +353,7 @@ var Site = (function() {
 
                 <p>Seth E. Spielman, University of Colorado<br>
                 David C. Folch, Florida State University<br>
-                Becky Davies, data wrangler<br>
+                Rebecca M. Davies, data wrangler<br>
                 Owen Mundy, website and data visualization</p>
 
             </div>
