@@ -122,7 +122,7 @@ var Site = (function() {
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top" id="top">
     <a class="navbar-brand" href="<?php print $site['rootDir']; ?>">Reducing Uncertainty</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -130,7 +130,7 @@ var Site = (function() {
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#map"><i class="far fa-map"></i></a>
+				<a class="nav-link" href="#top"><i class="far fa-map"></i></a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#data-quality">Data Quality</a>
@@ -153,7 +153,7 @@ var Site = (function() {
 
 
 
-<div class="container-fluid" id="map">
+<div class="container-fluid">
 	<div class="header">
 		<h2 class="callout">Reducing the Margin of Error in<br>the American Community Survey.</h2>
 	</div>
