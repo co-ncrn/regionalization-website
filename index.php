@@ -79,8 +79,9 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <!-- <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css"> -->
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet-easybutton/src/easy-button.css">
-<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap4c-chosen/dist/css/component-chosen.min.css">
+
+<link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/libs/web-fonts-with-css/css/fontawesome-all.css">
 
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles-chart.css">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>assets/css/styles-map.css">
@@ -128,6 +129,9 @@ var Site = (function() {
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a class="nav-link" href="#map"><i class="far fa-map"></i></a>
+			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#data-quality">Data Quality</a>
 			</li>

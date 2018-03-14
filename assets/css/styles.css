@@ -41,6 +41,8 @@ a:link, a:hover, a:focus, a:visited, a:active { color: #56a8cf}
 
 /* HEADERS, CALLOUTS, SECTIONS */
 
+.fa-map { margin-right: 14px; }
+
 .header .callout { font: 1.6em/1.5em 'Roboto Slab', serif; text-align: center; margin: 30px; color: #484848; }
 .section-title { font: 1.9em/1.5em 'Roboto Slab', serif; margin: 0 0 20px 0 ; color: #484848; }
 
