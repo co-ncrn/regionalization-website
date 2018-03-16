@@ -1,6 +1,8 @@
 var Page = (function() {
 	"use strict";
 
+
+
 	// the default location object
 	var location = {
 			"msa": "",
@@ -46,7 +48,7 @@ var Page = (function() {
 			if (Site.debug) console.log(" -> Page.parseUrl() page = ", page);
 			// remove previous slash
 			if(page.substr(0) === '/') page = page.substr(1);
-			
+
 			// if data
 			if (page != "") {
 				// then there must be msa (and/or scenario and data)
@@ -82,49 +84,53 @@ var Page = (function() {
 	 *	update URL - Be careful, because as you do the root of the site changes
 	 */
 	function updateUrl(change, newLocation) {
-		console.log(" -> Page.updateUrl()", change, newLocation);
+		if (Site.debug) console.log(" -> Page.updateUrl()", change, newLocation);
+		if (Site.debug) console.log(msas[newLocation.msa][0].description);
 
 		// bind to StateChange Event
 		History.Adapter.bind(window, 'statechange', function() {
 			let State = History.getState();
 		});
 
-		let url = returnSafeUrl();
+		let path = returnSafePath(),
+			title = "";
 		// change state
 		if (change == 'add') {
 			// data
+				title = Site.title + " – " + msas[newLocation.msa][0].description + " – " + path;
 			History.pushState({
 				state: 1
-			}, Site.title + " :: " + url, Site.rootDir + url);
+			}, title, Site.rootDir + path);
 		} else {
 			// default
+			title = Site.title;
 			History.pushState({
 				state: 0
-			}, Site.title + "", Site.rootDir);
+			}, title, Site.rootDir);
 		}
-
+		// update share links in menu
+		Menu.updateShareLinks(title,"https://"+Site.domain+"/"+path);
 	}
 
-	function returnSafeUrl(){
-		let url = "";
+	function returnSafePath(){
+		let path = "";
 		if (prop(location.msa)) {
-			url += "" + location.msa;
+			path += "" + location.msa;
 			if (prop(location.scenario)) {
-				url += "/" + location.scenario;
+				path += "/" + location.scenario;
 				if (prop(location.data))
-					url += "/" + location.data;
+					path += "/" + location.data;
 			}
 		}
-		return url;
+		return path;
 	}
 
 	/**
 	 *	Update Title
 	 */
 	function updateTitle() {
-		let url = returnSafeUrl();
-		if (url != "") url = " :: " + url;
-		$("title").html(Site.title + url);
+		let path = returnSafePath();
+		$("title").html(Site.title + " – " + msas[Page.location.msa][0].description + " – " + path);
 	}
 
 	/**

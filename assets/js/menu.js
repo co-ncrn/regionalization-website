@@ -18,7 +18,7 @@ var Menu = (function() {
 		}
 		$("#msa_select_box").append(str).trigger('chosen:updated'); // update select
 	}
-
+	// generic return option
 	function optionHTML(val, text) {
 		return "<option value='" + val + "'>" + text + "</option>";
 	}
@@ -37,7 +37,6 @@ var Menu = (function() {
 		if (Site.debug) console.log(" -> Menu.newScenarioMenu()", msa);
 		if (Site.debug) $("#rawDataOutput").val(msa + ": \n" + JSON.stringify(msas[msa])); // testing
 		//if (Site.debug) console.log("msas[msa][0]",msas[msa][0])
-
 
 		// use msa to update the scenario box
 		var str = "<option val=''></option>";
@@ -130,8 +129,6 @@ var Menu = (function() {
 		let url = "https://github.com/co-ncrn/co-ncrn.github.io/tree/master/msa_data/"+msa;
 		$(".download_link").attr("href",url);
 	}
-
-
 	function updateDownloadLinkMeta(){
 		let str = " [ "+
 			//"" + Page.location.msa + ":" + Page.location.scenario + ":" + Page.location.data +
@@ -144,6 +141,15 @@ var Menu = (function() {
 		$(".download_link_meta").html(str);
 	}
 
+	function updateShareLinks(title,url){
+		let fb = "https://www.facebook.com/dialog/share?app_id=833996433457830&display=page&href="+ url +"&redirect_uri="+ url,
+			tw = "https://twitter.com/intent/tweet?url="+ url +"&text="+ title +"&hashtags=ACS,census,data,maps,marginoferror",
+			go = "https://plus.google.com/share?url="+ url;
+
+		$(".share_link_fb").attr("href",fb).attr("title",title);
+		$(".share_link_tw").attr("href",tw).attr("title",title);
+		$(".share_link_go").attr("href",go).attr("title",title);
+	}
 
 
 
@@ -155,8 +161,8 @@ var Menu = (function() {
 		newMsaMenu: function(msas) {
 			newMsaMenu(msas);
 		},
-		update: function() {
-
+		updateShareLinks: function(title,url) {
+			updateShareLinks(title,url);
 		},
 		newScenarioMenu: function(msa, scenario, data) {
 			newScenarioMenu(msa, scenario, data);
