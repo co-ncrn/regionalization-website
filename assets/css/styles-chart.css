@@ -11,9 +11,14 @@
 
 .dropdown_left { float: left; width: 6%; margin: 5px 0; }
 .dropdown_right { float: left; width: 93%; margin: 5px 0; }
-.download_link, .download_link:hover { font-size: 88%; color: #333; text-decoration: none }
-.download_link_meta, .share_link_text { font-size: 88%; color: #888; }
-.share_links { display: inline-block; float: right;}
+
+.download_link, .download_link:hover, .download_link:focus { font-size: 88%; color: #56a8cf; text-decoration: none }
+.download_link_meta, .share_link_text { font-size: 88%; color: #ccc; }
+
+.share_links { display: inline-block; float: right; }
+.share_links a:link, .share_links a:visited { color: #ccc; padding-left: 5px; }
+.share_links a:active, .share_links a:hover, .share_links a:focus { color: #56a8cf; }
+
 
 /* ICONS */
 .fa {opacity: .85}
@@ -64,7 +69,7 @@ overflow-x: hidden;/**/
 #chart thead th.thRID, #chart tbody td.rid { min-width: 45px; max-width: 60px; width: 60px; }
 #chart thead th.thEST, #chart tbody td.est { min-width: 45px; max-width: 80px; width: 80px;  }
 #chart thead th.thMAR, #chart tbody td.err { min-width: 45px; max-width: 60px; width: 60px; }
-#chart thead th.thEST { padding: 4px 0 }
+#chart thead th.thEST { padding: 1px 0 }
 
 
 

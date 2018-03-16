@@ -144,6 +144,8 @@ function dataChangeCallback(){
 	Color.updateScale();
 	// update chart (and eventually map, from chart.js)
 	Chart.updateChart();
+	// resize chart once data is loaded
+	Chart.resizeTable();
 	// update meta
 	Menu.updateDownloadLinkMeta();
 }

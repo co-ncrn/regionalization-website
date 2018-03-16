@@ -48,3 +48,6 @@ audreyr/favicon-cheat-sheet
 
 Must-Have Social Meta Tags for Twitter, Google+, Facebook and More
 <https://moz.com/blog/meta-data-templates-123>
+
+Social Share URLs
+https://github.com/bradvin/social-share-urls

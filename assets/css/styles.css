@@ -18,7 +18,8 @@ a:link, a:hover, a:focus, a:visited, a:active { color: #56a8cf}
 .navbar-light .navbar-nav .nav-link { color: #56a8cf; }
 /* change the color of active or hovered links */
 .navbar-light .nav-item.active .nav-link,
-.navbar-light .nav-item:hover .nav-link { color: #56a8cf; }
+.navbar-light .nav-item:hover .nav-link,
+.navbar-light .nav-item:focus .nav-link { color: #56a8cf; }
 
 /* remove button outline */
 .btn:focus, .btn:active { outline: none !important; box-shadow: none !important; }
@@ -31,7 +32,7 @@ a:link, a:hover, a:focus, a:visited, a:active { color: #56a8cf}
 .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary:visited, .btn-outline-secondary:focus,
 .btn-outline-secondary:hover {
     background-color: rgba(0,0,0,0);
-    border-color: rgb(108, 117, 125);
+    border-color: #ced4da;
     color: rgb(108, 117, 125);
 }
 

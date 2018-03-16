@@ -32,13 +32,13 @@ var Chart = (function() {
 			"svgCell": $(".svgCell").width(),
 		};
 
-		console.log("\nTable.resize() sizes = ", sizes);
+		console.log("\nTable.resizeTable() sizes = ", sizes);
 
 		// expand table
 		$("table").width(sizes.chartContainer);
 
 		// resize headers to match data in colums
-		$(".thTID").innerWidth($(".tid").width());
+		$(".thTID").width($(".tid").width());
 		$(".thRID").width($(".rid").width());
 		$(".thEST").width($(".est").width());
 		$(".thMAR").width($(".err").width());
@@ -53,6 +53,7 @@ var Chart = (function() {
 		if (prop(loaded) && loaded == true) {
 			//console.log("currentScenarioArray0", currentScenarioArray);
 			updateChart();
+			updateChartScales();
 		}
 
 		// set svg properties
@@ -64,6 +65,7 @@ var Chart = (function() {
 		};
 		width = (sizes.thSVG - margin.left - margin.right);
 		height = (svgHeight - margin.top - margin.bottom);
+
 	}
 	resizeTable(); // get initial table sizes
 	//setTimeout (resizeTable,1000); // and do it again once data is set
@@ -542,7 +544,8 @@ var Chart = (function() {
 	 * 	Build / Update HTML table inside the SVG chart
 	 */
 	function updateChartScales() {
-		//if (CHART_DEBUG) console.log("updateChartScales()");
+		//if (CHART_DEBUG)
+		console.log("updateChartScales()");
 
 		// Y-SCALE: based on number of data
 		yScale = d3.scaleLinear()
@@ -569,7 +572,8 @@ var Chart = (function() {
 	return {
 		createChart: createChart,
 		updateChart: updateChart,
-		updateChartScales: updateChartScales
+		updateChartScales: updateChartScales,
+		resizeTable: resizeTable
 	};
 
 }());
