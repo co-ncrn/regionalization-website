@@ -209,9 +209,12 @@ var Site = (function() {
                                     <div class="col-11 form_select_col">
                                         <a href="#" title="Download data for this area" class="download_link" target="_blank">Download data for this area</a>
                                         <span class="download_link_meta"></span>
-                                        <a href="#" class="share_link_tw" target="_blank"><i class="fab fa-twitter"></i></a>
-                                        <a href="#" class="share_link_fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                        <a href="#" class="share_link_go" target="_blank"><i class="fab fa-google-plus-g"></i></a>
+                                        <div class="share_links">
+                                            <span class="share_link_text">share</span>
+                                            <a href="#" class="share_link_tw" target="_blank"><i class="fab fa-twitter"></i></a>
+                                            <a href="#" class="share_link_fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                            <a href="#" class="share_link_go" target="_blank"><i class="fab fa-google-plus-g"></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
