@@ -333,7 +333,7 @@ var Site = (function() {
             </h3>
 
             <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
-
+            <p>Regionalizations built using 2008-2012 ACS data.</p>
             <p>Data and source code is MIT Licensed and can be accessed at <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">Github</a>.</p>
         </div>
     </div>
