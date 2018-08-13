@@ -32,7 +32,7 @@ var Chart = (function() {
 			"svgCell": $(".svgCell").width(),
 		};
 
-		console.log("\nTable.resizeTable() sizes = ", sizes);
+		//console.log("\nTable.resizeTable() sizes = ", sizes, "sizes.chartContainer = "+ sizes.chartContainer," ratio = "+svgRatio);
 
 		// expand table
 		$("table").width(sizes.chartContainer);

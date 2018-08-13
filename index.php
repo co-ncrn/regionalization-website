@@ -35,12 +35,14 @@ $site = array(
 
 // handle rewrites
 if ($_SERVER['HTTP_HOST'] == "localhost") {
-    $site['rootDir'] = $site['server'] = "http://localhost/RegionalismMap/code/regionalization-website/";
+    $site['rootDir'] = $site['server'] = "http://localhost/ReducingUncertainty/code/regionalization-website/";
+    $site['server'] = "localhost";
 }
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <!-- meta -->
@@ -74,7 +76,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <meta property="fb:app_id" content="833996433457830" />
 
 
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto+Slab:100">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRoboto+Slab:100">
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/bootstrap/dist/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/chosen-jquery/lib/chosen.min.css"> -->
 <link rel="stylesheet" type="text/css" href="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.css">
@@ -89,24 +91,26 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 
 
 <script>
-var Site = (function() {
+    var Site = (function() {
 
-	return {
-        dataDir: "<?php print $site['dataDir']; ?>",
-        debug: <?php print $site['debug']; ?>,
-        description: "<?php print $site['description']; ?>",
-        domain: "<?php print $site['domain']; ?>",
-		rootDir: "<?php print $site['rootDir']; ?>",
-		server: "<?php print $site['server']; ?>",
-		title: "<?php print $site['title']; ?>",
-	}
+        return {
+            dataDir: "<?php print $site['dataDir']; ?>",
+            debug: <?php print $site['debug']; ?>,
+            description: "<?php print $site['description']; ?>",
+            domain: "<?php print $site['domain']; ?>",
+            rootDir: "<?php print $site['rootDir']; ?>",
+            server: "<?php print $site['server']; ?>",
+            title: "<?php print $site['title']; ?>",
+        }
 
-})();
+    })();
 </script>
 
 
 <style>
-#map { height: 680px; }
+    #map {
+        height: 680px;
+    }
 </style>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -115,6 +119,7 @@ var Site = (function() {
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
+
 <body>
 
 
@@ -125,26 +130,26 @@ var Site = (function() {
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top">
     <a class="navbar-brand" href="<?php print $site['rootDir']; ?>">Reducing Uncertainty</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<span class="navbar-toggler-icon"></span>
+</button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-auto">
-			<li class="nav-item">
-				<a class="nav-link" href="#top"><i class="far fa-map"></i></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#data-quality">Data Quality</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#margin-of-error">Margin of Error</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#regionalization">Regionalization</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#credits">Credits</a>
-			</li>
-		</ul>
+            <li class="nav-item">
+                <a class="nav-link" href="#top"><i class="far fa-map"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#data-quality">Data Quality</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#margin-of-error">Margin of Error</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#regionalization">Regionalization</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#credits">Credits</a>
+            </li>
+        </ul>
     </div>
 </nav>
 
@@ -154,21 +159,21 @@ var Site = (function() {
 
 
 <div class="container-fluid" id="top">
-	<div class="header">
-		<h2 class="callout">Reducing the Margin of Error in<br>the American Community Survey.</h2>
-	</div>
+    <div class="header">
+        <h2 class="callout">Reducing the Margin of Error in<br>the American Community Survey.</h2>
+    </div>
 </div>
 
 
 <div class="container-fluid">
-	<div id="presentation">
-		<div class="row">
+    <div id="presentation">
+        <div class="row">
 
-			<div class="col-md-7">
-				<div id="map"></div>
-			</div>
+            <div class="col-md-7">
+                <div id="map"></div>
+            </div>
 
-			<div class="col-md-5">
+            <div class="col-md-5">
                 <div class="row">
                     <div class="col-12">
                         <form>
@@ -177,8 +182,8 @@ var Site = (function() {
                                 <div class="row">
                                     <div class="col-1 form_icon_col">
                                         <label for="msa_select_box">
-                                            <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png">
-                                        </label>
+                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-geo-22w.png" alt="location icon">
+                                </label>
                                     </div>
                                     <div class="col-11 form_select_col">
                                         <select class="form-control form-control-chosen" id="msa_select_box" data-placeholder="Select a Metropolitan Statistical Area (MSA)"></select>
@@ -190,8 +195,8 @@ var Site = (function() {
                                 <div class="row">
                                     <div class="col-1 form_icon_col">
                                         <label for="scenario_select_box">
-                                            <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png">
-                                        </label>
+                                    <img src="<?php print $site['rootDir']; ?>assets/img/icon-bar-graph.png" alt="data icon">
+                                </label>
                                     </div>
                                     <div class="col-11 form_select_col">
                                         <select class="form-control form-control-chosen" id="scenario_select_box" data-placeholder="Select an ACS scenario and dataset"></select>
@@ -203,8 +208,8 @@ var Site = (function() {
                                 <div class="row">
                                     <div class="col-1 form_icon_col">
                                         <a href="#" title="Download data for this Metropolitan Area" class="download_link" target="_blank">
-                                			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png">
-                                        </a>
+                        			<img src="<?php print $site['rootDir']; ?>assets/img/icon-download.png" alt="download icon">
+                                </a>
                                     </div>
                                     <div class="col-11 form_select_col">
                                         <a href="#" title="Download data for this area" class="download_link" target="_blank">Download data for this area</a>
@@ -226,48 +231,48 @@ var Site = (function() {
 
                 <div class="row">
                     <div class="col-12">
-        				<div id="chart-container">
-        					<div id="chart">
+                        <div id="chart-container">
+                            <div id="chart">
 
-        						<table class="table-striped table-hover">
-        							<thead>
-        								<tr>
-        									<th class="thTID" title="Tract ID (state.county.tract)">
-        										<button class="btn btn-sm btn-outline-secondary">&nbsp;Tract&nbsp;</button>
-        									</th>
-        									<th class="thRID" title="Region ID">
-        										<button class="btn btn-sm btn-light">Region</button>
-        									</th>
-        									<th class="thEST ">
-        										<button class="btn btn-sm btn-outline-secondary">Estimate</button>
-        									</th>
-        									<th class="thMAR ">
-        										<button class="btn btn-sm btn-light">Error</button>
-        									</th>
-        									<th class="thSVG"></th>
-        								</tr>
-        							</thead>
+                                <table class="table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="thTID" title="Tract ID (state.county.tract)">
+                                                <button class="btn btn-sm btn-outline-secondary">&nbsp;Tract&nbsp;</button>
+                                            </th>
+                                            <th class="thRID" title="Region ID">
+                                                <button class="btn btn-sm btn-light">Region</button>
+                                            </th>
+                                            <th class="thEST ">
+                                                <button class="btn btn-sm btn-outline-secondary">Estimate</button>
+                                            </th>
+                                            <th class="thMAR ">
+                                                <button class="btn btn-sm btn-light">Error</button>
+                                            </th>
+                                            <th class="thSVG"></th>
+                                        </tr>
+                                    </thead>
                                     <!-- data goes here -->
-        							<tbody></tbody>
-        						</table>
+                                    <tbody></tbody>
+                                </table>
 
-        					</div>
-        				</div>
-        			</div>
-            	</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-        	</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
     <?php if (0 && site['debug']) { ?>
-	<div class="row pt-3 pb-3">
-		<div class="col-md-12" id="rawData">
+    <div class="row pt-3 pb-3">
+        <div class="col-md-12" id="rawData">
             <h4>Raw data</h4>
             <textarea class="form-control" rows="20" id="rawDataOutput"></textarea>
         </div>
-	</div>
+    </div>
     <?php } ?>
 
 </div>
@@ -285,9 +290,14 @@ var Site = (function() {
         <div class="col-md-6 pt-3">
             <h3 class="section-title">Data quality and the American Community Survey</h3>
 
-            <p>The <a href="https://www.census.gov/programs-surveys/acs/" target="_blank" title="American Community Survey (ACS)">American Community Survey (ACS)</a> is the largest survey of US households (3.5 million homes contacted each year) and is the principal source for neighborhood scale information about the US population. The ACS is used to allocate billions in federal spending and is a critical input to social scientific research in the US. However, estimates from the ACS can be highly unreliable. For example, in over 72% of census tracts, the estimated number of children under 5 in poverty has a margin of error greater than the estimate (e.g 100 kids in poverty +/- 150). Uncertainty of this magnitude complicates the use of social data in policy making, research, and governance. </p>
+            <p>The <a href="https://www.census.gov/programs-surveys/acs/" target="_blank" title="American Community Survey (ACS)">American Community Survey (ACS)</a> is the largest survey of US households (3.5 million homes contacted each year) and
+                is the principal source for neighborhood scale information about the US population. The ACS is used to allocate billions in federal spending and is a critical input to social scientific research in the US. However, estimates from
+                the ACS can be highly unreliable. For example, in over 72% of census tracts, the estimated number of children under 5 in poverty has a margin of error greater than the estimate (e.g 100 kids in poverty +/- 150). Uncertainty of
+                this magnitude complicates the use of social data in policy making, research, and governance. </p>
 
-            <p>Our project presents a way to reduce the margins of error in survey data via the creation of new geographies, a process called regionalization. Technical details of this paper and example implementations are described in this <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">PLOSOne Paper</a>. This website presents the data from 388 metropolitan statistical areas, before and after the regionalization process, in order to explain, demonstrate, and circulate our <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">results and the data</a>. </p>
+            <p>Our project presents a way to reduce the margins of error in survey data via the creation of new geographies, a process called regionalization. Technical details of this paper and example implementations are described in this <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0"
+                    target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">PLOSOne Paper</a>. This website presents the data from 388 metropolitan statistical areas, before and after the regionalization
+                process, in order to explain, demonstrate, and circulate our <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">results and the data</a>. </p>
         </div>
     </div>
 
@@ -300,11 +310,13 @@ var Site = (function() {
         </div>
         <div class="col-sm-7 section-text">
             <h3 class="section-title">
-                <span class="rwd-line">What is </span>
-                <span class="rwd-line">Margin of Error?</span>
-            </h3>
+        <span class="rwd-line">What is </span>
+        <span class="rwd-line">Margin of Error?</span>
+    </h3>
 
-            <p>Each ACS estimate has a corresponding margin of error (MOE). The MOE measures how much the estimate might vary relative to the population value, given a certain confidence level. The ACS uses a confidence level of 90%. For example, if the estimate of median household income for a particular census tract is $50,000 with an MOE of $10,000, then we are 90% confident that the actual median household income for that tract is between $40,000 and $60,000. If the MOE was $40,000, than that range would balloon to $10,000 to $90,000, giving us low confidence that the estimate is accurately capturing the actual income level.</p>
+            <p>Each ACS estimate has a corresponding margin of error (MOE). The MOE measures how much the estimate might vary relative to the population value, given a certain confidence level. The ACS uses a confidence level of 90%. For example,
+                if the estimate of median household income for a particular census tract is $50,000 with an MOE of $10,000, then we are 90% confident that the actual median household income for that tract is between $40,000 and $60,000. If the
+                MOE was $40,000, than that range would balloon to $10,000 to $90,000, giving us low confidence that the estimate is accurately capturing the actual income level.</p>
         </div>
     </div>
 
@@ -317,7 +329,9 @@ var Site = (function() {
         <div class="col-sm-7 section-text">
             <h3 class="section-title">Regionalization</h3>
 
-            <p>Regionalization is a process of combining neighboring polygons into “regions” based on a set of goals. In this case the goals are to combine census tracts 1) with similar socioeconomic attributes and 2) so that overall estimate uncertainty is reduced. Joining tracts together increases the sample size and thus generally reduces the overall uncertainty on the estimates for the combined tracts. We continue to combine similar tracts until all the estimates in all the regions have met a data quality threshold.  </p>
+            <p>Regionalization is a process of combining neighboring polygons into “regions” based on a set of goals. In this case the goals are to combine census tracts 1) with similar socioeconomic attributes and 2) so that overall estimate uncertainty
+                is reduced. Joining tracts together increases the sample size and thus generally reduces the overall uncertainty on the estimates for the combined tracts. We continue to combine similar tracts until all the estimates in all the
+                regions have met a data quality threshold. </p>
         </div>
     </div>
 
@@ -328,11 +342,12 @@ var Site = (function() {
         </div>
         <div class="col-sm-7 section-text">
             <h3 class="section-title">
-                <span class="rwd-line">Publications</span>
-                <span class="rwd-line">& Source code</span>
-            </h3>
+        <span class="rwd-line">Publications</span>
+        <span class="rwd-line">& Source code</span>
+    </h3>
 
-            <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
+            <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>.
+                <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
             <p>Regionalizations built using 2008-2012 ACS data.</p>
             <p>Data and source code is MIT Licensed and can be accessed at <a href="https://github.com/geoss/ACS_Regionalization" target="_blank" title="results and data">Github</a>.</p>
         </div>
@@ -357,16 +372,14 @@ var Site = (function() {
             <div class="col-md-4 pt-3 pb-3">
                 <div class="footer-title pb-3">Authors</div>
 
-                <p>Seth E. Spielman, University of Colorado<br>
-                David C. Folch, Florida State University<br>
-                Rebecca M. Davies, data wrangler<br>
-                Owen Mundy, website and data visualization</p>
+                <p>Seth E. Spielman, University of Colorado<br> David C. Folch, Florida State University<br> Rebecca M. Davies, data wrangler<br> Owen Mundy, website and data visualization</p>
 
             </div>
             <div class="col-md-4 pt-3 pb-3">
                 <div class="footer-title pb-3">Publications</div>
 
-                <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>. <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
+                <p>Spielman, S., Folch, D. <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0115626#abstract0" target="_blank" title="Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization">Reducing Uncertainty in the American Community Survey through Data-Driven Regionalization</a>.
+                    <em>PLoS ONE</em>, vol. 10, issue 2 (2015) Published by Public Library of Science.</p>
 
             </div>
             <div class="col-md-4 pt-3 pb-3">
@@ -433,20 +446,22 @@ var Site = (function() {
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102267502-4"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-102267502-4');
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'UA-102267502-4');
 </script>
 
-<script type="text/javascript">
-var sc_project=11652073;
-var sc_invisible=1;
-var sc_security="edfedd43";
+<script>
+    var sc_project = 11652073;
+    var sc_invisible = 1;
+    var sc_security = "edfedd43";
 </script>
-<script type="text/javascript"
-src="https://www.statcounter.com/counter/counter.js"
-async></script>
+<script src="https://www.statcounter.com/counter/counter.js" async></script>
 
 </body>
+
 </html>
