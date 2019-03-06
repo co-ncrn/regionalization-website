@@ -1,12 +1,24 @@
 <ifModule mod_rewrite.c>
     RewriteEngine On
 
-    #RewriteCond %{REQUEST_FILENAME} !\.(js|css|gif|jpg|jpeg|png|ico|swf|pdf|html|php|json|geojson|topojson)$
-    #RewriteCond %{REQUEST_URI} !^index
+    # Do not rewrite static files
+    RewriteCond %{REQUEST_FILENAME} !\.(js|css|gif|jpg|jpeg|png|ico|swf|pdf|html|php|json|geojson|topojson)$
+    RewriteCond %{REQUEST_URI} !^index
 
+    # Remove www *doing this through Dreamhost panel instead
+    #RewriteCond %{HTTP_HOST} ^www\.
+    #RewriteRule ^(.*)$ https://reducinguncertainty.org/$1 [R=301,L]
 
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # Force HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301] 
+
+    # do not rewrite files
+    RewriteCond %{REQUEST_FILENAME} !-f 
+    # do not rewrite directories
+    RewriteCond %{REQUEST_FILENAME} !-d 
+    # do not rewrite symbolic links
     RewriteCond %{REQUEST_FILENAME} !-l
     RewriteRule (.*) index.php [L]
+
 </ifModule>
