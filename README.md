@@ -2,6 +2,10 @@
 
 ### TO DO
 
+##### Now
+• Include the stepped color bar below the values from earlier design to make them more obvious
+
+
 ##### Before launch
 • Have another go at compression into Topojson
 • Minify everything
@@ -51,3 +55,42 @@ Must-Have Social Meta Tags for Twitter, Google+, Facebook and More
 
 Social Share URLs
 https://github.com/bradvin/social-share-urls
+
+
+OTHERS TO SORT
+
+
+https://github.com/tobinbradley
+https://github.com/tobinbradley/Mecklenburg-County-GeoPortal/blob/master/app/js/app.js
+http://fuzzytolerance.info/blog/2016/03/16/Leaflet-to-Mapbox-GL/
+
+
+
+
+https://medium.com/uber-design/crafting-data-driven-maps-b0835b620554#.n48gfrwpl
+https://docs.google.com/document/d/1ZMuWpMKm8CzKNTTN3mTqFPdTT6AnN9HJAp_Y6o9jabg/edit
+https://jsfiddle.net/ow3n/0e04ayf5/
+http://stackoverflow.com/questions/33832679/how-to-create-a-choropleth-map-with-mapbox-gl-js
+https://www.mapbox.com/mapbox-gl-js/example/updating-choropleth/
+https://www.mapbox.com/blog/data-driven-styling/
+https://jsfiddle.net/ow3n/0pnoohom/
+
+
+Mapbox Data Driven Styles
+http://anand.codes/2015/09/21/interative-data-driven-styles-with-mapbox-gl-js/
+https://www.mapbox.com/help/gl-dds-ref/
+https://www.mapbox.com/mapbox-gl-style-spec/
+http://justinmiller.io/posts/2015/01/20/anatomy-of-a-travel-map/
+
+
+
+
+
+http://mapshaper.org/
+http://shancarter.github.io/distillery/
+http://stackoverflow.com/questions/18900022/topojson-quantization-vs-simplification
+http://www.latimes.com/projects/la-march-neighborhood-election-results/
+
+
+https://github.com/substack/browserify-handbook
+http://www.bradoncode.com/tutorials/browserify-tutorial-node-js/
