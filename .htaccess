@@ -1,4 +1,5 @@
 <ifModule mod_rewrite.c>
+
     RewriteEngine On
 
     # Do not rewrite static files
@@ -17,6 +18,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f 
     # do not rewrite directories
     RewriteCond %{REQUEST_FILENAME} !-d 
+
     # do not rewrite symbolic links
     RewriteCond %{REQUEST_FILENAME} !-l
     RewriteRule (.*) index.php [L]
