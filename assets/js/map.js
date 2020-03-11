@@ -74,13 +74,31 @@ var Mns = (function() {
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 
+			let token = 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ';
+
 			// add base map
-			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-				id: 'mapbox.light', // testing: 'mapbox.streets'
-				opacity: 0.7,
-				attribution: attribution,
-				accessToken: 'pk.eyJ1Ijoib3dlbm11bmR5IiwiYSI6ImNpd3o4M3dvejAxMHkyeW1neTQxMzlxamkifQ.mRigBfiIBYYqOMAftwkvbQ'
-			}).addTo(map);
+			//L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			//	id: 'mapbox.light', // testing: 'mapbox.streets'
+			//	opacity: 0.7,
+			//	attribution: attribution,
+			//	accessToken: token
+			//}).addTo(map);
+
+
+// modern static tiles api
+L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+	attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+	tileSize: 512,
+	maxZoom: 18,
+	zoomOffset: -1,
+	id: 'mapbox/light-v10',
+	accessToken: token
+}).addTo(map);
+
+
+
+
+
 
 			// add buttons to map
 			L.easyButton('fa-arrows-alt fa-lg', function(btn, map) {
