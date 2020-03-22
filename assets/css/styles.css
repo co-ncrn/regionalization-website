@@ -93,6 +93,8 @@ a:link, a:hover, a:focus, a:visited, a:active { color: #56a8cf}
 
 
 /* FULLSCREEN */
+#presentation { background-color: #fff; }
+
 #presentation:-webkit-full-screen { width: 100vw; height: 100vh; /*background-color: red;*/ }
 #presentation:-moz-full-screen { width: 100vw; height: 100vh; }
 #presentation:-ms-fullscreen { width: 100vw; height: 100vh; }
