@@ -1,10 +1,14 @@
 {
-    "indent": 1,
-    "esversion": 6,
-    "validthis": true,
-    "globals": {
+	"esversion": 8,
+	"strict": "implied",
+	"devel": true,
+	"browser": true,
+	"indent": 1,
+	"undef": true,
+	"unused": true,
+	"globals": {
         "$": false,
         "L": false,
         "d3": false
-    }
+	}
 }
