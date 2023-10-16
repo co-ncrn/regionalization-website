@@ -6,7 +6,7 @@
     "author": "Owen Mundy",
     "license": "MIT",
     "dependencies": {
-        "bootstrap": "^4.0.0",
+        "bootstrap": "^5.3.2",
         "bootstrap-chosen": "^1.4.2",
         "bootstrap4c-chosen": "^1.0.6",
         "chosen-jquery": "^0.1.1",
