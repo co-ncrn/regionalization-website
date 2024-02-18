@@ -35,7 +35,7 @@ $site = array(
 
 // handle rewrites
 if ($_SERVER['HTTP_HOST'] == "localhost") {
-    $site['rootDir'] = $site['server'] = "http://localhost/ReducingUncertainty/code/regionalization-website/";
+    $site['rootDir'] = $site['server'] = "https://localhost/regionalization-website/";
     $site['server'] = "localhost";
 }
 
@@ -266,7 +266,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
         </div>
     </div>
 
-    <?php if (0 && site['debug']) { ?>
+    <?php if (0 && $site['debug']) { ?>
     <div class="row pt-3 pb-3">
         <div class="col-md-12" id="rawData">
             <h4>Raw data</h4>
@@ -442,18 +442,6 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <script src="<?php print $site['rootDir']; ?>assets/js/chart.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/map.js"></script>
 <script src="<?php print $site['rootDir']; ?>assets/js/main.js"></script>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-102267502-4"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-102267502-4');
-</script>
 
 <script>
     var sc_project = 11652073;
