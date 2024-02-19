@@ -1,6 +1,11 @@
 # ACS Regionalization WEBSITE
 
-### TO DO
+View the project
+https://reducinguncertainty.org/
+
+
+
+<!-- 
 
 ##### Now
 • Include the stepped color bar below the values from earlier design to make them more obvious
@@ -93,4 +98,6 @@ http://www.latimes.com/projects/la-march-neighborhood-election-results/
 
 
 https://github.com/substack/browserify-handbook
-http://www.bradoncode.com/tutorials/browserify-tutorial-node-js/
+http://www.bradoncode.com/tutorials/browserify-tutorial-node-js/ 
+
+-->
