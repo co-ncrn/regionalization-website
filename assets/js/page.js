@@ -140,7 +140,7 @@ var Page = (function() {
 
 		window.onpopstate = function(event) {
 			if (event && event.state) {
-				console.log("url changed");
+				if (Site.debug) console.log("url changed");
 				init();
 			}
 		};

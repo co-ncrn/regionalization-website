@@ -26,7 +26,7 @@ $(function() {
 });
 
 function init() {
-	console.log("init()");
+	if (Site.debug) console.log("init()");
 
 	// get _metadata for menus
 	d3.json(Site.rootDir + "data/msas.json", function(error, json) {
@@ -79,7 +79,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 
 	// if no msa then set default
 	if (!prop(newLocation.msa) || newLocation.msa == "") {
-		console.log(" -> -> no msa, picking random");
+		if (Site.debug) console.log(" -> -> no msa, picking random");
 		let rMsa = randomProperty(msas);
 		newLocation.msa = rMsa[0].msa;
 		updateMSA = true;
@@ -87,7 +87,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 	// if no scenario, or it doesn't exist in msa
 	if (!Data.msaScenarioAndDataExists(newLocation) || !prop(newLocation.scenario) || newLocation.scenario == "" ||
 		!prop(newLocation.data) || newLocation.data == "") {
-		console.log(" --------> no scenario || data, selecting first scenario| data instance");
+        if (Site.debug) console.log(" --------> no scenario || data, selecting first scenario| data instance");
 		newLocation.scenario = msas[newLocation.msa][0].scenario;
 		newLocation.data = msas[newLocation.msa][0].data[0];
 		updateScenario = updateData = true;
@@ -110,7 +110,7 @@ function dataChange(origin, newLocation, tractOrRegion, estimateOrMargin) {
 		if (prop(newLocation.data) && newLocation.data != Page.location.data)
 			updateScenario = true;
 	}
-	console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
+	if (Site.debug) console.log(" -> action = " + action, updateMSA, updateScenario, updateData);
 
 	// save new location
 	Page.setLocation(newLocation);
