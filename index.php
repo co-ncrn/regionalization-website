@@ -40,15 +40,14 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 }
 
 ?>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
 
 <!-- meta -->
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reducing Uncertainty :: Reducing the Margin of Error in the American Community Survey</title>
 <meta name='description' content="<?php print $site['title']; ?> – <?php print $site['description']; ?>">
 <meta name="keywords" content="ACS,census,data,maps,margin of error">
@@ -127,13 +126,13 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-light fixed-top">
+<nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top">
     <a class="navbar-brand" href="<?php print $site['rootDir']; ?>">Reducing Uncertainty</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-<span class="navbar-toggler-icon"></span>
-</button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ms-auto">
             <li class="nav-item">
                 <a class="nav-link" href="#top"><i class="far fa-map"></i></a>
             </li>
@@ -218,7 +217,6 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
                                             <span class="share_link_text">share</span>
                                             <a href="#" class="share_link_tw" target="_blank"><i class="fab fa-twitter"></i></a>
                                             <a href="#" class="share_link_fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#" class="share_link_go" target="_blank"><i class="fab fa-google-plus-g"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -423,6 +421,7 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <script src="<?php print $site['rootDir']; ?>node_modules/leaflet/dist/leaflet.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/leaflet-easybutton/src/easy-button.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/d3/build/d3.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js" integrity="sha512-pvyDOCsMWEqixJpLPypiZkpjuIywuxhZImCDncJ8AWOzt9IWPv5GDEAVEqp2zhPmpbUEoQ756B3kEV30+V04OA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <script src="<?php print $site['rootDir']; ?>node_modules/d3-color/build/d3-color.min.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/d3-scale-chromatic/dist/d3-scale-chromatic.min.js"></script>
 <script src="<?php print $site['rootDir']; ?>node_modules/topojson/dist/topojson.min.js"></script>
@@ -451,5 +450,4 @@ if ($_SERVER['HTTP_HOST'] == "localhost") {
 <script src="https://www.statcounter.com/counter/counter.js" async></script>
 
 </body>
-
 </html>
