@@ -51,7 +51,7 @@ var Chart = (function() {
 
 		// update SVG sizes in chart
 		if (prop(loaded) && loaded == true) {
-			//console.log("currentScenarioArray0", currentScenarioArray);
+			//if (CHART_DEBUG) console.log("currentScenarioArray0", currentScenarioArray);
 			updateChart();
 			updateChartScales();
 		}
@@ -426,20 +426,20 @@ var Chart = (function() {
 	function toggleEstimateOrMargin(state) {
 		if (state == estimateOrMargin) return; // if same, exit
 		estimateOrMargin = state; // update
-		console.log("estimateOrMargin", estimateOrMargin);
+		if (CHART_DEBUG) ("estimateOrMargin", estimateOrMargin);
 		Mns.updateMap();
 		updateChart();
 		highlightHeaders();
 	}
 
 	function selectEST() {
-		console.log("selectEST() -> estimateOrMargin=", estimateOrMargin);
+		if (CHART_DEBUG) console.log("selectEST() -> estimateOrMargin=", estimateOrMargin);
 		if (estimateOrMargin == "e") return; // if same, exit
 		toggleEstimateOrMargin("e");
 	}
 
 	function selectMAR() {
-		console.log("selectMAR() -> estimateOrMargin=", estimateOrMargin);
+		if (CHART_DEBUG) console.log("selectMAR() -> estimateOrMargin=", estimateOrMargin);
 		if (estimateOrMargin == "m") return; // if same, exit
 		toggleEstimateOrMargin("m");
 	}
@@ -498,7 +498,7 @@ var Chart = (function() {
 	 * Change selection on chart/map to show REGIONS
 	 */
 	function selectRID(d) {
-		//console.log("selectRID() -> tractOrRegion = ",tractOrRegion);
+		//if (CHART_DEBUG) console.log("selectRID() -> tractOrRegion = ",tractOrRegion);
 
 		// switch to display region data in boxplot
 		if (tractOrRegion == "t") {
@@ -545,7 +545,7 @@ var Chart = (function() {
 	 */
 	function updateChartScales() {
 		//if (CHART_DEBUG)
-		console.log("updateChartScales()");
+		if (CHART_DEBUG) console.log("updateChartScales()");
 
 		// Y-SCALE: based on number of data
 		yScale = d3.scaleLinear()

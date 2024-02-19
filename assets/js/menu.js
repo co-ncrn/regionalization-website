@@ -143,12 +143,10 @@ var Menu = (function() {
 
 	function updateShareLinks(title,url){
 		let fb = "https://www.facebook.com/dialog/share?app_id=833996433457830&display=page&href="+ url +"&redirect_uri="+ url,
-			tw = "https://twitter.com/intent/tweet?url="+ url +"&text="+ title +"&via=seth_sp @dacfo @owenmundy&hashtags=ACS,census,data,maps,marginoferror",
-			go = "https://plus.google.com/share?url="+ url;
+			tw = "https://twitter.com/intent/tweet?url="+ url +"&text="+ title +"&via=seth_sp @dacfo @owenmundy&hashtags=ACS,census,data,maps,marginoferror";
 
 		$(".share_link_fb").attr("href",fb).attr("title",title);
 		$(".share_link_tw").attr("href",tw).attr("title",title);
-		$(".share_link_go").attr("href",go).attr("title",title);
 	}
 
 

@@ -14,7 +14,7 @@ var Data = (function() {
 
 		d3.json(url, function(error, json) {
 			if (error) return console.error(error, json); // handle error
-			console.log(" -> json returned = ", json);
+			if (Site.debug) console.log(" -> json returned = ", json);
 
 
 			// DO I STILL NEED THIS?

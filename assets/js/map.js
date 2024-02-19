@@ -135,7 +135,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	 *	Zoom to the msa
 	 */
 	function zoomToMSAonMap(msa, from) {
-		console.log(" -> Mns.zoomToMSAonMap()", msa, from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
+		if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap()", msa, from, /*arguments.callee.caller.toString(), */ msa, msas[msa][0]);
 		if (!prop(msaIndex[msa])) return;
 		try {
 			//if (MAP_DEBUG) console.log(" -> Mns.zoomToMSAonMap() msaIndex[msa] = ", msaIndex[msa], msaIndex[msa].bounds);
@@ -509,9 +509,8 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	}
 	// update map after chart to give topojson time to load
 	function updateMap() {
-	//	return;
-// not sure if i need this
-		console.log("updateMap()");
+
+        if (MAP_DEBUG)console.log("updateMap()");
 		if (!prop(tractLayer.eachLayer)) return;
 
 		tractLayer.eachLayer(function(layer) {
@@ -541,8 +540,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 	}
 	// sets scales for tractStyles
 	function setTractStyleScale(data) {
-		console.log("setTractStyleScale()", data);
-
+		if (MAP_DEBUG) console.log("setTractStyleScale()", data);
 	}
 
 	return {

@@ -9,6 +9,9 @@ a:link, a:hover, a:focus, a:visited, a:active { color: #56a8cf}
 
 /* bootstrap */
 
+
+.navbar { padding: .5rem 1rem;}
+
 /* change the background color */
 .navbar-light { background-color: #fff !important; font-weight: 300;}
 /* change the brand and text color */
